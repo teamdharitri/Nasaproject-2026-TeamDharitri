@@ -1,6 +1,7 @@
 import { getSession, isAuthenticated, signIn, signOut } from './auth-service.js';
 import { createLandingAnimation } from './landing-animation.js';
 import { getRover, ROVERS } from './rover-data.js';
+import { redirectForAuth } from './route-guard.js';
 import { validateLoginForm } from './validation.js';
 
 const app = document.querySelector('#app');
@@ -292,6 +293,7 @@ function renderMissionDetail(rover) {
 function renderRoute() {
   const currentPath = pathName();
   const authenticated = isAuthenticated();
+  const authRedirect = redirectForAuth(currentPath, authenticated);
 
   if (currentPath === '/login' || currentPath === '/') {
     if (authenticated && currentPath === '/') {
@@ -302,7 +304,7 @@ function renderRoute() {
     return;
   }
 
-  if (currentPath === '/missions' && !authenticated) {
+  if (authRedirect) {
     window.history.replaceState({}, '', '/login');
     renderLogin();
     return;
@@ -317,12 +319,6 @@ function renderRoute() {
   if (missionMatch && authenticated) {
     const rover = getRover(missionMatch[1]);
     rover ? renderMissionDetail(rover) : renderNotFound();
-    return;
-  }
-
-  if (missionMatch && !authenticated) {
-    window.history.replaceState({}, '', '/login');
-    renderLogin();
     return;
   }
 
