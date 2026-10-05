@@ -1,1 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
+<title>MOON LANDING ATLAS (NASA DATA)</title>
+
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+
+<style>
+:root{
+  --bg:#05060b;
+  --ink:#f6eee8;
+  --mut:#a99b93;
+  --gl:rgba(18,14,20,.68);
+  --ln:rgba(255,255,255,.14);
+  color-scheme:dark;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  height:100%;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:14px/1.5 Inter,system-ui,sans-serif;
+  overflow:hidden;
+}
+
+canvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  touch-action:none;
+}
+
+.top{
+  position:fixed;
+  left:0;
+  right:0;
+  top:0;
+  padding:calc(12px + env(safe-area-inset-top,0px)) 150px 0 16px;
+  pointer-events:none;
+  z-index:10;
+}
+
+h1{
+  margin:0;
+  font-size:22px;
+  font-weight:700;
+}
+
+.sub{
+  color:var(--mut);
+  font-size:12px;
+}
+
+.backBtn{
+  position:fixed;
+  top:calc(12px + env(safe-area-inset-top,0px));
+  right:16px;
+  z-index:20;
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(8,8,12,.72);
+  color:var(--ink);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  font:500 13px Inter,system-ui,sans-serif;
+  cursor:pointer;
+  transition:.2s ease;
+}
+.backBtn:hover{
+  border-color:rgba(255,255,255,.42);
+  background:rgba(20,18,22,.88);
+  transform:translateY(-1px);
+}
+.backBtn:active{transform:translateY(0) scale(.98)}
+@media(max-width:600px){
+  .backBtn{top:calc(10px + env(safe-area-inset-top,0px));right:10px;font-size:12px;padding:7px 11px}
+}
+
+.fl{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+  pointer-events:auto;
+}
+
+button{
+  font:inherit;
+  color:var(--ink);
+  cursor:pointer;
+}
+
+.f,.chip{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 12px;
+  border-radius:99px;
+  background:var(--gl);
+  border:1px solid var(--ln);
+  backdrop-filter:blur(12px);
+  white-space:nowrap;
+  font-size:13px;
+}
+
+.f.off{
+  opacity:.4;
+}
+
+.chip.on{
+  border-color:#fff;
+}
+
+.d{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  flex:none;
+}
+
+.dock{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:0 12px calc(10px + env(safe-area-inset-bottom,0px));
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  pointer-events:none;
+  z-index:10;
+}
+
+#card{
+  pointer-events:auto;
+  width:100%;
+  max-width:520px;
+  margin:0 auto;
+  background:var(--gl);
+  border:1px solid var(--ln);
+  backdrop-filter:blur(16px);
+  border-radius:18px;
+  padding:12px 15px;
+  font-size:13px;
+}
+
+.h{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:18px;
+  font-weight:700;
+}
+
+.h em{
+  margin-left:auto;
+  font-style:normal;
+  font-size:11px;
+  font-weight:500;
+  padding:1px 9px;
+  border-radius:99px;
+  border:1px solid currentColor;
+}
+
+.mt{
+  color:var(--mut);
+  margin:0 0 6px;
+}
+
+.g{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:1px 12px;
+  margin-bottom:6px;
+}
+
+.g span{
+  color:var(--mut);
+}
+
+.row{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  pointer-events:auto;
+  scrollbar-width:none;
+  padding:2px;
+}
+
+.row::-webkit-scrollbar{
+  display:none;
+}
+
+.l{
+  position:fixed;
+  left:0;
+  top:0;
+  font-size:11px;
+  padding:1px 8px;
+  border-radius:99px;
+  background:rgba(8,6,12,.62);
+  border:1px solid;
+  white-space:nowrap;
+  cursor:pointer;
+  will-change:transform;
+  transition:opacity .25s;
+  z-index:5;
+}
+
+#ld{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:var(--bg);
+  color:var(--mut);
+  transition:opacity .6s;
+  z-index:100;
+}
+
+@media(max-width:600px){
+  .top{padding-right:105px}
+
+  h1{
+    font-size:19px;
+  }
+
+  .sub{
+    max-width:340px;
+    line-height:1.4;
+  }
+
+  #card{
+    font-size:12px;
+    padding:10px 12px;
+  }
+
+  .h{
+    font-size:16px;
+  }
+
+  .f,.chip{
+    font-size:12px;
+    padding:5px 9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="c"></canvas>
+
+<div id="L"></div>
+
+<button id="backBtn" class="backBtn" type="button" aria-label="Go back">← Back</button>
+<div class="top">
+  <h1>MOON LANDING ATLAS</h1>
+  <div class="sub">
+    NASA DATA • Drag to orbit • Scroll / pinch to zoom
+  </div>
+  <div class="fl" id="fl"></div>
+</div>
+
+<div class="dock">
+  <div id="card">
+    <p class="mt" style="margin:0">
+      Click a marker or select a mission below to view details.
+    </p>
+  </div>
+  <div class="row" id="rw"></div>
+</div>
+
+<div id="ld">Initializing Moon…</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+
+const M = [
+  {
+    n:'Apollo 11', t:'Lander', s:'Mare Tranquillitatis',
+    la:0.6741, lo:23.4729, a:'Jul 20, 1969', e:'Jul 21, 1969', k:0,
+    d:'First crewed lunar landing. The astronauts collected samples, deployed experiments, and documented the lunar surface.'
+  },
+  {
+    n:'Apollo 12', t:'Lander', s:'Oceanus Procellarum',
+    la:-3.0128, lo:-23.4216, a:'Nov 19, 1969', e:'Nov 20, 1969', k:0,
+    d:'Demonstrated a precision lunar landing and landed near Surveyor 3, allowing astronauts to inspect the earlier robotic spacecraft.'
+  },
+  {
+    n:'Apollo 14', t:'Lander', s:'Fra Mauro Formation',
+    la:-3.6454, lo:-17.4719, a:'Feb 5, 1971', e:'Feb 6, 1971', k:0,
+    d:'Explored the Fra Mauro region and collected lunar samples during the third crewed lunar landing.'
+  },
+  {
+    n:'Apollo 15', t:'Lander + Rover', s:'Hadley–Apennine region',
+    la:26.1322, lo:3.6339, a:'Jul 30, 1971', e:'Aug 2, 1971', k:0,
+    d:'First Apollo mission to use the Lunar Roving Vehicle, greatly extending the astronauts’ surface exploration range.'
+  },
+  {
+    n:'Apollo 16', t:'Lander + Rover', s:'Descartes Highlands',
+    la:-8.9734, lo:15.4986, a:'Apr 21, 1972', e:'Apr 24, 1972', k:0,
+    d:'Explored the lunar highlands with the Lunar Roving Vehicle and returned extensive samples and scientific measurements.'
+  },
+  {
+    n:'Apollo 17', t:'Lander + Rover', s:'Taurus–Littrow Valley',
+    la:20.1908, lo:30.7717, a:'Dec 11, 1972', e:'Dec 14, 1972', k:0,
+    d:'The final Apollo lunar landing. The crew used the Lunar Roving Vehicle and returned a large collection of samples.'
+  },
+  {
+    n:'Surveyor 1', t:'Lander', s:'Oceanus Procellarum',
+    la:-2.474, lo:-43.339, a:'Jun 2, 1966', e:'Jan 7, 1967', k:0,
+    d:'The first U.S. spacecraft to achieve a true soft landing on the Moon and return extensive surface images and engineering data.'
+  },
+  {
+    n:'Surveyor 3', t:'Lander', s:'Oceanus Procellarum',
+    la:-3.016, lo:-23.419, a:'Apr 20, 1967', e:'Dec 3, 1967', k:0,
+    d:'Studied lunar soil, surface mechanics, thermal properties, and returned thousands of images from its landing site.'
+  },
+  {
+    n:'Surveyor 7', t:'Lander', s:'Tycho crater ejecta',
+    la:-40.97, lo:-11.44, a:'Jan 10, 1968', e:'Feb 21, 1968', k:0,
+    d:'The final Surveyor mission landed near Tycho crater and performed detailed scientific studies of the lunar surface.'
+  },
+  {
+    n:'Ranger 7', t:'Impact Probe', s:'Mare Nubium / Sea of Clouds',
+    la:-10.63, lo:-20.68, a:'Jul 31, 1964', e:'Jul 31, 1964', k:0,
+    d:'Returned 4,316 close-range images before impacting the Moon, helping identify safe landing regions for later missions.'
+  }
+];
+
+
+const $ = s => document.querySelector(s);
+
+const C = [
+  '#ffd166',
+  '#8ee7ff'
+];
+
+const S = [
+  'Mission Completed',
+  'Active'
+];
+
+const G = Math.PI / 180;
+
+
+function P(la,lo,r){
+
+  return new THREE.Vector3(
+    -Math.cos(lo * G) * Math.cos(la * G),
+    Math.sin(la * G),
+    Math.sin(lo * G) * Math.cos(la * G)
+  ).multiplyScalar(r);
+
+}
+
+
+const cv = $('#c');
+
+const ren = new THREE.WebGLRenderer({
+  canvas:cv,
+  antialias:true
+});
+
+ren.setPixelRatio(
+  Math.min(window.devicePixelRatio,2)
+);
+
+ren.outputEncoding = THREE.sRGBEncoding;
+
+ren.setClearColor(0x05060b);
+
+
+const sc = new THREE.Scene();
+
+const cam = new THREE.PerspectiveCamera(
+  42,
+  1,
+  0.1,
+  200
+);
+
+
+const asp = innerWidth / innerHeight;
+
+const D0 = Math.max(
+  3.8,
+  1 / Math.sin(
+    Math.atan(
+      .33 * Math.min(asp,1.15)
+    )
+  )
+);
+
+cam.position.set(0,.55,1).setLength(D0);
+
+sc.add(cam);
+
+
+const SD = new THREE.Vector3(
+  5,
+  1.4,
+  3
+).normalize();
+
+
+const U = {
+  sd:{
+    value:new THREE.Vector3()
+  }
+};
+
+
+const OD = Math.min(
+  24,
+  Math.max(
+    17,
+    7.6 / (.384 * Math.min(asp,1.4))
+  )
+);
+
+
+const sun = new THREE.DirectionalLight(
+  0xfff1e0,
+  2.1
+);
+
+sun.position.copy(SD).multiplyScalar(30);
+
+sc.add(sun);
+
+
+const fill = new THREE.DirectionalLight(
+  0xffa070,
+  .28
+);
+
+fill.position.set(-2,1,3);
+
+cam.add(fill);
+
+sc.add(
+  new THREE.AmbientLight(
+    0x6a4a44,
+    .32
+  )
+);
+
+
+const ctl = new THREE.OrbitControls(
+  cam,
+  cv
+);
+
+ctl.enableDamping = true;
+ctl.enablePan = false;
+
+ctl.minDistance = 1.7;
+ctl.maxDistance = 24;
+
+ctl.rotateSpeed = .6;
+
+ctl.autoRotate = true;
+ctl.autoRotateSpeed = .5;
+
+ctl.addEventListener(
+  'start',
+  () => {
+    ctl.autoRotate = false;
+  }
+);
+
+
+let mk = [];
+let fly = null;
+let bg = null;
+let cl = null;
+let moons = [];
+let ov = 0;
+
+
+function rs(){
+
+  ren.setSize(
+    innerWidth,
+    innerHeight,
+    false
+  );
+
+  cam.aspect =
+    innerWidth / innerHeight;
+
+  cam.updateProjectionMatrix();
+
+}
+
+addEventListener('resize',rs);
+
+rs();
+
+
+function hash(x,y,z){
+
+  let n =
+    Math.imul(x,374761393) ^
+    Math.imul(y,668265263) ^
+    Math.imul(z,1274126177);
+
+  n = Math.imul(
+    n ^ (n >>> 13),
+    1103515245
+  );
+
+  return ((n ^ (n >>> 16)) >>> 0)
+    / 4294967296;
+
+}
+
+
+function lerp(a,b,t){
+
+  return a + (b-a)*t;
+
+}
+
+
+function valueNoise(x,y,z){
+
+  const X = Math.floor(x);
+  const Y = Math.floor(y);
+  const Z = Math.floor(z);
+
+  const a = x-X;
+  const b = y-Y;
+  const c = z-Z;
+
+  const u = a*a*(3-2*a);
+  const v = b*b*(3-2*b);
+  const w = c*c*(3-2*c);
+
+
+  const x00 = lerp(
+    hash(X,Y,Z),
+    hash(X+1,Y,Z),
+    u
+  );
+
+  const x10 = lerp(
+    hash(X,Y+1,Z),
+    hash(X+1,Y+1,Z),
+    u
+  );
+
+  const x01 = lerp(
+    hash(X,Y,Z+1),
+    hash(X+1,Y,Z+1),
+    u
+  );
+
+  const x11 = lerp(
+    hash(X,Y+1,Z+1),
+    hash(X+1,Y+1,Z+1),
+    u
+  );
+
+
+  return lerp(
+    lerp(x00,x10,v),
+    lerp(x01,x11,v),
+    w
+  );
+
+}
+
+
+function fb(x,y,z,o){
+
+  let s = 0;
+  let a = .5;
+
+  for(let i=0;i<o;i++){
+
+    s += a * valueNoise(x,y,z);
+
+    x *= 2.07;
+    y *= 2.07;
+    z *= 2.07;
+
+    a *= .5;
+
+  }
+
+  return s;
+
+}
+
+
+function makeTexture(){
+  const W=1024, H=512;
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const ctx=c.getContext('2d');
+  const img=ctx.createImageData(W,H);
+  for(let j=0;j<H;j++){
+    const lat=(.5-(j+.5)/H)*Math.PI, cp=Math.cos(lat), sp=Math.sin(lat);
+    for(let i=0;i<W;i++){
+      const lon=(i+.5)/W*Math.PI*2;
+      const x=-Math.cos(lon)*cp, z=Math.sin(lon)*cp;
+      const broad=fb(x*2.1+9,sp*2.1+9,z*2.1+9,5);
+      const fine=fb(x*13+41,sp*13+41,z*13+41,4);
+      const maria=smoothstep(.25,.85,fb(x*1.4+73,sp*1.4+73,z*1.4+73,4));
+      let base=142+broad*62+fine*18;
+      let r=base*.98, g=base*.99, b=base*.97;
+      r-=maria*48; g-=maria*50; b-=maria*52;
+      const q=(j*W+i)*4;
+      img.data[q]=Math.max(0,Math.min(255,r));
+      img.data[q+1]=Math.max(0,Math.min(255,g));
+      img.data[q+2]=Math.max(0,Math.min(255,b));
+      img.data[q+3]=255;
+    }
+  }
+  ctx.putImageData(img,0,0);
+  let seed=48193;
+  const rnd=()=>{ seed=(seed*1664525+1013904223)>>>0; return seed/4294967296; };
+  for(let n=0;n<420;n++){
+    const x=rnd()*W,y=rnd()*H,rr=1.5+rnd()*22;
+    const g=ctx.createRadialGradient(x-rr*.18,y-rr*.18,rr*.08,x,y,rr);
+    g.addColorStop(0,'rgba(255,255,255,.12)');
+    g.addColorStop(.48,'rgba(70,70,70,.18)');
+    g.addColorStop(.72,'rgba(220,220,220,.08)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,rr,0,Math.PI*2); ctx.fill();
+  }
+  return c;
+}
+
+function smoothstep(a,b,x){const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);}
+
+function makeBumpTexture(){
+  const W=512,H=256,c=document.createElement('canvas'); c.width=W;c.height=H;
+  const ctx=c.getContext('2d'),img=ctx.createImageData(W,H);
+  for(let j=0;j<H;j++)for(let i=0;i<W;i++){
+    const lat=(.5-(j+.5)/H)*Math.PI,cp=Math.cos(lat),sp=Math.sin(lat),lon=(i+.5)/W*Math.PI*2;
+    const x=-Math.cos(lon)*cp,z=Math.sin(lon)*cp;
+    const v=75+fb(x*4+17,sp*4+17,z*4+17,4)*145;
+    const q=(j*W+i)*4; img.data[q]=img.data[q+1]=img.data[q+2]=Math.max(0,Math.min(255,v)); img.data[q+3]=255;
+  }
+  ctx.putImageData(img,0,0); return c;
+}
+
+function buildMOON(){
+  const tx=new THREE.CanvasTexture(makeTexture());
+  const tb=new THREE.CanvasTexture(makeBumpTexture());
+  tx.encoding=THREE.sRGBEncoding;
+  tx.anisotropy=Math.min(8,ren.capabilities.getMaxAnisotropy());
+  const moon=new THREE.Mesh(
+    new THREE.SphereGeometry(1,96,64),
+    new THREE.MeshStandardMaterial({map:tx,bumpMap:tb,bumpScale:.055,roughness:1,metalness:0})
+  );
+  sc.add(moon);
+}
+
+function makeStars(){
+
+  const group =
+    new THREE.Group();
+
+  sc.add(group);
+
+  bg=group;
+
+
+  const starPositions=[];
+  const starColors=[];
+
+
+  for(let n=0;n<2200;){
+
+    const u=
+      Math.random()*2-1;
+
+    const t=
+      Math.random()*Math.PI*2;
+
+    const r=
+      Math.sqrt(1-u*u);
+
+    const x=
+      r*Math.cos(t);
+
+    const z=
+      r*Math.sin(t);
+
+
+    if(
+      Math.random() >
+      .18+
+      .82*
+      Math.exp(
+        -Math.pow(
+          (u*.8+x*.6)*2.6,
+          2
+        )
+      )
+    ){
+
+      continue;
+
+    }
+
+
+    starPositions.push(
+      x*90,
+      u*90,
+      z*90
+    );
+
+
+    const c =
+      new THREE.Color();
+
+    c.setHSL(
+      Math.random()<.7?.6:.08,
+      .5,
+      .6+Math.random()*.4
+    );
+
+    starColors.push(
+      c.r,
+      c.g,
+      c.b
+    );
+
+    n++;
+
+  }
+
+
+  const geometry =
+    new THREE.BufferGeometry();
+
+  geometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(
+      starPositions,
+      3
+    )
+  );
+
+  geometry.setAttribute(
+    'color',
+    new THREE.Float32BufferAttribute(
+      starColors,
+      3
+    )
+  );
+
+
+  const stars =
+    new THREE.Points(
+
+      geometry,
+
+      new THREE.PointsMaterial({
+        size:.3,
+        vertexColors:true,
+        transparent:true,
+        opacity:.85,
+        depthWrite:false
+      })
+
+    );
+
+
+  group.add(stars);
+
+}
+
+
+function buildGrid(){
+
+  const gp=[];
+
+
+  for(
+    let la=-60;
+    la<=60;
+    la+=30
+  ){
+
+    for(
+      let i=0;
+      i<96;
+      i++
+    ){
+
+      gp.push(
+        P(
+          la,
+          i*3.75,
+          1.002
+        ),
+
+        P(
+          la,
+          (i+1)*3.75,
+          1.002
+        )
+      );
+
+    }
+
+  }
+
+
+  for(
+    let lo=0;
+    lo<360;
+    lo+=30
+  ){
+
+    for(
+      let j=-90;
+      j<90;
+      j+=5
+    ){
+
+      gp.push(
+        P(j,lo,1.002),
+        P(j+5,lo,1.002)
+      );
+
+    }
+
+  }
+
+
+  const geometry =
+    new THREE.BufferGeometry()
+      .setFromPoints(gp);
+
+
+  const grid =
+    new THREE.LineSegments(
+
+      geometry,
+
+      new THREE.LineBasicMaterial({
+        color:0xffffff,
+        transparent:true,
+        opacity:.16
+      })
+
+    );
+
+
+  grid.visible=false;
+
+  sc.add(grid);
+
+  return grid;
+
+}
+
+
+function makeGlowTexture(){
+
+  const c=
+    document.createElement('canvas');
+
+  c.width=c.height=128;
+
+  const ctx=c.getContext('2d');
+
+  const g=
+    ctx.createRadialGradient(
+      64,64,0,
+      64,64,64
+    );
+
+  g.addColorStop(
+    0,
+    'rgba(255,255,255,1)'
+  );
+
+  g.addColorStop(
+    .3,
+    'rgba(255,255,255,.45)'
+  );
+
+  g.addColorStop(
+    1,
+    'rgba(255,255,255,0)'
+  );
+
+  ctx.fillStyle=g;
+
+  ctx.fillRect(
+    0,0,128,128
+  );
+
+  return new THREE.CanvasTexture(c);
+
+}
+
+
+function buildMarkers(){
+
+  const glow =
+    makeGlowTexture();
+
+
+  mk=M.map((m,i)=>{
+
+    const col=
+      new THREE.Color(C[m.k]);
+
+
+    const p0=
+      P(m.la,m.lo,1.003);
+
+    const p1=
+      P(m.la,m.lo,1.07);
+
+
+    const g=
+      new THREE.Group();
+
+
+    const line=
+      new THREE.Line(
+
+        new THREE.BufferGeometry()
+          .setFromPoints([
+            p0,p1
+          ]),
+
+        new THREE.LineBasicMaterial({
+          color:col,
+          transparent:true,
+          opacity:.8
+        })
+
+      );
+
+
+    const bd=
+      new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+          .016,
+          16,
+          16
+        ),
+
+        new THREE.MeshBasicMaterial({
+          color:col
+        })
+
+      );
+
+
+    bd.position.copy(p1);
+
+
+    const ring=
+      new THREE.Mesh(
+
+        new THREE.RingGeometry(
+          .022,
+          .028,
+          40
+        ),
+
+        new THREE.MeshBasicMaterial({
+          color:col,
+          transparent:true,
+          side:THREE.DoubleSide,
+          depthWrite:false
+        })
+
+      );
+
+
+    ring.position.copy(p0);
+
+    ring.lookAt(
+      P(
+        m.la,
+        m.lo,
+        2
+      )
+    );
+
+
+    const sprite=
+      new THREE.Sprite(
+
+        new THREE.SpriteMaterial({
+          map:glow,
+          color:col,
+          blending:
+            THREE.AdditiveBlending,
+          depthWrite:false,
+          transparent:true
+        })
+
+      );
+
+
+    sprite.scale.setScalar(.16);
+
+    sprite.position.copy(p1);
+
+
+    g.add(
+      line,
+      bd,
+      ring,
+      sprite
+    );
+
+
+    sc.add(g);
+
+
+    const el=
+      document.createElement('div');
+
+    el.className='l';
+
+    el.textContent=m.n;
+
+    el.style.borderColor=
+      C[m.k]+'99';
+
+    el.onclick=()=>{
+      selectMission(i);
+    };
+
+    $('#L').appendChild(el);
+
+
+    const chip=
+      document.createElement('button');
+
+    chip.className='chip';
+
+    chip.innerHTML=
+      '<i class="d" style="background:'+
+      C[m.k]+
+      '"></i>'+
+      m.n;
+
+    chip.onclick=()=>{
+      selectMission(i);
+    };
+
+    $('#rw').appendChild(chip);
+
+
+    return {
+      g,
+      bd,
+      rg:ring,
+      el,
+      ch:chip,
+      p:p1,
+      m,
+      sp:sprite
+    };
+
+  });
+
+}
+
+
+function createFilters(grid){
+  const categories=[
+    {label:'LANDER',match:m=>/Lander/.test(m.t)},
+    {label:'IMPACT',match:m=>/Impact/.test(m.t)}
+  ];
+  categories.forEach(cat=>{
+    const b=document.createElement('button'); b.className='f';
+    const count=M.filter(cat.match).length;
+    b.innerHTML='<i class="d" style="background:#ffd166"></i>'+cat.label+' ('+count+')';
+    b.onclick=()=>{
+      b.classList.toggle('off');
+      const enabled=!b.classList.contains('off');
+      mk.forEach(o=>{if(cat.match(o.m)){o.g.visible=enabled;o.ch.style.display=enabled?'':'none';}});
+    };
+    $('#fl').appendChild(b);
+  });
+  const allButton=document.createElement('button'); allButton.className='f'; allButton.textContent='ALL';
+  allButton.onclick=()=>{mk.forEach(o=>{o.g.visible=true;o.ch.style.display='';});};
+  $('#fl').appendChild(allButton);
+  const gridButton=document.createElement('button'); gridButton.className='f off'; gridButton.textContent='Grid';
+  gridButton.onclick=()=>{grid.visible=!grid.visible;gridButton.classList.toggle('off',!grid.visible);};
+  $('#fl').appendChild(gridButton);
+  const orbitButton=document.createElement('button'); orbitButton.className='f off'; orbitButton.textContent='Orbit View';
+  orbitButton.onclick=()=>{ov=ov?0:1;orbitButton.classList.toggle('off',!ov);orbitButton.textContent=ov?'Surface View':'Orbit View';go(ov?new THREE.Vector3(.45,.6,1):new THREE.Vector3(0,.55,1),ov?OD:D0);};
+  $('#fl').appendChild(orbitButton);
+}
+
+const LA={
+  'Apollo 11':'Jul 16, 1969','Apollo 12':'Nov 14, 1969','Apollo 14':'Jan 31, 1971',
+  'Apollo 15':'Jul 26, 1971','Apollo 16':'Apr 16, 1972','Apollo 17':'Dec 7, 1972',
+  'Surveyor 1':'May 30, 1966','Surveyor 3':'Apr 17, 1967','Surveyor 7':'Jan 7, 1968',
+  'Ranger 7':'Jul 28, 1964'
+};
+
+function duration(m){
+  const start=Date.parse(m.a),end=Date.parse(m.e);
+  if(!Number.isFinite(start)||!Number.isFinite(end)) return 'N/A';
+  const days=Math.max(0,Math.round((end-start)/86400000));
+  return days<2 ? days+' day' : days+' days';
+}
+
+function duration(m){
+
+  if(m.k){
+
+    return 'Active';
+
+  }
+
+
+  const start=
+    Date.parse(m.a);
+
+  const end=
+    Date.parse(m.e);
+
+
+  const months=
+    Math.max(
+      0,
+      Math.floor(
+        (end-start) /
+        2629800000
+      )
+    );
+
+
+  const years=
+    Math.floor(
+      months/12
+    );
+
+  const rem=
+    months%12;
+
+
+  let result='';
+
+  if(years){
+    result += years+' yr ';
+  }
+
+  result += rem+' mo';
+
+  return result;
+
+}
+
+
+function selectMission(i){
+
+  const m=M[i];
+
+  const c=C[m.k];
+
+
+  mk.forEach((o,j)=>{
+
+    o.ch.classList.toggle(
+      'on',
+      j===i
+    );
+
+    o.bd.scale.setScalar(
+      j===i ? 1.7 : 1
+    );
+
+    o.sp.scale.setScalar(
+      j===i ? .3 : .16
+    );
+
+  });
+
+
+
+  $('#card').innerHTML=`
+
+    <div class="h">
+
+      <i class="d"
+         style="background:${c}">
+      </i>
+
+      ${m.n}
+
+      <em style="color:${c}">
+        ${S[m.k]}
+      </em>
+
+    </div>
+
+    <p class="mt">
+      ${m.t}, ${m.s}
+    </p>
+
+    <div class="g">
+
+      <span>Coordinates</span>
+
+      <b>
+        ${Math.abs(m.la).toFixed(2)}
+        °${m.la<0?'S':'N'},
+        ${((m.lo+360)%360).toFixed(2)}°E
+      </b>
+
+      <span>Launch</span>
+      <b>${LA[m.n]}</b>
+
+      <span>Landing</span>
+      <b>${m.a}</b>
+
+      <span>End</span>
+      <b>${m.e}</b>
+
+      <span>Duration</span>
+      <b>${duration(m)}</b>
+
+    </div>
+
+    <div>
+      ${m.d}
+    </div>
+
+  `;
+
+
+  go(
+    P(m.la,m.lo,1),
+    Math.min(
+      cam.position.length(),
+      D0*.72
+    )
+  );
+
+}
+
+
+function go(target,distance){
+
+  const from=
+    cam.position.clone()
+      .normalize();
+
+  const quaternion=
+    new THREE.Quaternion()
+      .setFromUnitVectors(
+        from,
+        target.clone().normalize()
+      );
+
+
+  fly={
+    f:from,
+    q:quaternion,
+    d0:cam.position.length(),
+    d:distance,
+    k:0
+  };
+
+
+  ctl.autoRotate=false;
+
+}
+
+
+function buildMoons(){ /* Moon atlas has no secondary moon system. */ }
+
+
+function animate(){
+
+  requestAnimationFrame(
+    animate
+  );
+
+
+  const time=
+    performance.now()/1000;
+
+
+  if(fly){
+
+    fly.k=
+      Math.min(
+        1,
+        fly.k+.025
+      );
+
+
+    const e=
+      1-
+      Math.pow(
+        1-fly.k,
+        3
+      );
+
+
+    const q=
+      new THREE.Quaternion();
+
+
+    q.slerpQuaternions(
+      new THREE.Quaternion(),
+      fly.q,
+      e
+    );
+
+
+    cam.position
+      .copy(fly.f)
+      .applyQuaternion(q)
+      .multiplyScalar(
+        fly.d0+
+        (fly.d-fly.d0)*e
+      );
+
+
+    if(fly.k>=1){
+
+      fly=null;
+
+    }
+
+  }
+
+
+  if(bg){
+
+    bg.position.copy(
+      cam.position
+    );
+
+  }
+
+
+  if(cl){
+
+    cl.rotation.y+=.0003;
+
+  }
+
+
+  U.sd.value.copy(SD);
+
+  U.sd.value.transformDirection(
+    cam.matrixWorldInverse
+  );
+
+
+  ctl.update();
+
+
+  const w=innerWidth;
+  const h=innerHeight;
+
+
+  mk.forEach((o,i)=>{
+
+    const k=
+      (time*.45+i*.11)%1;
+
+
+    o.rg.scale.setScalar(
+      1+k*2.4
+    );
+
+
+    o.rg.material.opacity=
+      .8*(1-k);
+
+
+    const visible=
+      o.g.visible;
+
+
+    const facing=
+      o.p.dot(cam.position)>0;
+
+
+    const ok=
+      visible &&
+      facing;
+
+
+    const projected=
+      o.p.clone().project(cam);
+
+
+    o.el.style.opacity=
+      ok ? 1 : 0;
+
+    o.el.style.pointerEvents=
+      ok ? 'auto' : 'none';
+
+
+    o.el.style.transform=
+      'translate('+
+      ((projected.x*.5+.5)*w)+
+      'px,'+
+      ((-projected.y*.5+.5)*h)+
+      'px) translate(-50%,-135%)';
+
+  });
+
+
+  ren.render(
+    sc,
+    cam
+  );
+
+}
+
+
+
+const backBtn = document.getElementById('backBtn');
+if(backBtn){
+  backBtn.addEventListener('click',()=>{
+    if(window.history.length > 1){
+      window.history.back();
+    }else{
+      // Useful when this file is opened directly.
+      window.location.href = 'index.html';
+    }
+  });
+}
+window.addEventListener('keydown',(e)=>{
+  if(e.key === 'Escape') backBtn?.click();
+});
+
+function init(){
+
+  const loading = $('#ld');
+
+  try{
+
+    if(!window.THREE){
+      throw new Error('Three.js failed to load. Check your internet connection or CDN access.');
+    }
+
+    if(!THREE.OrbitControls){
+      throw new Error('OrbitControls failed to load.');
+    }
+
+    buildMOON();
+    makeStars();
+
+    const grid = buildGrid();
+
+    buildMarkers();
+    createFilters(grid);
+    animate();
+
+    setTimeout(()=>{
+      if(!loading) return;
+      loading.style.opacity=0;
+      setTimeout(()=>loading.remove(),700);
+    },300);
+
+  }catch(error){
+
+    console.error('Moon Landing Atlas initialization failed:', error);
+
+    if(loading){
+      loading.textContent='Unable to initialize the Moon atlas. Open the browser console for details.';
+      loading.style.opacity=1;
+    }
+
+  }
+
+}
+
+init();
+
+</script>
+
+</body>
+</html>
