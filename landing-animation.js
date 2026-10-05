@@ -99,7 +99,7 @@ export function createLandingAnimation(root, config) {
         ${animationArt(config.type, `${config.label} landing sequence`)}
         <div class="animation-scanline" aria-hidden="true"></div>
       </div>
-      <div class="animation-controls" aria-label="Landing animation controls">
+      <div class="animation-controls" role="group" aria-label="Landing animation controls">
         <button type="button" class="control-button" data-action="replay">Replay</button>
         <button type="button" class="control-button" data-action="pause" aria-pressed="false">${prefersReducedMotion ? 'Static view' : 'Pause'}</button>
         <button type="button" class="control-button control-button--quiet" data-action="skip">Skip</button>

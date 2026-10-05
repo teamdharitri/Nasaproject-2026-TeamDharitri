@@ -265,7 +265,7 @@ function renderMissionDetail(rover) {
             <p class="eyebrow">${escapeHtml(rover.body)} · ${escapeHtml(rover.agency)}</p>
             <h1>${escapeHtml(rover.name)}</h1>
             <p class="mission-description">${escapeHtml(rover.description)}</p>
-            <div class="mission-facts" aria-label="${escapeHtml(rover.name)} mission facts">
+            <div class="mission-facts" role="group" aria-label="${escapeHtml(rover.name)} mission facts">
               <div><span>Launch date</span><strong>${escapeHtml(rover.launchDate)}</strong></div>
               <div><span>Landing date</span><strong>${escapeHtml(rover.landingDate)}</strong></div>
               <div><span>Landing site</span><strong>${escapeHtml(rover.landingSite)}</strong></div>
