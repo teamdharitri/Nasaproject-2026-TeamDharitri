@@ -1,0 +1,11 @@
+{
+  "name": "rover-mission-atlas",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "lint": "node scripts/lint.mjs",
+    "build": "node scripts/build-check.mjs"
+  }
+}
