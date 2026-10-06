@@ -1,0 +1,3449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>MARS LANDING ATLAS (MARS DATA)</title>
+
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+
+<style>
+:root{
+  --bg:#05060b;
+  --ink:#f6eee8;
+  --mut:#a99b93;
+  --gl:rgba(18,14,20,.68);
+  --ln:rgba(255,255,255,.14);
+  color-scheme:dark;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  height:100%;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:14px/1.5 Inter,system-ui,sans-serif;
+  overflow:hidden;
+}
+
+canvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  touch-action:none;
+}
+
+.top{
+  position:fixed;
+  left:0;
+  right:0;
+  top:0;
+  padding:calc(12px + env(safe-area-inset-top,0px)) 150px 0 16px;
+  pointer-events:none;
+  z-index:10;
+}
+
+h1{
+  margin:0;
+  font-size:22px;
+  font-weight:700;
+}
+
+.sub{
+  color:var(--mut);
+  font-size:12px;
+}
+
+.backBtn{
+  position:fixed;
+  top:calc(12px + env(safe-area-inset-top,0px));
+  right:16px;
+  z-index:20;
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(8,8,12,.72);
+  color:var(--ink);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  font:500 13px Inter,system-ui,sans-serif;
+  cursor:pointer;
+  transition:.2s ease;
+}
+.backBtn:hover{
+  border-color:rgba(255,255,255,.42);
+  background:rgba(20,18,22,.88);
+  transform:translateY(-1px);
+}
+.backBtn:active{transform:translateY(0) scale(.98)}
+@media(max-width:600px){
+  .backBtn{top:calc(10px + env(safe-area-inset-top,0px));right:10px;font-size:12px;padding:7px 11px}
+}
+
+.fl{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+  pointer-events:auto;
+}
+
+button{
+  font:inherit;
+  color:var(--ink);
+  cursor:pointer;
+}
+
+.f,.chip{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 12px;
+  border-radius:99px;
+  background:var(--gl);
+  border:1px solid var(--ln);
+  backdrop-filter:blur(12px);
+  white-space:nowrap;
+  font-size:13px;
+}
+
+.f.off{
+  opacity:.4;
+}
+
+.chip.on{
+  border-color:#fff;
+}
+
+.d{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  flex:none;
+}
+
+.dock{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:0 12px calc(10px + env(safe-area-inset-bottom,0px));
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  pointer-events:none;
+  z-index:10;
+}
+
+#card{
+  pointer-events:auto;
+  width:100%;
+  max-width:520px;
+  margin:0 auto;
+  background:var(--gl);
+  border:1px solid var(--ln);
+  backdrop-filter:blur(16px);
+  border-radius:18px;
+  padding:12px 15px;
+  font-size:13px;
+}
+
+.h{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:18px;
+  font-weight:700;
+}
+
+.h em{
+  margin-left:auto;
+  font-style:normal;
+  font-size:11px;
+  font-weight:500;
+  padding:1px 9px;
+  border-radius:99px;
+  border:1px solid currentColor;
+}
+
+.mt{
+  color:var(--mut);
+  margin:0 0 6px;
+}
+
+.g{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:1px 12px;
+  margin-bottom:6px;
+}
+
+.g span{
+  color:var(--mut);
+}
+
+.row{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  pointer-events:auto;
+  scrollbar-width:none;
+  padding:2px;
+}
+
+.row::-webkit-scrollbar{
+  display:none;
+}
+
+.l{
+  position:fixed;
+  left:0;
+  top:0;
+  font-size:11px;
+  padding:1px 8px;
+  border-radius:99px;
+  background:rgba(8,6,12,.62);
+  border:1px solid;
+  white-space:nowrap;
+  cursor:pointer;
+  will-change:transform;
+  transition:opacity .25s;
+  z-index:5;
+}
+
+#ld{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:var(--bg);
+  color:var(--mut);
+  transition:opacity .6s;
+  z-index:100;
+}
+
+/* KIDS FLOW: These screens sit above the unchanged globe and stay lightweight. */
+body{
+  overflow:hidden;
+}
+
+body[data-view="login"] #c,
+body[data-view="login"] #L,
+body[data-view="login"] #backBtn,
+body[data-view="login"] .top,
+body[data-view="login"] .dock,
+body[data-view="login"] #ld,
+body[data-view="character"] #c,
+body[data-view="character"] #L,
+body[data-view="character"] #backBtn,
+body[data-view="character"] .top,
+body[data-view="character"] .dock,
+body[data-view="character"] #ld,
+body[data-view="planet"] #c,
+body[data-view="planet"] #L,
+body[data-view="planet"] #backBtn,
+body[data-view="planet"] .top,
+body[data-view="planet"] .dock,
+body[data-view="planet"] #ld,
+body[data-view="inspect"] #ld{
+  display:none;
+}
+
+.game-screen{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:grid;
+  place-items:center;
+  overflow:auto;
+  padding:24px;
+  background:
+    radial-gradient(circle at 80% 12%,rgba(199,104,67,.2),transparent 28rem),
+    radial-gradient(circle at 10% 90%,rgba(92,225,230,.1),transparent 26rem),
+    var(--bg);
+}
+
+.game-screen[hidden]{
+  display:none;
+}
+
+.game-screen::before,
+.game-screen::after{
+  position:absolute;
+  inset:0;
+  content:"";
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.75) 0 1px,transparent 1.5px),
+    radial-gradient(circle,rgba(255,180,84,.6) 0 1px,transparent 1.5px);
+  background-size:180px 160px,270px 230px;
+  opacity:.32;
+}
+
+.game-card{
+  position:relative;
+  z-index:1;
+  width:min(680px,100%);
+  padding:clamp(24px,5vw,52px);
+  border:1px solid var(--ln);
+  border-radius:28px;
+  background:rgba(18,14,20,.76);
+  box-shadow:0 24px 80px rgba(0,0,0,.35);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+.game-card--wide{
+  width:min(900px,100%);
+}
+
+.game-kicker{
+  margin:0 0 12px;
+  color:#ffb454;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.18em;
+}
+
+.game-card h2{
+  margin:0;
+  font-size:clamp(30px,6vw,56px);
+  line-height:1;
+  letter-spacing:-.06em;
+}
+
+.game-copy{
+  max-width:520px;
+  margin:16px 0 0;
+  color:var(--mut);
+  font-size:16px;
+}
+
+.game-form{
+  display:grid;
+  gap:14px;
+  margin-top:28px;
+}
+
+.game-label{
+  display:grid;
+  gap:6px;
+  color:var(--ink);
+  font-size:14px;
+  font-weight:600;
+}
+
+.game-input,
+.game-select{
+  width:100%;
+  min-height:50px;
+  padding:10px 14px;
+  border:1px solid var(--ln);
+  border-radius:12px;
+  outline:0;
+  background:rgba(0,0,0,.25);
+  color:var(--ink);
+}
+
+.game-input:focus,
+.game-select:focus{
+  border-color:#ffb454;
+  box-shadow:0 0 0 3px rgba(255,180,84,.16);
+}
+
+.game-input[aria-invalid="true"]{
+  border-color:#ef8a75;
+}
+
+.game-error{
+  min-height:20px;
+  margin:0;
+  color:#efaa99;
+  font-size:13px;
+}
+
+.game-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:24px;
+}
+
+.game-button{
+  min-width:48px;
+  min-height:50px;
+  padding:12px 18px;
+  border:1px solid #ffb454;
+  border-radius:999px;
+  background:#c76843;
+  color:#fff7f1;
+  font-weight:700;
+}
+
+.game-button:hover{
+  background:#dd8054;
+}
+
+.game-button--quiet{
+  border-color:var(--ln);
+  background:transparent;
+  color:var(--ink);
+}
+
+.game-button--quiet:hover{
+  border-color:rgba(255,255,255,.45);
+  background:var(--gl);
+}
+
+.game-options{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:24px;
+}
+
+.choice{
+  min-height:72px;
+  padding:12px;
+  border:1px solid var(--ln);
+  border-radius:15px;
+  background:rgba(0,0,0,.18);
+  color:var(--ink);
+  text-align:left;
+}
+
+.choice:hover,
+.choice[aria-pressed="true"]{
+  border-color:#ffb454;
+  background:rgba(199,104,67,.18);
+}
+
+.choice strong,
+.choice span{
+  display:block;
+}
+
+.choice span{
+  margin-top:3px;
+  color:var(--mut);
+  font-size:12px;
+}
+
+.character-layout{
+  display:grid;
+  grid-template-columns:minmax(220px,.85fr) minmax(280px,1.15fr);
+  align-items:center;
+  gap:28px;
+}
+
+.preview-frame{
+  min-height:280px;
+  overflow:hidden;
+  border:1px solid var(--ln);
+  border-radius:20px;
+  background:radial-gradient(circle at 50% 28%,rgba(92,225,230,.13),transparent 55%),#090b14;
+}
+
+.preview-frame canvas{
+  position:static;
+  width:100%;
+  height:280px;
+  display:block;
+  touch-action:none;
+}
+
+.customize-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:20px;
+}
+
+.planet-options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:28px;
+}
+
+.planet-choice{
+  position:relative;
+  min-height:220px;
+  padding:22px;
+  overflow:hidden;
+  border:1px solid var(--ln);
+  border-radius:22px;
+  background:rgba(0,0,0,.22);
+  color:var(--ink);
+  text-align:left;
+}
+
+.planet-choice:hover{
+  border-color:#ffb454;
+  transform:translateY(-2px);
+}
+
+.planet-choice[disabled]{
+  cursor:not-allowed;
+  opacity:.72;
+}
+
+.planet-choice strong{
+  display:block;
+  margin-top:110px;
+  font-size:24px;
+}
+
+.planet-choice span{
+  display:block;
+  margin-top:4px;
+  color:var(--mut);
+}
+
+.planet-orb{
+  position:absolute;
+  top:24px;
+  left:22px;
+  width:92px;
+  height:92px;
+  border-radius:50%;
+  box-shadow:inset -16px -10px 24px rgba(0,0,0,.45),0 0 28px rgba(199,104,67,.2);
+}
+
+.planet-orb--mars{
+  background:radial-gradient(circle at 32% 28%,#e99a6e,#873927 70%);
+}
+
+.planet-orb--moon{
+  background:radial-gradient(circle at 34% 28%,#f1eee0,#74727a 75%);
+  box-shadow:inset -16px -10px 24px rgba(0,0,0,.45),0 0 28px rgba(214,210,199,.18);
+}
+
+.game-status{
+  min-height:20px;
+  margin:10px 0 0;
+  color:#a8e6cf;
+  font-size:13px;
+}
+
+.grown-up-link{
+  display:block;
+  margin:18px auto 0;
+  border:0;
+  background:transparent;
+  color:#d6cbc3;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.grown-up-panel{
+  margin-top:14px;
+  padding:12px;
+  border:1px solid var(--ln);
+  border-radius:12px;
+  background:rgba(0,0,0,.2);
+  color:#d6cbc3;
+  font-size:12px;
+}
+
+.grown-up-panel[hidden]{
+  display:none;
+}
+
+.grown-up-panel p{
+  margin:0 0 8px;
+}
+
+.avatar-badge{
+  position:fixed;
+  top:calc(12px + env(safe-area-inset-top,0px));
+  left:16px;
+  z-index:22;
+  min-height:42px;
+  padding:8px 13px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  background:rgba(8,8,12,.78);
+  color:var(--ink);
+  font-size:12px;
+}
+
+.atlas-action{
+  position:fixed;
+  top:calc(12px + env(safe-area-inset-top,0px));
+  right:88px;
+  z-index:21;
+  display:flex;
+  gap:8px;
+}
+
+.atlas-action[hidden],
+.avatar-badge[hidden]{
+  display:none;
+}
+
+.atlas-pill{
+  min-height:48px;
+  padding:7px 12px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  background:rgba(8,8,12,.72);
+  color:var(--ink);
+  font:500 12px Inter,system-ui,sans-serif;
+}
+
+.atlas-pill:hover{
+  border-color:rgba(255,255,255,.45);
+}
+
+.inspect-panel{
+  position:fixed;
+  right:16px;
+  bottom:92px;
+  z-index:30;
+  width:min(390px,calc(100vw - 32px));
+  max-height:calc(100vh - 150px);
+  overflow:auto;
+  padding:16px;
+  border:1px solid var(--ln);
+  border-radius:20px;
+  background:rgba(8,8,12,.88);
+  box-shadow:0 18px 60px rgba(0,0,0,.42);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+.inspect-panel[hidden]{
+  display:none;
+}
+
+.inspect-close{
+  float:right;
+  min-width:48px;
+  min-height:48px;
+  border:1px solid var(--ln);
+  border-radius:50%;
+  background:transparent;
+  color:var(--ink);
+}
+
+.inspect-panel h2{
+  margin:6px 0 0;
+  font-size:27px;
+  letter-spacing:-.05em;
+}
+
+.inspect-panel p{
+  color:var(--mut);
+}
+
+.inspect-preview{
+  clear:both;
+  margin-top:12px;
+  border:1px solid var(--ln);
+  border-radius:14px;
+  overflow:hidden;
+  background:#090b14;
+}
+
+.inspect-preview canvas{
+  position:static;
+  width:100%;
+  height:190px;
+  display:block;
+}
+
+.inspect-facts{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:3px 12px;
+  margin:14px 0;
+  font-size:13px;
+}
+
+.inspect-facts dt{
+  color:var(--mut);
+}
+
+.inspect-facts dd{
+  margin:0;
+}
+
+.inspect-fun-fact{
+  padding:10px 12px;
+  border-left:2px solid #ffb454;
+  background:rgba(255,180,84,.08);
+  color:var(--ink)!important;
+}
+
+.hook-note{
+  color:var(--mut);
+  font-size:11px;
+}
+
+@media(max-width:700px){
+  .game-screen{
+    align-items:start;
+    padding:14px;
+  }
+
+  .game-card{
+    margin:auto 0;
+    padding:24px 18px;
+  }
+
+  .character-layout{
+    grid-template-columns:1fr;
+  }
+
+  .preview-frame{
+    min-height:210px;
+  }
+
+  .preview-frame canvas{
+    height:210px;
+  }
+
+  .game-options,
+  .planet-options{
+    grid-template-columns:1fr;
+  }
+
+  .planet-choice{
+    min-height:150px;
+  }
+
+  .planet-choice strong{
+    margin-top:64px;
+  }
+
+  .atlas-action{
+    right:80px;
+  }
+
+  .avatar-badge{
+    left:10px;
+    max-width:120px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+}
+
+@media(max-width:600px){
+  .top{padding-right:105px}
+
+  h1{
+    font-size:19px;
+  }
+
+  .sub{
+    max-width:340px;
+    line-height:1.4;
+  }
+
+  #card{
+    font-size:12px;
+    padding:10px 12px;
+  }
+
+  .h{
+    font-size:16px;
+  }
+
+  .f,.chip{
+    font-size:12px;
+    padding:5px 9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- KIDS FLOW: The globe below is initialized only after Mars is selected. -->
+<section id="loginScreen" class="game-screen" aria-labelledby="loginTitle">
+  <div class="game-card">
+    <p class="game-kicker">ROVER CREW ACADEMY</p>
+    <h2 id="loginTitle">Ready for a space adventure?</h2>
+    <p class="game-copy">Choose a space nickname and a secret PIN. No real name, email, birthday, or location needed.</p>
+    <form id="loginForm" class="game-form" novalidate>
+      <label class="game-label" for="nickname">
+        Space nickname
+        <input id="nickname" class="game-input" name="nickname" maxlength="18" autocomplete="off" placeholder="Brave Comet">
+      </label>
+      <p id="nicknameError" class="game-error" role="alert"></p>
+      <label class="game-label" for="pin">
+        4-digit secret PIN
+        <input id="pin" class="game-input" name="pin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" aria-describedby="pinHint">
+      </label>
+      <p id="pinHint" class="game-copy" style="margin:0;font-size:12px">Use four numbers you can remember. Ask a grown-up before sharing anything online.</p>
+      <p id="pinError" class="game-error" role="alert"></p>
+      <div class="game-actions">
+        <button class="game-button" type="submit">Make my crew badge <span aria-hidden="true">↗</span></button>
+        <button id="guestButton" class="game-button game-button--quiet" type="button">Play as guest</button>
+      </div>
+      <p id="loginStatus" class="game-status" role="status" aria-live="polite"></p>
+      <button id="grownUpButton" class="grown-up-link" type="button" aria-expanded="false" aria-controls="grownUpPanel">Ask a grown-up</button>
+      <div id="grownUpPanel" class="grown-up-panel" hidden>
+        <p><strong>Grown-up mission control</strong></p>
+        <p>This local demo does not connect parent accounts or send information anywhere.</p>
+        <button id="grownUpDone" class="game-button game-button--quiet" type="button">Got it</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section id="characterScreen" class="game-screen" aria-labelledby="characterTitle" hidden>
+  <div class="game-card game-card--wide">
+    <p class="game-kicker">STEP 1 · CREW BADGE</p>
+    <div class="character-layout">
+      <div>
+        <h2 id="characterTitle">Build your explorer</h2>
+        <p class="game-copy">There is no wrong way to be a space explorer. Pick what feels like you.</p>
+        <div id="characterChoices" class="game-options" role="group" aria-label="Explorer base"></div>
+        <div class="customize-grid">
+          <label class="game-label" for="skinChoice">Skin tone
+            <select id="skinChoice" class="game-select">
+              <option value="#9b6a4e">Warm brown</option>
+              <option value="#d39b78">Golden tan</option>
+              <option value="#f0c7a8">Light peach</option>
+              <option value="#6e4938">Deep brown</option>
+            </select>
+          </label>
+          <label class="game-label" for="helmetChoice">Helmet style
+            <select id="helmetChoice" class="game-select">
+              <option>Clear helmet</option>
+              <option>Gold visor</option>
+              <option>Blue visor</option>
+            </select>
+          </label>
+          <label class="game-label" for="suitChoice">Suit color
+            <select id="suitChoice" class="game-select">
+              <option value="#ef9b68">Mars orange</option>
+              <option value="#5ce1e6">Orbit teal</option>
+              <option value="#d6d2c7">Moon silver</option>
+            </select>
+          </label>
+          <label class="game-label" for="buddyChoice">Rover buddy
+            <select id="buddyChoice" class="game-select">
+              <option>Sojourner</option>
+              <option>Curiosity</option>
+              <option>Perseverance</option>
+              <option>Yutu-2</option>
+            </select>
+          </label>
+        </div>
+        <div class="game-actions">
+          <button id="characterNext" class="game-button" type="button">Choose a planet <span aria-hidden="true">→</span></button>
+          <button id="characterBack" class="game-button game-button--quiet" type="button">Back</button>
+        </div>
+      </div>
+      <div class="preview-frame">
+        <canvas id="characterPreview" aria-label="Rotating explorer preview"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="planetScreen" class="game-screen" aria-labelledby="planetTitle" hidden>
+  <div class="game-card game-card--wide">
+    <p class="game-kicker">STEP 2 · DESTINATION</p>
+    <h2 id="planetTitle">Where should we explore?</h2>
+    <p class="game-copy">Pick a world and we will fly you to its landing atlas.</p>
+    <div class="planet-options">
+      <button id="marsChoice" class="planet-choice" type="button">
+        <span class="planet-orb planet-orb--mars" aria-hidden="true"></span>
+        <strong>Mars</strong>
+        <span>The red planet, full of rover tracks.</span>
+      </button>
+      <button id="moonChoice" class="planet-choice" type="button">
+        <span class="planet-orb planet-orb--moon" aria-hidden="true"></span>
+        <strong>Moon</strong>
+        <span>Moon base is coming soon. Choose Mars to play now.</span>
+      </button>
+    </div>
+    <p id="planetStatus" class="game-status" role="status" aria-live="polite"></p>
+    <div class="game-actions">
+      <button id="planetBack" class="game-button game-button--quiet" type="button">Back to explorer</button>
+    </div>
+  </div>
+</section>
+
+<div id="avatarBadge" class="avatar-badge" hidden></div>
+<div id="atlasActions" class="atlas-action" hidden>
+  <button id="changePlanet" class="atlas-pill" type="button">Change planet</button>
+  <button id="logoutButton" class="atlas-pill" type="button">Log out</button>
+</div>
+
+<section id="inspectPanel" class="inspect-panel" aria-labelledby="inspectTitle" hidden>
+  <button id="inspectClose" class="inspect-close" type="button" aria-label="Close rover inspection">×</button>
+  <p class="game-kicker">ROVER INSPECTION</p>
+  <h2 id="inspectTitle">Meet the rover</h2>
+  <p id="inspectDescription"></p>
+  <div class="inspect-preview">
+    <canvas id="roverPreview" aria-label="Rotating rover preview"></canvas>
+  </div>
+  <dl id="inspectFacts" class="inspect-facts"></dl>
+  <p id="inspectFunFact" class="inspect-fun-fact"></p>
+  <!-- HOOK: Watch landing button goes here -->
+  <p class="hook-note">Landing story coming in a future mission update.</p>
+</section>
+
+<canvas id="c"></canvas>
+
+<div id="L"></div>
+
+<button id="backBtn" class="backBtn" type="button" aria-label="Go back">← Back</button>
+<div class="top">
+  <h1>MARS LANDING ATLAS</h1>
+  <div class="sub">
+    DATA • Drag to orbit • Scroll / pinch to zoom
+  </div>
+  <div class="fl" id="fl"></div>
+</div>
+
+<div class="dock">
+  <div id="card">
+    <p class="mt" style="margin:0">
+      Click a marker or select a mission below to view details.
+    </p>
+  </div>
+  <div class="row" id="rw"></div>
+</div>
+
+<div id="ld">Initializing Mars…</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<script src="./kids-auth.js"></script>
+
+<script>
+
+const M = [
+
+  {
+    n:'Viking 1',
+    t:'Lander',
+    s:'Chryse Planitia',
+    la:22.54,
+    lo:-48.23,
+    a:'Jul 20, 1976',
+    e:'Nov 11, 1982',
+    k:0,
+    d:'The first successful lander on Mars — captured surface images and analyzed the soil.'
+  },
+
+  {
+    n:'Viking 2',
+    t:'Lander',
+    s:'Utopia Planitia',
+    la:48,
+    lo:134,
+    a:'Sep 3, 1976',
+    e:'Apr 11, 1980',
+    k:0,
+    d:"Viking 1's twin lander — returned images and weather data from the northern plains."
+  },
+
+  {
+    n:'Pathfinder',
+    t:'Lander + Sojourner rover',
+    s:'Ares Vallis',
+    la:19.33,
+    lo:-33.55,
+    a:'Jul 4, 1997',
+    e:'Sep 27, 1997',
+    k:0,
+    d:'The lander that delivered Sojourner, the first rover deployed on Mars.'
+  },
+
+  {
+    n:'Spirit',
+    t:'Rover (MER-A)',
+    s:'Gusev Crater',
+    la:-14.57,
+    lo:175.47,
+    a:'Jan 4, 2004',
+    e:'Mar 22, 2010',
+    k:0,
+    d:'Designed for a 90-day mission, it operated for nearly 6 years; final contact was in 2010.'
+  },
+
+  {
+    n:'Opportunity',
+    t:'Rover (MER-B)',
+    s:'Meridiani Planum',
+    la:-1.95,
+    lo:-5.53,
+    a:'Jan 25, 2004',
+    e:'Jun 10, 2018',
+    k:0,
+    d:'Designed for a 90-day mission, it operated for nearly 14 years and found important evidence of ancient water activity.'
+  },
+
+  {
+    n:'Phoenix',
+    t:'Lander',
+    s:'Green Valley, Vastitas Borealis',
+    la:68.22,
+    lo:-125.75,
+    a:'May 25, 2008',
+    e:'Nov 2, 2008',
+    k:0,
+    d:'Confirmed water ice beneath the surface near the polar region.'
+  },
+
+  {
+    n:'InSight',
+    t:'Lander',
+    s:'Elysium Planitia',
+    la:4.5,
+    lo:135.62,
+    a:'Nov 26, 2018',
+    e:'Dec 21, 2022',
+    k:0,
+    d:'Measured marsquakes and studied the interior structure of Mars.'
+  },
+
+  {
+    n:'Curiosity',
+    t:'Rover (MSL)',
+    s:'Gale Crater',
+    la:-4.59,
+    lo:137.44,
+    a:'Aug 6, 2012',
+    e:'Active',
+    k:1,
+    d:'Climbing Mount Sharp while studying evidence of ancient habitable environments.'
+  },
+
+  {
+    n:'Perseverance',
+    t:'Rover + Ingenuity helicopter',
+    s:'Jezero Crater',
+    la:18.44,
+    lo:77.45,
+    a:'Feb 18, 2021',
+    e:'Active (Ingenuity: ended Jan 2024)',
+    k:1,
+    d:'Searching for potential signs of ancient life and collecting samples from Mars.'
+  }
+
+];
+
+
+const $ = s => document.querySelector(s);
+
+const C = [
+  '#ffb454',
+  '#5ce1e6'
+];
+
+const S = [
+  'Mission Ended',
+  'Active'
+];
+
+const G = Math.PI / 180;
+
+
+function P(la,lo,r){
+
+  return new THREE.Vector3(
+    -Math.cos(lo * G) * Math.cos(la * G),
+    Math.sin(la * G),
+    Math.sin(lo * G) * Math.cos(la * G)
+  ).multiplyScalar(r);
+
+}
+
+
+const cv = $('#c');
+let ren = null;
+let sc = null;
+let cam = null;
+let SD = null;
+let U = {sd:{value:null}};
+let D0 = 0;
+let OD = 0;
+let ctl = null;
+let globeReady = false;
+
+let mk = [];
+let fly = null;
+let bg = null;
+let cl = null;
+let moons = [];
+let ov = 0;
+let atmosphereMesh = null;
+let starsMesh = null;
+let globeIntro = 0;
+
+function initGlobe(){
+
+  if(globeReady){
+    return;
+  }
+
+  if(!window.THREE){
+    throw new Error('Three.js failed to load. Check your internet connection or CDN access.');
+  }
+
+  if(!THREE.OrbitControls){
+    throw new Error('OrbitControls failed to load.');
+  }
+
+  ren = new THREE.WebGLRenderer({
+    canvas:cv,
+    antialias:true
+  });
+
+  ren.setPixelRatio(
+    Math.min(window.devicePixelRatio,2)
+  );
+
+  ren.outputEncoding = THREE.sRGBEncoding;
+  ren.setClearColor(0x05060b);
+
+  sc = new THREE.Scene();
+
+  cam = new THREE.PerspectiveCamera(
+    42,
+    1,
+    0.1,
+    200
+  );
+
+  const asp = innerWidth / innerHeight;
+
+  D0 = Math.max(
+    3.8,
+    1 / Math.sin(
+      Math.atan(
+        .33 * Math.min(asp,1.15)
+      )
+    )
+  );
+
+  cam.position.set(0,.55,1).setLength(
+    Math.min(20,D0*3)
+  );
+
+  sc.add(cam);
+
+  SD = new THREE.Vector3(
+    5,
+    1.4,
+    3
+  ).normalize();
+
+  U = {
+    sd:{
+      value:new THREE.Vector3()
+    }
+  };
+
+  OD = Math.min(
+    24,
+    Math.max(
+      17,
+      7.6 / (.384 * Math.min(asp,1.4))
+    )
+  );
+
+  const sun = new THREE.DirectionalLight(
+    0xfff1e0,
+    2.1
+  );
+
+  sun.position.copy(SD).multiplyScalar(30);
+  sc.add(sun);
+
+  const fill = new THREE.DirectionalLight(
+    0xffa070,
+    .28
+  );
+
+  fill.position.set(-2,1,3);
+  cam.add(fill);
+
+  sc.add(
+    new THREE.AmbientLight(
+      0x6a4a44,
+      .32
+    )
+  );
+
+  ctl = new THREE.OrbitControls(
+    cam,
+    cv
+  );
+
+  ctl.enableDamping = true;
+  ctl.enablePan = false;
+  ctl.minDistance = 1.7;
+  ctl.maxDistance = 24;
+  ctl.rotateSpeed = .6;
+  ctl.autoRotate = true;
+  ctl.autoRotateSpeed = .5;
+
+  ctl.addEventListener(
+    'start',
+    () => {
+      ctl.autoRotate = false;
+    }
+  );
+
+  buildMARS();
+  makeStars();
+
+  const grid = buildGrid();
+
+  buildMarkers();
+  createFilters(grid);
+  buildMoons();
+
+  globeReady = true;
+  rs();
+  animate();
+
+  const loading = $('#ld');
+
+  if(loading){
+    setTimeout(()=>{
+      loading.style.opacity=0;
+      setTimeout(()=>loading.remove(),700);
+    },1400);
+  }
+
+  go(
+    new THREE.Vector3(0,.55,1),
+    D0
+  );
+
+}
+
+
+function rs(){
+
+  if(!ren || !cam){
+    return;
+  }
+
+  ren.setSize(
+    innerWidth,
+    innerHeight,
+    false
+  );
+
+  cam.aspect =
+    innerWidth / innerHeight;
+
+  cam.updateProjectionMatrix();
+
+}
+
+addEventListener('resize',rs);
+
+rs();
+
+
+function hash(x,y,z){
+
+  let n =
+    Math.imul(x,374761393) ^
+    Math.imul(y,668265263) ^
+    Math.imul(z,1274126177);
+
+  n = Math.imul(
+    n ^ (n >>> 13),
+    1103515245
+  );
+
+  return ((n ^ (n >>> 16)) >>> 0)
+    / 4294967296;
+
+}
+
+
+function lerp(a,b,t){
+
+  return a + (b-a)*t;
+
+}
+
+
+function valueNoise(x,y,z){
+
+  const X = Math.floor(x);
+  const Y = Math.floor(y);
+  const Z = Math.floor(z);
+
+  const a = x-X;
+  const b = y-Y;
+  const c = z-Z;
+
+  const u = a*a*(3-2*a);
+  const v = b*b*(3-2*b);
+  const w = c*c*(3-2*c);
+
+
+  const x00 = lerp(
+    hash(X,Y,Z),
+    hash(X+1,Y,Z),
+    u
+  );
+
+  const x10 = lerp(
+    hash(X,Y+1,Z),
+    hash(X+1,Y+1,Z),
+    u
+  );
+
+  const x01 = lerp(
+    hash(X,Y,Z+1),
+    hash(X+1,Y,Z+1),
+    u
+  );
+
+  const x11 = lerp(
+    hash(X,Y+1,Z+1),
+    hash(X+1,Y+1,Z+1),
+    u
+  );
+
+
+  return lerp(
+    lerp(x00,x10,v),
+    lerp(x01,x11,v),
+    w
+  );
+
+}
+
+
+function fb(x,y,z,o){
+
+  let s = 0;
+  let a = .5;
+
+  for(let i=0;i<o;i++){
+
+    s += a * valueNoise(x,y,z);
+
+    x *= 2.07;
+    y *= 2.07;
+    z *= 2.07;
+
+    a *= .5;
+
+  }
+
+  return s;
+
+}
+
+
+function makeTexture(){
+  const W = 1024;
+  const H = 512;
+  const c = document.createElement('canvas');
+  c.width = W;
+  c.height = H;
+  const ctx = c.getContext('2d');
+  const img = ctx.createImageData(W,H);
+
+  // Deterministic multi-octave terrain noise.
+  for(let j=0;j<H;j++){
+    const lat = (.5-(j+.5)/H)*Math.PI;
+    const cp = Math.cos(lat);
+    const sp = Math.sin(lat);
+
+    for(let i=0;i<W;i++){
+      const lon = (i+.5)/W * Math.PI*2;
+      const x = -Math.cos(lon)*cp;
+      const z =  Math.sin(lon)*cp;
+
+      const broad = fb(x*1.55+11, sp*1.55+11, z*1.55+11, 6);
+      const medium = fb(x*5.5+31, sp*5.5+31, z*5.5+31, 5);
+      const fine = fb(x*16+71, sp*16+71, z*16+71, 4);
+
+      // Southern highlands and northern lowlands.
+      const highland = smoothstep(-.18,.72,Math.abs(sp)+broad*.22);
+      const darkRegion = smoothstep(.54,.88,Math.abs(sp))*0.16;
+
+      // MARS-like rusty palette with broad regional variation.
+      let r = 82 + broad*105 + medium*34 - darkRegion*35 + highland*8;
+      let g = 34 + broad*62  + medium*23 - darkRegion*13 + highland*2;
+      let b = 20 + broad*35  + medium*16 - darkRegion*8;
+
+      // Subtle basaltic dark patches.
+      const basalt = smoothstep(.61,.78,medium) * smoothstep(.62,.88,broad);
+      r -= basalt*20; g -= basalt*10; b -= basalt*5;
+
+      // Fine dusty grain.
+      r += (fine-.5)*22;
+      g += (fine-.5)*12;
+      b += (fine-.5)*7;
+
+      // Polar ice caps.
+      const pole = smoothstep(.88,.985,Math.abs(sp));
+      r = lerp(r, 224, pole);
+      g = lerp(g, 221, pole);
+      b = lerp(b, 213, pole);
+
+      // Slight latitude-dependent atmospheric haze.
+      const haze = smoothstep(.93,1.0,Math.abs(sp));
+      r = lerp(r, 196, haze*.25);
+      g = lerp(g, 190, haze*.25);
+      b = lerp(b, 181, haze*.25);
+
+      const q=(j*W+i)*4;
+      img.data[q]   = Math.max(0,Math.min(255,r));
+      img.data[q+1] = Math.max(0,Math.min(255,g));
+      img.data[q+2] = Math.max(0,Math.min(255,b));
+      img.data[q+3] = 255;
+    }
+  }
+
+  ctx.putImageData(img,0,0);
+
+  // Add hundreds of soft crater depressions directly to the color map.
+  let seed = 93721;
+  const rnd = ()=>{
+    seed = (seed*1664525 + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+
+  for(let n=0;n<300;n++){
+    const x=rnd()*W, y=rnd()*H;
+    const rr=2+rnd()*24;
+    const grd=ctx.createRadialGradient(x,y,0,x,y,rr);
+    grd.addColorStop(0,'rgba(42,18,10,.28)');
+    grd.addColorStop(.45,'rgba(62,26,13,.18)');
+    grd.addColorStop(.72,'rgba(210,103,55,.07)');
+    grd.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=grd;
+    ctx.beginPath();
+    ctx.arc(x,y,rr,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  return c;
+}
+
+function smoothstep(a,b,x){
+  const t=Math.max(0,Math.min(1,(x-a)/(b-a)));
+  return t*t*(3-2*t);
+}
+
+function makeBumpTexture(){
+  const W = 512;
+  const H = 256;
+  const c = document.createElement('canvas');
+  c.width=W; c.height=H;
+  const ctx=c.getContext('2d');
+  const img=ctx.createImageData(W,H);
+
+  for(let j=0;j<H;j++){
+    const lat=(.5-(j+.5)/H)*Math.PI;
+    const cp=Math.cos(lat), sp=Math.sin(lat);
+
+    for(let i=0;i<W;i++){
+      const lon=(i+.5)/W*Math.PI*2;
+      const x=-Math.cos(lon)*cp;
+      const z=Math.sin(lon)*cp;
+
+      const terrain =
+        fb(x*3.2+19,sp*3.2+19,z*3.2+19,5)*.68 +
+        fb(x*10+47,sp*10+47,z*10+47,4)*.32;
+
+      const v=Math.max(0,Math.min(255,82+terrain*150));
+      const q=(j*W+i)*4;
+      img.data[q]=v;
+      img.data[q+1]=v;
+      img.data[q+2]=v;
+      img.data[q+3]=255;
+    }
+  }
+  ctx.putImageData(img,0,0);
+  return c;
+}
+
+function buildMARS(){
+
+  const marsCanvas = makeTexture();
+  const bumpCanvas = makeBumpTexture();
+
+
+  const tx =
+    new THREE.CanvasTexture(
+      marsCanvas
+    );
+
+  const tb =
+    new THREE.CanvasTexture(
+      bumpCanvas
+    );
+
+
+  tx.encoding =
+    THREE.sRGBEncoding;
+
+  tx.anisotropy = Math.min(8, ren.capabilities.getMaxAnisotropy());
+
+
+  const mars =
+    new THREE.Mesh(
+
+      new THREE.SphereGeometry(
+        1,
+        96,
+        64
+      ),
+
+      new THREE.MeshStandardMaterial({
+        map:tx,
+        bumpMap:tb,
+        bumpScale:.08,
+        roughness:1,
+        metalness:0
+      })
+
+    );
+
+
+  sc.add(mars);
+
+
+  const atmosphere =
+    new THREE.Mesh(
+
+      new THREE.SphereGeometry(
+        1.14,
+        64,
+        64
+      ),
+
+      new THREE.ShaderMaterial({
+
+        uniforms:U,
+
+        transparent:true,
+
+        side:THREE.BackSide,
+
+        blending:
+          THREE.AdditiveBlending,
+
+        depthWrite:false,
+
+        vertexShader:`
+
+          varying vec3 n;
+
+          void main(){
+
+            n=normalize(
+              normalMatrix*normal
+            );
+
+            gl_Position=
+              projectionMatrix*
+              modelViewMatrix*
+              vec4(position,1.);
+
+          }
+
+        `,
+
+        fragmentShader:`
+
+          uniform vec3 sd;
+
+          varying vec3 n;
+
+          void main(){
+
+            float s=
+              clamp(
+                -n.z/.48,
+                0.,
+                1.
+              );
+
+            float l=
+              .25+
+              .75*
+              smoothstep(
+                -.4,
+                .8,
+                dot(
+                  normalize(
+                    n.xy+
+                    vec2(1e-4)
+                  ),
+                  normalize(
+                    sd.xy+
+                    vec2(1e-4)
+                  )
+                )
+              );
+
+            gl_FragColor=
+              vec4(
+                1.,
+                .52,
+                .32,
+                1.
+              )*
+              pow(s,2.2)*
+              l*
+              1.1;
+
+          }
+
+        `
+
+      })
+
+    );
+
+  atmosphereMesh = atmosphere;
+  atmosphere.material.opacity = 0;
+
+  sc.add(atmosphere);
+
+  // Very subtle dusty limb glow for a more cinematic, realistic MARS edge.
+  const dust = new THREE.Mesh(
+    new THREE.SphereGeometry(1.035,64,64),
+    new THREE.MeshBasicMaterial({
+      color:0xb85f36,
+      transparent:true,
+      opacity:.045,
+      side:THREE.BackSide,
+      blending:THREE.AdditiveBlending,
+      depthWrite:false
+    })
+  );
+  sc.add(dust);
+
+}
+
+
+function makeStars(){
+
+  const group =
+    new THREE.Group();
+
+  sc.add(group);
+
+  bg=group;
+
+
+  const starPositions=[];
+  const starColors=[];
+
+
+  for(let n=0;n<2200;){
+
+    const u=
+      Math.random()*2-1;
+
+    const t=
+      Math.random()*Math.PI*2;
+
+    const r=
+      Math.sqrt(1-u*u);
+
+    const x=
+      r*Math.cos(t);
+
+    const z=
+      r*Math.sin(t);
+
+
+    if(
+      Math.random() >
+      .18+
+      .82*
+      Math.exp(
+        -Math.pow(
+          (u*.8+x*.6)*2.6,
+          2
+        )
+      )
+    ){
+
+      continue;
+
+    }
+
+
+    starPositions.push(
+      x*90,
+      u*90,
+      z*90
+    );
+
+
+    const c =
+      new THREE.Color();
+
+    c.setHSL(
+      Math.random()<.7?.6:.08,
+      .5,
+      .6+Math.random()*.4
+    );
+
+    starColors.push(
+      c.r,
+      c.g,
+      c.b
+    );
+
+    n++;
+
+  }
+
+
+  const geometry =
+    new THREE.BufferGeometry();
+
+  geometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(
+      starPositions,
+      3
+    )
+  );
+
+  geometry.setAttribute(
+    'color',
+    new THREE.Float32BufferAttribute(
+      starColors,
+      3
+    )
+  );
+
+
+  const stars =
+    new THREE.Points(
+
+      geometry,
+
+      new THREE.PointsMaterial({
+        size:.3,
+        vertexColors:true,
+        transparent:true,
+        opacity:.85,
+        depthWrite:false
+      })
+
+    );
+
+  starsMesh = stars;
+  stars.material.opacity = 0;
+
+  group.add(stars);
+
+}
+
+
+function buildGrid(){
+
+  const gp=[];
+
+
+  for(
+    let la=-60;
+    la<=60;
+    la+=30
+  ){
+
+    for(
+      let i=0;
+      i<96;
+      i++
+    ){
+
+      gp.push(
+        P(
+          la,
+          i*3.75,
+          1.002
+        ),
+
+        P(
+          la,
+          (i+1)*3.75,
+          1.002
+        )
+      );
+
+    }
+
+  }
+
+
+  for(
+    let lo=0;
+    lo<360;
+    lo+=30
+  ){
+
+    for(
+      let j=-90;
+      j<90;
+      j+=5
+    ){
+
+      gp.push(
+        P(j,lo,1.002),
+        P(j+5,lo,1.002)
+      );
+
+    }
+
+  }
+
+
+  const geometry =
+    new THREE.BufferGeometry()
+      .setFromPoints(gp);
+
+
+  const grid =
+    new THREE.LineSegments(
+
+      geometry,
+
+      new THREE.LineBasicMaterial({
+        color:0xffffff,
+        transparent:true,
+        opacity:.16
+      })
+
+    );
+
+
+  grid.visible=false;
+
+  sc.add(grid);
+
+  return grid;
+
+}
+
+
+function makeGlowTexture(){
+
+  const c=
+    document.createElement('canvas');
+
+  c.width=c.height=128;
+
+  const ctx=c.getContext('2d');
+
+  const g=
+    ctx.createRadialGradient(
+      64,64,0,
+      64,64,64
+    );
+
+  g.addColorStop(
+    0,
+    'rgba(255,255,255,1)'
+  );
+
+  g.addColorStop(
+    .3,
+    'rgba(255,255,255,.45)'
+  );
+
+  g.addColorStop(
+    1,
+    'rgba(255,255,255,0)'
+  );
+
+  ctx.fillStyle=g;
+
+  ctx.fillRect(
+    0,0,128,128
+  );
+
+  return new THREE.CanvasTexture(c);
+
+}
+
+
+function buildMarkers(){
+
+  const glow =
+    makeGlowTexture();
+
+
+  mk=M.map((m,i)=>{
+
+    const col=
+      new THREE.Color(C[m.k]);
+
+
+    const p0=
+      P(m.la,m.lo,1.003);
+
+    const p1=
+      P(m.la,m.lo,1.07);
+
+
+    const g=
+      new THREE.Group();
+
+
+    const line=
+      new THREE.Line(
+
+        new THREE.BufferGeometry()
+          .setFromPoints([
+            p0,p1
+          ]),
+
+        new THREE.LineBasicMaterial({
+          color:col,
+          transparent:true,
+          opacity:.8
+        })
+
+      );
+
+
+    const bd=
+      new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+          .016,
+          16,
+          16
+        ),
+
+        new THREE.MeshBasicMaterial({
+          color:col
+        })
+
+      );
+
+
+    bd.position.copy(p1);
+
+
+    const ring=
+      new THREE.Mesh(
+
+        new THREE.RingGeometry(
+          .022,
+          .028,
+          40
+        ),
+
+        new THREE.MeshBasicMaterial({
+          color:col,
+          transparent:true,
+          side:THREE.DoubleSide,
+          depthWrite:false
+        })
+
+      );
+
+
+    ring.position.copy(p0);
+
+    ring.lookAt(
+      P(
+        m.la,
+        m.lo,
+        2
+      )
+    );
+
+
+    const sprite=
+      new THREE.Sprite(
+
+        new THREE.SpriteMaterial({
+          map:glow,
+          color:col,
+          blending:
+            THREE.AdditiveBlending,
+          depthWrite:false,
+          transparent:true
+        })
+
+      );
+
+
+    sprite.scale.setScalar(.16);
+
+    sprite.position.copy(p1);
+
+
+    g.add(
+      line,
+      bd,
+      ring,
+      sprite
+    );
+
+
+    sc.add(g);
+
+
+    const el=
+      document.createElement('div');
+
+    el.className='l';
+
+    el.textContent=m.n;
+
+    el.style.borderColor=
+      C[m.k]+'99';
+
+    el.onclick=()=>{
+      selectMission(i);
+    };
+
+    $('#L').appendChild(el);
+
+
+    const chip=
+      document.createElement('button');
+
+    chip.className='chip';
+
+    chip.innerHTML=
+      '<i class="d" style="background:'+
+      C[m.k]+
+      '"></i>'+
+      m.n;
+
+    chip.onclick=()=>{
+      selectMission(i);
+    };
+
+    $('#rw').appendChild(chip);
+
+
+    return {
+      g,
+      bd,
+      rg:ring,
+      el,
+      ch:chip,
+      p:p1,
+      m,
+      sp:sprite
+    };
+
+  });
+
+}
+
+
+function createFilters(grid){
+
+  [0,1].forEach(k=>{
+
+    const b=
+      document.createElement('button');
+
+    b.className='f';
+
+    b.innerHTML=
+      '<i class="d" style="background:'+
+      C[k]+
+      '"></i>'+
+      S[k]+
+      ' ('+
+      M.filter(
+        m=>m.k===k
+      ).length+
+      ')';
+
+
+    b.onclick=()=>{
+
+      b.classList.toggle('off');
+
+      mk.forEach(o=>{
+
+        if(o.m.k===k){
+
+          const visible=
+            !o.g.visible;
+
+          o.g.visible=
+            visible;
+
+          o.ch.style.display=
+            visible?'':'none';
+
+        }
+
+      });
+
+    };
+
+
+    $('#fl').appendChild(b);
+
+  });
+
+
+  const gridButton=
+    document.createElement('button');
+
+  gridButton.className='f off';
+
+  gridButton.textContent='Grid';
+
+  gridButton.onclick=()=>{
+
+    grid.visible=
+      !grid.visible;
+
+    gridButton.classList.toggle(
+      'off',
+      !grid.visible
+    );
+
+  };
+
+  $('#fl').appendChild(gridButton);
+
+
+  const orbitButton=
+    document.createElement('button');
+
+  orbitButton.className='f off';
+
+  orbitButton.textContent='Orbit View';
+
+  orbitButton.onclick=()=>{
+
+    ov = ov ? 0 : 1;
+
+    orbitButton.classList.toggle(
+      'off',
+      !ov
+    );
+
+    orbitButton.textContent=
+      ov ?
+      'Landing View' :
+      'Orbit View';
+
+
+    go(
+
+      ov
+      ? new THREE.Vector3(.45,.6,1)
+      : new THREE.Vector3(0,.55,1),
+
+      ov ? OD : D0
+
+    );
+
+  };
+
+
+  $('#fl').appendChild(
+    orbitButton
+  );
+
+}
+
+
+const LA={
+
+  'Viking 1':'Aug 20, 1975',
+  'Viking 2':'Sep 9, 1975',
+  'Pathfinder':'Dec 4, 1996',
+  'Spirit':'Jun 10, 2003',
+  'Opportunity':'Jul 7, 2003',
+  'Phoenix':'Aug 4, 2007',
+  'InSight':'May 5, 2018',
+  'Curiosity':'Nov 26, 2011',
+  'Perseverance':'Jul 30, 2020'
+
+};
+
+
+function duration(m){
+
+  if(m.k){
+
+    return 'Active';
+
+  }
+
+
+  const start=
+    Date.parse(m.a);
+
+  const end=
+    Date.parse(m.e);
+
+
+  const months=
+    Math.max(
+      0,
+      Math.floor(
+        (end-start) /
+        2629800000
+      )
+    );
+
+
+  const years=
+    Math.floor(
+      months/12
+    );
+
+  const rem=
+    months%12;
+
+
+  let result='';
+
+  if(years){
+    result += years+' yr ';
+  }
+
+  result += rem+' mo';
+
+  return result;
+
+}
+
+
+function selectMission(i,inspect=true){
+
+  const m=M[i];
+
+  const c=C[m.k];
+
+
+  mk.forEach((o,j)=>{
+
+    o.ch.classList.toggle(
+      'on',
+      j===i
+    );
+
+    o.bd.scale.setScalar(
+      j===i ? 1.7 : 1
+    );
+
+    o.sp.scale.setScalar(
+      j===i ? .3 : .16
+    );
+
+  });
+
+
+  moons.forEach(
+    m=>m.ch.classList.remove('on')
+  );
+
+
+  $('#card').innerHTML=`
+
+    <div class="h">
+
+      <i class="d"
+         style="background:${c}">
+      </i>
+
+      ${m.n}
+
+      <em style="color:${c}">
+        ${S[m.k]}
+      </em>
+
+    </div>
+
+    <p class="mt">
+      ${m.t}, ${m.s}
+    </p>
+
+    <div class="g">
+
+      <span>Coordinates</span>
+
+      <b>
+        ${Math.abs(m.la).toFixed(2)}
+        °${m.la<0?'S':'N'},
+        ${((m.lo+360)%360).toFixed(2)}°E
+      </b>
+
+      <span>Launch</span>
+      <b>${LA[m.n]}</b>
+
+      <span>Landing</span>
+      <b>${m.a}</b>
+
+      <span>End</span>
+      <b>${m.e}</b>
+
+      <span>Duration</span>
+      <b>${duration(m)}</b>
+
+    </div>
+
+    <div>
+      ${m.d}
+    </div>
+
+  `;
+
+
+  go(
+    P(m.la,m.lo,1),
+    Math.min(
+      cam.position.length(),
+      D0*.72
+    )
+  );
+
+  if(inspect){
+    openInspect(m);
+  }
+
+}
+
+
+function go(target,distance){
+
+  const from=
+    cam.position.clone()
+      .normalize();
+
+  const quaternion=
+    new THREE.Quaternion()
+      .setFromUnitVectors(
+        from,
+        target.clone().normalize()
+      );
+
+
+  fly={
+    f:from,
+    q:quaternion,
+    d0:cam.position.length(),
+    d:distance,
+    k:0
+  };
+
+
+  ctl.autoRotate=false;
+
+}
+
+
+function buildMoons(){
+
+  const MO=[
+
+    {
+      n:'Phobos',
+      a:9378,
+      T:.31891,
+      i:1.08,
+      r:[13,11.4,9.1],
+      c:'#e0b9a1'
+    },
+
+    {
+      n:'Deimos',
+      a:23459,
+      T:1.26244,
+      i:1.79,
+      r:[7.8,6,5.1],
+      c:'#bdb7d6'
+    }
+
+  ];
+
+
+  const geometry=
+    new THREE.IcosahedronGeometry(
+      1,
+      3
+    );
+
+
+  const pp=
+    geometry.attributes.position;
+
+
+  for(
+    let v=0;
+    v<pp.count;
+    v++
+  ){
+
+    const x=pp.getX(v);
+    const y=pp.getY(v);
+    const z=pp.getZ(v);
+
+
+    const k=
+      1+
+      .12*
+      Math.sin(x*9+y*5)*
+      Math.cos(z*7+x*3);
+
+
+    pp.setXYZ(
+      v,
+      x*k,
+      y*k,
+      z*k
+    );
+
+  }
+
+
+  geometry.computeVertexNormals();
+
+
+  moons=MO.map((o,i)=>{
+
+    const rr=
+      o.a/3389.5;
+
+
+    const group=
+      new THREE.Group();
+
+
+    group.rotation.x=
+      o.i*G;
+
+
+    const points=[];
+
+
+    for(
+      let s=0;
+      s<=160;
+      s++
+    ){
+
+      const t=
+        s/160*Math.PI*2;
+
+      points.push(
+        new THREE.Vector3(
+          Math.cos(t)*rr,
+          0,
+          Math.sin(t)*rr
+        )
+      );
+
+    }
+
+
+    group.add(
+
+      new THREE.Line(
+
+        new THREE.BufferGeometry()
+          .setFromPoints(points),
+
+        new THREE.LineBasicMaterial({
+          color:o.c,
+          transparent:true,
+          opacity:.4
+        })
+
+      )
+
+    );
+
+
+    const mesh=
+      new THREE.Mesh(
+
+        geometry,
+
+        new THREE.MeshStandardMaterial({
+          color:o.c,
+          roughness:1
+        })
+
+      );
+
+
+    mesh.scale.set(
+      o.r[0],
+      o.r[2],
+      o.r[1]
+    );
+
+    mesh.scale.multiplyScalar(
+      25/3389.5
+    );
+
+
+    group.add(mesh);
+
+    sc.add(group);
+
+
+    const el=
+      document.createElement('div');
+
+    el.className='l';
+
+    el.textContent=o.n;
+
+    el.style.borderColor=
+      o.c+'99';
+
+    el.onclick=()=>{
+      selectMoon(i);
+    };
+
+    $('#L').appendChild(el);
+
+
+    const chip=
+      document.createElement('button');
+
+    chip.className='chip';
+
+    chip.innerHTML=
+      '<i class="d" style="background:'+
+      o.c+
+      '"></i>'+
+      o.n;
+
+    chip.onclick=()=>{
+      selectMoon(i);
+    };
+
+    $('#rw').appendChild(chip);
+
+
+    return {
+      o,
+      rr,
+      mm:mesh,
+      group,
+      el,
+      ch:chip
+    };
+
+  });
+
+}
+
+
+function selectMoon(i){
+
+  const o=moons[i].o;
+
+
+  mk.forEach(m=>{
+
+    m.ch.classList.remove('on');
+
+    m.bd.scale.setScalar(1);
+
+    m.sp.scale.setScalar(.16);
+
+  });
+
+
+  moons.forEach((m,j)=>{
+
+    m.ch.classList.toggle(
+      'on',
+      j===i
+    );
+
+  });
+
+
+  $('#card').innerHTML=`
+
+    <div class="h">
+
+      <i class="d"
+         style="background:${o.c}">
+      </i>
+
+      ${o.n}
+
+      <em style="color:${o.c}">
+        Moon
+      </em>
+
+    </div>
+
+    <p class="mt">
+      Natural satellite of Mars
+    </p>
+
+    <div class="g">
+
+      <span>Orbit</span>
+
+      <b>
+        ${o.a.toLocaleString('en')} km
+      </b>
+
+      <span>Period</span>
+
+      <b>
+        ${(o.T*24).toFixed(2)} hours
+      </b>
+
+      <span>Size</span>
+
+      <b>
+        ${o.r.map(v=>v*2).join(' × ')} km
+      </b>
+
+      <span>Orbital Inclination</span>
+
+      <b>${o.i}°</b>
+
+    </div>
+
+    <div>
+      The moon size is exaggerated for visibility on the map.
+    </div>
+
+  `;
+
+
+  if(
+    cam.position.length() < OD*.6
+  ){
+
+    go(
+      new THREE.Vector3(.45,.6,1),
+      OD
+    );
+
+  }
+
+}
+
+
+function animate(){
+
+  requestAnimationFrame(
+    animate
+  );
+
+
+  const time=
+    performance.now()/1000;
+
+
+  if(fly){
+
+    fly.k=
+      Math.min(
+        1,
+        fly.k+.025
+      );
+
+
+    const e=
+      1-
+      Math.pow(
+        1-fly.k,
+        3
+      );
+
+
+    const q=
+      new THREE.Quaternion();
+
+
+    q.slerpQuaternions(
+      new THREE.Quaternion(),
+      fly.q,
+      e
+    );
+
+
+    cam.position
+      .copy(fly.f)
+      .applyQuaternion(q)
+      .multiplyScalar(
+        fly.d0+
+        (fly.d-fly.d0)*e
+      );
+
+
+    if(fly.k>=1){
+
+      fly=null;
+
+    }
+
+  }
+
+
+  if(bg){
+
+    bg.position.copy(
+      cam.position
+    );
+
+  }
+
+  if(globeIntro < 1){
+    globeIntro = Math.min(1,globeIntro+.012);
+    if(atmosphereMesh){
+      atmosphereMesh.material.opacity = globeIntro;
+    }
+    if(starsMesh){
+      starsMesh.material.opacity = .85 * globeIntro;
+    }
+  }
+
+
+  if(cl){
+
+    cl.rotation.y+=.0003;
+
+  }
+
+
+  U.sd.value.copy(SD);
+
+  U.sd.value.transformDirection(
+    cam.matrixWorldInverse
+  );
+
+
+  ctl.update();
+
+
+  const w=innerWidth;
+  const h=innerHeight;
+
+
+  mk.forEach((o,i)=>{
+
+    const k=
+      (time*.45+i*.11)%1;
+
+
+    o.rg.scale.setScalar(
+      1+k*2.4
+    );
+
+
+    o.rg.material.opacity=
+      .8*(1-k);
+
+
+    const visible=
+      o.g.visible;
+
+
+    const facing=
+      o.p.dot(cam.position)>0;
+
+
+    const ok=
+      visible &&
+      facing;
+
+
+    const projected=
+      o.p.clone().project(cam);
+
+
+    o.el.style.opacity=
+      ok ? 1 : 0;
+
+    o.el.style.pointerEvents=
+      ok ? 'auto' : 'none';
+
+
+    o.el.style.transform=
+      'translate('+
+      ((projected.x*.5+.5)*w)+
+      'px,'+
+      ((-projected.y*.5+.5)*h)+
+      'px) translate(-50%,-135%)';
+
+  });
+
+
+  moons.forEach((m,i)=>{
+
+    const theta=
+      time*
+      6.2832/
+      (m.o.T*19.2)
+      +
+      i*2;
+
+
+    m.mm.position.set(
+      Math.cos(theta)*m.rr,
+      0,
+      Math.sin(theta)*m.rr
+    );
+
+
+    m.mm.rotation.y=
+      -theta;
+
+
+    const worldPosition=
+      new THREE.Vector3();
+
+
+    m.mm.getWorldPosition(
+      worldPosition
+    );
+
+
+    const projected=
+      worldPosition
+        .clone()
+        .project(cam);
+
+
+    const camera=
+      cam.position;
+
+
+    const direction=
+      worldPosition
+        .clone()
+        .sub(camera);
+
+
+    const hidden=
+      direction.dot(camera)>0;
+
+
+    m.el.style.opacity=
+      hidden ? 0 : 1;
+
+    m.el.style.pointerEvents=
+      hidden ? 'none' : 'auto';
+
+
+    m.el.style.transform=
+      'translate('+
+      ((projected.x*.5+.5)*w)+
+      'px,'+
+      ((-projected.y*.5+.5)*h)+
+      'px) translate(-50%,-170%)';
+
+  });
+
+
+  ren.render(
+    sc,
+    cam
+  );
+
+}
+
+
+
+let activePreview = null;
+let characterPreview = null;
+let roverPreview = null;
+let profile = null;
+let character = {
+  base:'Explorer',
+  skin:'#9b6a4e',
+  helmet:'Clear helmet',
+  suit:'#ef9b68',
+  buddy:'Sojourner'
+};
+
+const BANNED_NICKNAMES = [
+  'idiot',
+  'stupid',
+  'dumb',
+  'hate',
+  'kill'
+];
+
+const FUN_FACTS = {
+  'Viking 1':'Viking 1 was the first spacecraft to successfully land on Mars and send pictures home.',
+  'Pathfinder':'Pathfinder carried Sojourner, the first rover to drive on another planet.',
+  'Spirit':'Spirit kept exploring for many years longer than its planned 90-sol mission.',
+  'Opportunity':'Opportunity found rocks that formed in ancient water.',
+  'Curiosity':'Curiosity is about the size of a small car and has a laser for studying rocks.',
+  'Perseverance':'Perseverance is collecting carefully chosen rock samples for scientists.',
+  'Perseverance':'Perseverance carries a tiny helicopter named Ingenuity.',
+  'Phoenix':'Phoenix found water ice just below the Martian soil.',
+  'InSight':'InSight listened for marsquakes to learn about the inside of Mars.',
+  'Viking 2':'Viking 2 was Viking 1’s twin lander on the other side of Mars.'
+};
+
+function slug(value){
+  return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+}
+
+function parseRoute(){
+  const hash = window.location.hash.replace(/^#/,'') || 'login';
+  const inspect = hash.match(/^inspect=(.+)$/);
+  if(inspect){
+    return {view:'inspect',roverId:inspect[1]};
+  }
+  return {
+    view:['login','character','planet','atlas'].includes(hash) ? hash : 'login'
+  };
+}
+
+function routeHash(view,roverId){
+  return view === 'inspect' ? `#inspect=${roverId}` : `#${view}`;
+}
+
+function setRoute(view,roverId,replace=false){
+  const hash = routeHash(view,roverId);
+  const state = {
+    kidsFlow:true,
+    view,
+    roverId:roverId || null
+  };
+
+  if(replace){
+    window.history.replaceState(state,'',hash);
+  }else{
+    window.history.pushState(state,'',hash);
+  }
+
+  renderView();
+}
+
+function previousView(view){
+  if(view === 'character') return 'login';
+  if(view === 'planet') return 'character';
+  if(view === 'atlas') return 'planet';
+  if(view === 'inspect') return 'atlas';
+  return 'login';
+}
+
+function stepBack(){
+  const route = parseRoute();
+  if(route.view === 'login'){
+    return;
+  }
+  setRoute(previousView(route.view));
+}
+
+function hideGameScreens(){
+  ['loginScreen','characterScreen','planetScreen'].forEach((id)=>{
+    const screen = document.getElementById(id);
+    if(screen) screen.hidden = true;
+  });
+}
+
+function cleanNickname(value){
+  return value
+    .replace(/[^a-zA-Z0-9 ]/g,'')
+    .replace(/\s+/g,' ')
+    .trim()
+    .slice(0,18);
+}
+
+function nicknameIsSafe(value){
+  const normalized = value.toLowerCase();
+  return value.length >= 2 &&
+    !BANNED_NICKNAMES.some(word=>normalized.includes(word));
+}
+
+function setError(id,message,inputId){
+  const error = document.getElementById(id);
+  const input = inputId ? document.getElementById(inputId) : null;
+  if(error) error.textContent = message || '';
+  if(input) input.setAttribute('aria-invalid',String(Boolean(message)));
+}
+
+function characterValues(){
+  character = {
+    ...character,
+    skin:$('#skinChoice').value,
+    helmet:$('#helmetChoice').value,
+    suit:$('#suitChoice').value,
+    buddy:$('#buddyChoice').value
+  };
+  return character;
+}
+
+function renderCharacterChoices(){
+  const choices = [
+    ['Girl','A curious explorer'],
+    ['Boy','A brave explorer'],
+    ['Explorer','Your own explorer']
+  ];
+
+  $('#characterChoices').innerHTML = choices.map(([name,copy])=>`
+    <button class="choice" type="button" data-character="${name}" aria-pressed="${character.base === name}">
+      <strong>${name}</strong>
+      <span>${copy}</span>
+    </button>
+  `).join('');
+
+  document.querySelectorAll('[data-character]').forEach((button)=>{
+    button.addEventListener('click',()=>{
+      character.base = button.dataset.character;
+      document.querySelectorAll('[data-character]').forEach((choice)=>{
+        choice.setAttribute('aria-pressed',String(choice === button));
+      });
+      refreshCharacterPreview();
+    });
+  });
+}
+
+function disposePreview(preview){
+  if(!preview){
+    return;
+  }
+
+  cancelAnimationFrame(preview.frame);
+  preview.controls?.dispose();
+  window.removeEventListener('resize',preview.resize);
+
+  preview.scene.traverse((object)=>{
+    object.geometry?.dispose();
+    if(Array.isArray(object.material)){
+      object.material.forEach(material=>material.dispose());
+    }else{
+      object.material?.dispose();
+    }
+  });
+
+  preview.renderer.dispose();
+  preview.renderer.forceContextLoss?.();
+}
+
+function previewScene(canvas,kind,options={}){
+  if(!window.THREE || !THREE.OrbitControls){
+    return null;
+  }
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias:true,
+    alpha:true
+  });
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.setClearColor(0x090b14,0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30,1,.1,100);
+  camera.position.set(0,1.1,5.2);
+
+  scene.add(new THREE.AmbientLight(0xffffff,1.3));
+  const key = new THREE.DirectionalLight(0xffd1a1,2.2);
+  key.position.set(3,4,5);
+  scene.add(key);
+
+  const controls = new THREE.OrbitControls(camera,canvas);
+  controls.enableDamping = true;
+  controls.enablePan = false;
+  controls.minDistance = 3;
+  controls.maxDistance = 8;
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  if(kind === 'astronaut'){
+    const suit = new THREE.MeshStandardMaterial({color:options.suit || '#ef9b68',roughness:.85});
+    const skin = new THREE.MeshStandardMaterial({color:options.skin || '#9b6a4e',roughness:1});
+    const dark = new THREE.MeshStandardMaterial({color:0x202231,roughness:.7});
+    const boot = new THREE.MeshStandardMaterial({color:0x252631,roughness:1});
+    const torso = new THREE.Mesh(new THREE.BoxGeometry(1.1,1.35,.65),suit);
+    torso.position.y=.35;
+    group.add(torso);
+
+    const head = new THREE.Mesh(new THREE.SphereGeometry(.45,24,16),skin);
+    head.position.y=1.35;
+    group.add(head);
+
+    const helmet = new THREE.Mesh(
+      new THREE.SphereGeometry(.53,24,16),
+      new THREE.MeshStandardMaterial({
+        color:options.helmet === 'Gold visor' ? 0xffc857 : options.helmet === 'Blue visor' ? 0x5ce1e6 : 0xcceeff,
+        transparent:true,
+        opacity:.35,
+        roughness:.2,
+        metalness:.2
+      })
+    );
+    helmet.position.y=1.35;
+    group.add(helmet);
+
+    [-.42,.42].forEach(x=>{
+      const arm = new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,.9,12),suit);
+      arm.position.set(x, .43, 0);
+      arm.rotation.z=x > 0 ? -.22 : .22;
+      group.add(arm);
+
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(.16,.16,.8,12),boot);
+      leg.position.set(x*.5,-.72,0);
+      group.add(leg);
+    });
+
+    const badge = new THREE.Mesh(
+      new THREE.CircleGeometry(.13,20),
+      new THREE.MeshBasicMaterial({color:options.buddy === 'Yutu-2' ? 0xd6d2c7 : 0x5ce1e6})
+    );
+    badge.position.set(0,.4,.34);
+    group.add(badge);
+  }else{
+    const body = new THREE.Mesh(
+      new THREE.BoxGeometry(1.8,.55,1.1),
+      new THREE.MeshStandardMaterial({color:0xd9d0c5,roughness:.8})
+    );
+    body.position.y=.15;
+    group.add(body);
+
+    const wheelMaterial = new THREE.MeshStandardMaterial({color:0x19181e,roughness:1});
+    [-.68,.68].forEach(x=>{
+      [-.42,.42].forEach(z=>{
+        const wheel = new THREE.Mesh(new THREE.CylinderGeometry(.25,.25,.16,16),wheelMaterial);
+        wheel.rotation.x=Math.PI/2;
+        wheel.position.set(x,-.32,z);
+        group.add(wheel);
+      });
+    });
+
+    const mast = new THREE.Mesh(
+      new THREE.CylinderGeometry(.08,.08,.75,12),
+      new THREE.MeshStandardMaterial({color:0x8b909c,roughness:.8})
+    );
+    mast.position.y=.78;
+    group.add(mast);
+
+    const cameraHead = new THREE.Mesh(
+      new THREE.BoxGeometry(.45,.28,.35),
+      new THREE.MeshStandardMaterial({color:options.accent || 0xef9b68,roughness:.55})
+    );
+    cameraHead.position.y=1.15;
+    group.add(cameraHead);
+  }
+
+  group.rotation.y=.45;
+
+  const resize = ()=>{
+    const width = Math.max(1,canvas.clientWidth);
+    const height = Math.max(1,canvas.clientHeight);
+    renderer.setSize(width,height,false);
+    camera.aspect=width/height;
+    camera.updateProjectionMatrix();
+  };
+
+  const preview = {
+    camera,
+    canvas,
+    controls,
+    frame:0,
+    renderer,
+    resize,
+    scene
+  };
+
+  const tick = ()=>{
+    preview.frame=requestAnimationFrame(tick);
+    group.rotation.y += .004;
+    controls.update();
+    renderer.render(scene,camera);
+  };
+
+  resize();
+  window.addEventListener('resize',resize);
+  tick();
+  return preview;
+}
+
+function refreshCharacterPreview(){
+  disposePreview(characterPreview);
+  characterPreview = previewScene(
+    $('#characterPreview'),
+    'astronaut',
+    characterValues()
+  );
+}
+
+function refreshRoverPreview(m){
+  disposePreview(roverPreview);
+  roverPreview = previewScene(
+    $('#roverPreview'),
+    'rover',
+    {accent:C[m.k]}
+  );
+}
+
+function renderInspect(m){
+  $('#inspectTitle').textContent=`Meet ${m.n}`;
+  $('#inspectDescription').textContent=m.d;
+  $('#inspectFacts').innerHTML=`
+    <dt>What it is</dt><dd>${m.t}</dd>
+    <dt>Where</dt><dd>${m.s}</dd>
+    <dt>Arrived</dt><dd>${m.a}</dd>
+    <dt>Mission</dt><dd>${m.k ? 'Still exploring' : 'Finished its amazing job and went to sleep'}</dd>
+  `;
+  $('#inspectFunFact').textContent=FUN_FACTS[m.n] || 'Every rover carries a special piece of Earth’s curiosity to another world.';
+  $('#inspectPanel').hidden=false;
+  refreshRoverPreview(m);
+}
+
+function openInspect(m){
+  setRoute('inspect',slug(m.n));
+}
+
+function hideInspect(){
+  $('#inspectPanel').hidden=true;
+  disposePreview(roverPreview);
+  roverPreview=null;
+}
+
+function showAtlasActions(show){
+  $('#avatarBadge').hidden=!show;
+  $('#atlasActions').hidden=!show;
+}
+
+function renderView(){
+  const route=parseRoute();
+  const view=route.view;
+  document.body.dataset.view=view;
+  hideGameScreens();
+
+  if(view !== 'character'){
+    disposePreview(characterPreview);
+    characterPreview=null;
+  }
+
+  if(view !== 'inspect'){
+    hideInspect();
+  }
+
+  if(view === 'login'){
+    showAtlasActions(false);
+    $('#loginScreen').hidden=false;
+    const savedProfile=KidsAuth.getProfile();
+    const returningPlayer=Boolean(savedProfile?.pinHash && !KidsAuth.isLoggedIn());
+    $('#nickname').readOnly=returningPlayer;
+    if(returningPlayer){
+      $('#nickname').value=savedProfile.nickname;
+      $('#loginForm button[type="submit"]').textContent='Return to my crew ↗';
+    }
+    return;
+  }
+
+  if(!profile){
+    profile=KidsAuth.getProfile();
+  }
+
+  if((!profile || !KidsAuth.isLoggedIn()) && view !== 'login'){
+    profile=null;
+    setRoute('login',null,true);
+    return;
+  }
+
+  if(view === 'character'){
+    showAtlasActions(false);
+    $('#characterScreen').hidden=false;
+    renderCharacterChoices();
+    $('#skinChoice').value=character.skin;
+    $('#helmetChoice').value=character.helmet;
+    $('#suitChoice').value=character.suit;
+    $('#buddyChoice').value=character.buddy;
+    refreshCharacterPreview();
+    return;
+  }
+
+  if(view === 'planet'){
+    showAtlasActions(false);
+    $('#planetScreen').hidden=false;
+    return;
+  }
+
+  showAtlasActions(true);
+  $('#avatarBadge').textContent=`✦ ${profile.nickname}`;
+
+  if(!globeReady){
+    try{
+      initGlobe();
+    }catch(error){
+      console.error('Kids Mars atlas initialization failed:',error);
+      $('#planetStatus').textContent='The Mars atlas needs an internet connection to load.';
+      setRoute('planet',null,true);
+      return;
+    }
+  }
+
+  if(view === 'inspect'){
+    const missionIndex=M.findIndex(m=>slug(m.n)===route.roverId);
+    if(missionIndex < 0){
+      setRoute('atlas',null,true);
+      return;
+    }
+    selectMission(missionIndex,false);
+    renderInspect(M[missionIndex]);
+  }
+}
+
+function bindKidsFlow(){
+  const loginForm=$('#loginForm');
+
+  loginForm.addEventListener('submit',(event)=>{
+    event.preventDefault();
+    const savedProfile=KidsAuth.getProfile();
+    const returningPlayer=Boolean(savedProfile?.pinHash && !KidsAuth.isLoggedIn());
+    const nickname=cleanNickname($('#nickname').value) || savedProfile?.nickname || '';
+    const pin=$('#pin').value;
+    const nicknameMessage=returningPlayer ? '' : nicknameIsSafe(nickname) ? '' : 'Choose a friendly nickname with at least two letters.';
+    const pinMessage=/^\d{4}$/.test(pin) ? '' : 'Your secret PIN needs exactly four numbers.';
+    setError('nicknameError',nicknameMessage,'nickname');
+    setError('pinError',pinMessage,'pin');
+
+    if(nicknameMessage || pinMessage){
+      (nicknameMessage ? $('#nickname') : $('#pin')).focus();
+      return;
+    }
+
+    if(returningPlayer){
+      const signedInProfile=KidsAuth.login(pin);
+      if(!signedInProfile){
+        setError('pinError','That PIN does not match your crew badge.','pin');
+        $('#pin').focus();
+        return;
+      }
+      profile=signedInProfile;
+      setRoute('character');
+      return;
+    }
+
+    profile=KidsAuth.createProfile({
+      nickname,
+      character
+    },pin);
+    setRoute('character');
+  });
+
+  $('#guestButton').addEventListener('click',()=>{
+    const nickname=cleanNickname($('#nickname').value) || 'Brave Comet';
+    profile=KidsAuth.playAsGuest(nicknameIsSafe(nickname) ? nickname : 'Brave Comet');
+    setRoute('character');
+  });
+
+  $('#grownUpButton').addEventListener('click',()=>{
+    const panel=$('#grownUpPanel');
+    const expanded=panel.hidden;
+    panel.hidden=!expanded;
+    $('#grownUpButton').setAttribute('aria-expanded',String(expanded));
+    if(expanded){
+      $('#grownUpDone').focus();
+    }
+  });
+
+  $('#grownUpDone').addEventListener('click',()=>{
+    $('#grownUpPanel').hidden=true;
+    $('#grownUpButton').setAttribute('aria-expanded','false');
+    $('#grownUpButton').focus();
+  });
+
+  ['skinChoice','helmetChoice','suitChoice','buddyChoice'].forEach(id=>{
+    $(`#${id}`).addEventListener('change',refreshCharacterPreview);
+  });
+
+  $('#characterNext').addEventListener('click',()=>{
+    characterValues();
+    profile=KidsAuth.updateProfile({character});
+    setRoute('planet');
+  });
+
+  $('#characterBack').addEventListener('click',()=>setRoute('login'));
+  $('#planetBack').addEventListener('click',()=>setRoute('character'));
+
+  $('#marsChoice').addEventListener('click',()=>{
+    profile=KidsAuth.updateProfile({planet:'Mars'});
+    setRoute('atlas');
+  });
+
+  $('#moonChoice').addEventListener('click',()=>{
+    $('#planetStatus').textContent='Moon base is coming soon. Mars is ready to explore!';
+  });
+
+  $('#inspectClose').addEventListener('click',()=>setRoute('atlas'));
+  $('#changePlanet').addEventListener('click',()=>setRoute('planet'));
+  $('#avatarBadge').addEventListener('click',()=>setRoute('character'));
+  $('#logoutButton').addEventListener('click',()=>{
+    KidsAuth.logout();
+    profile=null;
+    hideInspect();
+    setRoute('login');
+  });
+
+  const backBtn=$('#backBtn');
+  backBtn.textContent='← Back';
+  backBtn.addEventListener('click',stepBack);
+  window.addEventListener('keydown',(event)=>{
+    if(event.key === 'Escape'){
+      stepBack();
+    }
+  });
+  window.addEventListener('popstate',renderView);
+}
+
+profile=KidsAuth.getProfile();
+if(profile?.character){
+  character={
+    ...character,
+    ...profile.character
+  };
+}
+bindKidsFlow();
+
+const initialRoute=parseRoute();
+if(!window.location.hash){
+  window.history.replaceState(
+    {kidsFlow:true,view:profile && KidsAuth.isLoggedIn() ? 'character' : 'login'},
+    '',
+    profile && KidsAuth.isLoggedIn() ? '#character' : '#login'
+  );
+}
+
+if(profile && KidsAuth.isLoggedIn() && initialRoute.view === 'login'){
+  window.history.replaceState({kidsFlow:true,view:'character'},'','#character');
+}
+
+renderView();
+
+</script>
+
+</body>
+</html>
