@@ -98,6 +98,15 @@ test('reading level picks age-appropriate mission wording', () => {
   assert.notEqual(younger, older);
   assert.equal(strings.missionDescription(unknownMission), unknownMission.d);
 
+  // Unverified missions must keep their TODO instead of gaining a rewritten fact.
+  for (const todoMission of ['Lunokhod 1', 'Lunokhod 2', 'Yutu', 'Yutu-2', 'Pragyan']) {
+    const record = { n: todoMission, d: 'TODO: verify the kid-friendly mission description.' };
+    for (const level of ['younger', 'older']) {
+      strings.setReadingLevel(level);
+      assert.match(strings.missionDescription(record), /^TODO: verify/);
+    }
+  }
+
   strings.setReadingLevel('nonsense');
   assert.equal(strings.getReadingLevel(), 'younger');
 });
@@ -180,6 +189,19 @@ test('offline support ships a versioned worker and installable manifest', async 
 
   assert.match(kidsGame, /rel="manifest"/);
   assert.match(kidsGame, /serviceWorker\.register/);
+});
+
+test('rover preview survives repeated open and close cycles', () => {
+  const fromDispose = kidsGame.slice(kidsGame.indexOf('function disposePreview'));
+  const disposeBody = fromDispose.slice(0, fromDispose.indexOf('\nfunction '));
+
+  // Each preview rebuilds a renderer on a canvas it shares with the previous
+  // one, so forcing a context loss here kills the next renderer's canvas.
+  assert.doesNotMatch(disposeBody, /forceContextLoss/);
+
+  // A settings change refreshes the open panel's text only. Routing it through
+  // renderInspect would tear down and rebuild the preview's WebGL context.
+  assert.match(kidsGame, /renderInspectText\(inspectedMission\)/);
 });
 
 test('moon missions load without inventing unverified facts', () => {

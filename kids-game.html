@@ -145,7 +145,8 @@ button{
   display:flex;
   align-items:center;
   gap:7px;
-  padding:6px 12px;
+  min-height:48px;
+  padding:6px 14px;
   border-radius:99px;
   background:var(--gl);
   border:1px solid var(--ln);
@@ -953,7 +954,7 @@ body[data-view="inspect"] #ld{
 
   .f,.chip{
     font-size:12px;
-    padding:5px 9px;
+    padding:5px 12px;
   }
 }
 </style>
@@ -3624,7 +3625,10 @@ function disposePreview(preview){
   });
 
   preview.renderer.dispose();
-  preview.renderer.forceContextLoss?.();
+
+  // Keep the canvas's WebGL context alive so the next preview reuses it.
+  // Forcing a context loss here leaves the canvas with a dead context, and
+  // the next renderer created on that canvas crashes during setup.
 }
 
 function previewScene(canvas,kind,options={}){
@@ -3632,11 +3636,19 @@ function previewScene(canvas,kind,options={}){
     return null;
   }
 
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias:true,
-    alpha:true
-  });
+  let renderer;
+
+  try{
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias:true,
+      alpha:true
+    });
+  }catch(error){
+    // A device can refuse extra WebGL contexts; the panel still reads fine without one.
+    console.warn('Preview scene unavailable:',error);
+    return null;
+  }
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -3789,6 +3801,13 @@ function refreshRoverPreview(m){
 
 function renderInspect(m){
   inspectedMission=m;
+  renderInspectText(m);
+  $('#inspectPanel').hidden=false;
+  refreshRoverPreview(m);
+}
+
+// Text-only refresh: a settings change must not rebuild the preview's WebGL context.
+function renderInspectText(m){
   $('#inspectTitle').textContent=`${KidsStrings.get('meet')} ${m.n}`;
   $('#inspectDescription').textContent=KidsStrings.missionDescription(m);
   $('#inspectFacts').innerHTML=`
@@ -3798,8 +3817,6 @@ function renderInspect(m){
     <dt>${KidsStrings.get('mission')}</dt><dd>${m.k ? KidsStrings.get('stillExploring') : KidsStrings.get('finished')}</dd>
   `;
   $('#inspectFunFact').textContent=FUN_FACTS[m.n] || 'Every rover carries a special piece of Earth’s curiosity to another world.';
-  $('#inspectPanel').hidden=false;
-  refreshRoverPreview(m);
 }
 
 function openInspect(m){
@@ -3852,7 +3869,7 @@ function applyStrings(){
     $('#card').innerHTML=renderMissionCard(selectedMission);
   }
   if(inspectedMission && !$('#inspectPanel').hidden){
-    renderInspect(inspectedMission);
+    renderInspectText(inspectedMission);
   }
 }
 

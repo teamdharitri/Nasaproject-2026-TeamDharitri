@@ -120,26 +120,24 @@
     }
   };
 
+  // Each entry only rephrases the description already stored with that mission.
+  // Missions whose facts are still unverified keep their own TODO text instead.
   const READING_FACTS = {
     Curiosity: {
-      younger: 'Curiosity is a car-sized rover that studies rocks and soil on Mars.',
-      older: 'Curiosity studies Mount Sharp and the evidence of ancient habitable environments.'
+      younger: 'Curiosity is climbing Mount Sharp and studying clues that Mars once had places where life could live.',
+      older: 'Curiosity climbs Mount Sharp while studying evidence of ancient habitable environments.'
     },
     Perseverance: {
-      younger: 'Perseverance looks for clues about ancient life and collects rock samples.',
-      older: 'Perseverance searches Jezero Crater for signs of ancient life and collects samples.'
+      younger: 'Perseverance looks for signs that life may have existed long ago, and it collects rock samples.',
+      older: 'Perseverance searches for potential signs of ancient life and collects samples from Mars.'
     },
     Spirit: {
-      younger: 'Spirit explored Mars for years and studied rocks that tell a water story.',
-      older: 'Spirit explored Gusev Crater far beyond its planned mission and studied evidence of past water.'
+      younger: 'Spirit was built to work for 90 days, but it kept going for almost 6 years.',
+      older: 'Spirit was designed for a 90-day mission but operated for nearly 6 years, with final contact in 2010.'
     },
     Opportunity: {
-      younger: 'Opportunity found rocks shaped by water long ago.',
-      older: 'Opportunity found important evidence that water once changed rocks on Mars.'
-    },
-    'Yutu-2': {
-      younger: 'Yutu-2 was the first rover to explore the far side of the Moon.',
-      older: 'Yutu-2 explores the far side of the Moon as part of Chang’e 4.'
+      younger: 'Opportunity was built to work for 90 days, but it explored for almost 14 years and found clues that water was once there.',
+      older: 'Opportunity was designed for a 90-day mission, operated for nearly 14 years, and found important evidence of ancient water activity.'
     }
   };
 
