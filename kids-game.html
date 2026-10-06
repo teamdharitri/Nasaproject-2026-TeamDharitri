@@ -648,6 +648,52 @@ body[data-view="inspect"] #ld{
   border-color:rgba(255,255,255,.45);
 }
 
+.audio-controls{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:35;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px;
+  border:1px solid var(--ln);
+  border-radius:999px;
+  background:rgba(8,8,12,.86);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.audio-pill{
+  min-height:48px;
+  padding:9px 13px;
+  border:1px solid var(--ln);
+  border-radius:999px;
+  background:transparent;
+  color:var(--ink);
+  font-size:12px;
+}
+
+.audio-pill:hover,
+.audio-pill[aria-pressed="true"]{
+  border-color:#ffb454;
+  background:rgba(255,180,84,.14);
+}
+
+.volume-control{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:0 8px;
+  color:var(--mut);
+  font-size:11px;
+}
+
+.volume-control input{
+  width:72px;
+  accent-color:#ffb454;
+}
+
 .inspect-panel{
   position:fixed;
   right:16px;
@@ -778,6 +824,21 @@ body[data-view="inspect"] #ld{
     top:128px;
     bottom:auto;
     max-height:calc(100vh - 145px);
+  }
+
+  .audio-controls{
+    right:10px;
+    bottom:10px;
+    left:10px;
+    justify-content:space-between;
+  }
+
+  .volume-control{
+    flex:1;
+  }
+
+  .volume-control input{
+    width:100%;
   }
 
   .avatar-badge{
@@ -939,8 +1000,16 @@ body[data-view="inspect"] #ld{
 
 <div id="avatarBadge" class="avatar-badge" hidden></div>
 <div id="atlasActions" class="atlas-action" hidden>
-  <button id="changePlanet" class="atlas-pill" type="button">Change planet</button>
-  <button id="logoutButton" class="atlas-pill" type="button">Log out</button>
+  <button id="changePlanet" class="atlas-pill" type="button" data-audio-tap>Change planet</button>
+  <button id="logoutButton" class="atlas-pill" type="button" data-audio-tap>Log out</button>
+</div>
+
+<div id="audioControls" class="audio-controls">
+  <button id="muteButton" class="audio-pill" type="button" aria-pressed="false" data-audio-tap>🔊 Sound on</button>
+  <label class="volume-control" for="volumeControl">
+    <span>Volume</span>
+    <input id="volumeControl" type="range" min="0" max=".2" step=".01" value=".12">
+  </label>
 </div>
 
 <section id="inspectPanel" class="inspect-panel" aria-labelledby="inspectTitle" hidden>
@@ -985,6 +1054,7 @@ body[data-view="inspect"] #ld{
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
+<script src="./audio.js"></script>
 <script src="./kids-auth.js"></script>
 
 <script>
@@ -2623,6 +2693,7 @@ function selectMission(i,inspect=true){
   const m=M[i];
 
   const c=C[m.k];
+  KidsAudio.chime();
   const coordinates=Number.isFinite(m.la) && Number.isFinite(m.lo)
     ? `${Math.abs(m.la).toFixed(2)}°${m.la<0?'S':'N'}, ${((m.lo+360)%360).toFixed(2)}°E`
     : 'TODO: verify coordinates';
@@ -3330,6 +3401,7 @@ function setRoute(view,roverId,replace=false){
     window.history.pushState(state,'',hash);
   }
 
+  KidsAudio.setMood(view);
   renderView();
 }
 
@@ -3629,6 +3701,7 @@ function renderView(){
   const route=parseRoute();
   const view=route.view;
   document.body.dataset.view=view;
+  KidsAudio.setMood(view);
   hideGameScreens();
   $('#focusOverlay').hidden=true;
 
@@ -3854,6 +3927,7 @@ if(profile?.character){
     ...profile.character
   };
 }
+KidsAudio.mount();
 bindKidsFlow();
 
 const initialRoute=parseRoute();
