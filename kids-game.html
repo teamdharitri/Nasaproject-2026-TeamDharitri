@@ -253,6 +253,13 @@ body[data-view="planet"] #backBtn,
 body[data-view="planet"] .top,
 body[data-view="planet"] .dock,
 body[data-view="planet"] #ld,
+body[data-view="focus"] #L,
+body[data-view="focus"] #backBtn,
+body[data-view="focus"] .top,
+body[data-view="focus"] .dock,
+body[data-view="focus"] .avatar-badge,
+body[data-view="focus"] .atlas-action,
+body[data-view="focus"] #ld,
 body[data-view="inspect"] #ld{
   display:none;
 }
@@ -273,6 +280,43 @@ body[data-view="inspect"] #ld{
 
 .game-screen[hidden]{
   display:none;
+}
+
+.focus-overlay{
+  position:fixed;
+  inset:0;
+  z-index:25;
+  display:grid;
+  place-items:center;
+  background:rgba(5,6,11,.3);
+  pointer-events:none;
+}
+
+.focus-overlay[hidden]{
+  display:none;
+}
+
+.focus-card{
+  width:min(390px,calc(100vw - 32px));
+  padding:24px;
+  border:1px solid var(--ln);
+  border-radius:22px;
+  background:rgba(18,14,20,.78);
+  box-shadow:0 20px 70px rgba(0,0,0,.4);
+  text-align:center;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.focus-card h2{
+  margin:0;
+  font-size:32px;
+  letter-spacing:-.05em;
+}
+
+.focus-card p:last-child{
+  margin-bottom:0;
+  color:var(--mut);
 }
 
 .game-screen::before,
@@ -726,7 +770,14 @@ body[data-view="inspect"] #ld{
   }
 
   .atlas-action{
-    right:80px;
+    top:calc(64px + env(safe-area-inset-top,0px));
+    right:10px;
+  }
+
+  .inspect-panel{
+    top:128px;
+    bottom:auto;
+    max-height:calc(100vh - 145px);
   }
 
   .avatar-badge{
@@ -878,6 +929,14 @@ body[data-view="inspect"] #ld{
   </div>
 </section>
 
+<section id="focusOverlay" class="focus-overlay" aria-live="polite" hidden>
+  <div class="focus-card">
+    <p class="game-kicker">STEP 3 · FOCUS FLY-IN</p>
+    <h2 id="focusTitle">Flying to Mars</h2>
+    <p id="focusCopy">The atlas is waking up. Get ready to explore.</p>
+  </div>
+</section>
+
 <div id="avatarBadge" class="avatar-badge" hidden></div>
 <div id="atlasActions" class="atlas-action" hidden>
   <button id="changePlanet" class="atlas-pill" type="button">Change planet</button>
@@ -930,7 +989,7 @@ body[data-view="inspect"] #ld{
 
 <script>
 
-const M = [
+const MARS = [
 
   {
     n:'Viking 1',
@@ -1042,15 +1101,101 @@ const M = [
 
 ];
 
+// Moon records from moon-map.html plus requested rover placeholders.
+// TODO: Verify every placeholder coordinate/date/fact against a published agency source before release.
+const MOON = [
+  {
+    n:'Apollo 11', t:'Lander', s:'Mare Tranquillitatis',
+    la:0.6741, lo:23.4729, a:'Jul 20, 1969', e:'Jul 21, 1969', k:0,
+    d:'First crewed lunar landing. The astronauts collected samples, deployed experiments, and documented the lunar surface.'
+  },
+  {
+    n:'Apollo 12', t:'Lander', s:'Oceanus Procellarum',
+    la:-3.0128, lo:-23.4216, a:'Nov 19, 1969', e:'Nov 20, 1969', k:0,
+    d:'Demonstrated a precision lunar landing and landed near Surveyor 3.'
+  },
+  {
+    n:'Apollo 14', t:'Lander', s:'Fra Mauro Formation',
+    la:-3.6454, lo:-17.4719, a:'Feb 5, 1971', e:'Feb 6, 1971', k:0,
+    d:'Explored the Fra Mauro region and collected lunar samples.'
+  },
+  {
+    n:'Apollo 15', t:'Lander + Rover', s:'Hadley–Apennine region',
+    la:26.1322, lo:3.6339, a:'Jul 30, 1971', e:'Aug 2, 1971', k:0,
+    d:'First Apollo mission to use the Lunar Roving Vehicle.'
+  },
+  {
+    n:'Apollo 16', t:'Lander + Rover', s:'Descartes Highlands',
+    la:-8.9734, lo:15.4986, a:'Apr 21, 1972', e:'Apr 24, 1972', k:0,
+    d:'Explored the lunar highlands with the Lunar Roving Vehicle.'
+  },
+  {
+    n:'Apollo 17', t:'Lander + Rover', s:'Taurus–Littrow Valley',
+    la:20.1908, lo:30.7717, a:'Dec 11, 1972', e:'Dec 14, 1972', k:0,
+    d:'The final Apollo lunar landing and the final Apollo mission to use the rover.'
+  },
+  {
+    n:'Surveyor 1', t:'Lander', s:'Oceanus Procellarum',
+    la:-2.474, lo:-43.339, a:'Jun 2, 1966', e:'Jan 7, 1967', k:0,
+    d:'The first U.S. spacecraft to achieve a true soft landing on the Moon.'
+  },
+  {
+    n:'Surveyor 3', t:'Lander', s:'Oceanus Procellarum',
+    la:-3.016, lo:-23.419, a:'Apr 20, 1967', e:'Dec 3, 1967', k:0,
+    d:'Studied lunar soil and returned thousands of images.'
+  },
+  {
+    n:'Surveyor 7', t:'Lander', s:'Tycho crater ejecta',
+    la:-40.97, lo:-11.44, a:'Jan 10, 1968', e:'Feb 21, 1968', k:0,
+    d:'The final Surveyor mission studied the lunar surface near Tycho crater.'
+  },
+  {
+    n:'Ranger 7', t:'Impact Probe', s:'Mare Nubium / Sea of Clouds',
+    la:-10.63, lo:-20.68, a:'Jul 31, 1964', e:'Jul 31, 1964', k:0,
+    d:'Returned close-range images before impacting the Moon.'
+  },
+  {
+    n:'Lunokhod 1', t:'Rover', s:'TODO: verify landing site',
+    la:null, lo:null, a:'TODO: verify launch date', e:'TODO: verify mission end',
+    k:0, d:'TODO: verify the kid-friendly mission description from a published source.'
+  },
+  {
+    n:'Lunokhod 2', t:'Rover', s:'TODO: verify landing site',
+    la:null, lo:null, a:'TODO: verify launch date', e:'TODO: verify mission end',
+    k:0, d:'TODO: verify the kid-friendly mission description from a published source.'
+  },
+  {
+    n:'Apollo Lunar Roving Vehicle', t:'Rover', s:'TODO: verify vehicle-level landing site',
+    la:null, lo:null, a:'TODO: verify vehicle-level launch date', e:'TODO: verify vehicle-level mission dates',
+    k:0, d:'Used on Apollo 15, Apollo 16, and Apollo 17. TODO: verify the preferred vehicle-level facts.'
+  },
+  {
+    n:'Yutu', t:'Rover', s:'TODO: verify landing site',
+    la:null, lo:null, a:'TODO: verify launch date', e:'TODO: verify mission end',
+    k:0, d:'TODO: verify the kid-friendly mission description from a published source.'
+  },
+  {
+    n:'Yutu-2', t:'Rover', s:'TODO: verify landing site',
+    la:null, lo:null, a:'TODO: verify launch date', e:'TODO: verify mission status',
+    k:0, d:'TODO: verify the kid-friendly mission description from a published source.'
+  },
+  {
+    n:'Pragyan', t:'Rover', s:'TODO: verify landing site',
+    la:null, lo:null, a:'TODO: verify launch date', e:'TODO: verify mission status',
+    k:0, d:'TODO: verify the kid-friendly mission description from a published source.'
+  }
+];
+
+let M = MARS;
 
 const $ = s => document.querySelector(s);
 
-const C = [
+let C = [
   '#ffb454',
   '#5ce1e6'
 ];
 
-const S = [
+let S = [
   'Mission Ended',
   'Active'
 ];
@@ -1079,6 +1224,9 @@ let D0 = 0;
 let OD = 0;
 let ctl = null;
 let globeReady = false;
+let worldRoot = null;
+let activePlanet = 'Mars';
+let focusTimer = null;
 
 let mk = [];
 let fly = null;
@@ -1117,6 +1265,8 @@ function initGlobe(){
   ren.setClearColor(0x05060b);
 
   sc = new THREE.Scene();
+  worldRoot = new THREE.Group();
+  sc.add(worldRoot);
 
   cam = new THREE.PerspectiveCamera(
     42,
@@ -1205,14 +1355,8 @@ function initGlobe(){
     }
   );
 
-  buildMARS();
   makeStars();
-
-  const grid = buildGrid();
-
-  buildMarkers();
-  createFilters(grid);
-  buildMoons();
+  buildPlanetContent();
 
   globeReady = true;
   rs();
@@ -1232,6 +1376,85 @@ function initGlobe(){
     D0
   );
 
+}
+
+function buildPlanetContent(){
+  M = activePlanet === 'Moon' ? MOON : MARS;
+  C = activePlanet === 'Moon'
+    ? ['#d6d2c7','#8ee7ff']
+    : ['#ffb454','#5ce1e6'];
+  S = ['Mission Ended','Active'];
+  LA = activePlanet === 'Moon' ? MOON_LA : MARS_LA;
+
+  if(activePlanet === 'Moon'){
+    buildMOON();
+    moons=[];
+  }else{
+    buildMARS();
+    buildMoons();
+  }
+
+  const grid = buildGrid();
+  buildMarkers();
+  createFilters(grid);
+}
+
+function disposeMaterial(material){
+  if(!material){
+    return;
+  }
+
+  ['map','bumpMap','normalMap','roughnessMap','metalnessMap','alphaMap']
+    .forEach(key=>material[key]?.dispose());
+  material.dispose();
+}
+
+function disposeActivePlanet(){
+  if(!worldRoot){
+    return;
+  }
+
+  worldRoot.traverse(object=>{
+    object.geometry?.dispose();
+    if(Array.isArray(object.material)){
+      object.material.forEach(disposeMaterial);
+    }else{
+      disposeMaterial(object.material);
+    }
+  });
+
+  while(worldRoot.children.length){
+    worldRoot.remove(worldRoot.children[0]);
+  }
+
+  document.querySelector('#L').replaceChildren();
+  document.querySelector('#fl').replaceChildren();
+  document.querySelector('#rw').replaceChildren();
+  document.querySelector('#card').innerHTML='<p class="mt" style="margin:0">Click a marker or select a mission below to view details.</p>';
+  mk=[];
+  moons=[];
+  fly=null;
+  ov=0;
+  atmosphereMesh=null;
+  if(starsMesh){
+    starsMesh.material.opacity=0;
+  }
+  globeIntro=0;
+}
+
+function startPlanetFocus(){
+  if(!cam || !globeReady){
+    return;
+  }
+
+  window.clearTimeout(focusTimer);
+  cam.position.set(0,.55,1).setLength(Math.min(20,D0*3));
+  go(new THREE.Vector3(0,.55,1),D0);
+  focusTimer=window.setTimeout(()=>{
+    if(parseRoute().view === 'focus'){
+      setRoute('atlas');
+    }
+  },1800);
 }
 
 
@@ -1524,7 +1747,7 @@ function buildMARS(){
     );
 
 
-  sc.add(mars);
+  worldRoot.add(mars);
 
 
   const atmosphere =
@@ -1623,7 +1846,7 @@ function buildMARS(){
   atmosphereMesh = atmosphere;
   atmosphere.material.opacity = 0;
 
-  sc.add(atmosphere);
+  worldRoot.add(atmosphere);
 
   // Very subtle dusty limb glow for a more cinematic, realistic MARS edge.
   const dust = new THREE.Mesh(
@@ -1637,8 +1860,124 @@ function buildMARS(){
       depthWrite:false
     })
   );
-  sc.add(dust);
+  worldRoot.add(dust);
 
+}
+
+function makeMoonTexture(){
+  const W=1024;
+  const H=512;
+  const c=document.createElement('canvas');
+  c.width=W;
+  c.height=H;
+  const ctx=c.getContext('2d');
+  const img=ctx.createImageData(W,H);
+
+  for(let j=0;j<H;j++){
+    const lat=(.5-(j+.5)/H)*Math.PI;
+    const cp=Math.cos(lat);
+    const sp=Math.sin(lat);
+
+    for(let i=0;i<W;i++){
+      const lon=(i+.5)/W*Math.PI*2;
+      const x=-Math.cos(lon)*cp;
+      const z=Math.sin(lon)*cp;
+      const broad=fb(x*2.1+9,sp*2.1+9,z*2.1+9,5);
+      const fine=fb(x*13+41,sp*13+41,z*13+41,4);
+      const maria=smoothstep(.25,.85,fb(x*1.4+73,sp*1.4+73,z*1.4+73,4));
+      const base=142+broad*62+fine*18;
+      const q=(j*W+i)*4;
+      img.data[q]=Math.max(0,Math.min(255,base*.98-maria*48));
+      img.data[q+1]=Math.max(0,Math.min(255,base*.99-maria*50));
+      img.data[q+2]=Math.max(0,Math.min(255,base*.97-maria*52));
+      img.data[q+3]=255;
+    }
+  }
+
+  ctx.putImageData(img,0,0);
+  let seed=48193;
+  const rnd=()=>{
+    seed=(seed*1664525+1013904223)>>>0;
+    return seed/4294967296;
+  };
+
+  for(let n=0;n<420;n++){
+    const x=rnd()*W;
+    const y=rnd()*H;
+    const rr=1.5+rnd()*22;
+    const gradient=ctx.createRadialGradient(
+      x-rr*.18,
+      y-rr*.18,
+      rr*.08,
+      x,
+      y,
+      rr
+    );
+    gradient.addColorStop(0,'rgba(255,255,255,.12)');
+    gradient.addColorStop(.48,'rgba(70,70,70,.18)');
+    gradient.addColorStop(.72,'rgba(220,220,220,.08)');
+    gradient.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gradient;
+    ctx.beginPath();
+    ctx.arc(x,y,rr,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  return c;
+}
+
+function makeMoonBumpTexture(){
+  const W=512;
+  const H=256;
+  const c=document.createElement('canvas');
+  c.width=W;
+  c.height=H;
+  const ctx=c.getContext('2d');
+  const img=ctx.createImageData(W,H);
+
+  for(let j=0;j<H;j++){
+    const lat=(.5-(j+.5)/H)*Math.PI;
+    const cp=Math.cos(lat);
+    const sp=Math.sin(lat);
+
+    for(let i=0;i<W;i++){
+      const lon=(i+.5)/W*Math.PI*2;
+      const x=-Math.cos(lon)*cp;
+      const z=Math.sin(lon)*cp;
+      const terrain=fb(x*4+17,sp*4+17,z*4+17,4);
+      const value=Math.max(0,Math.min(255,82+terrain*150));
+      const q=(j*W+i)*4;
+      img.data[q]=value;
+      img.data[q+1]=value;
+      img.data[q+2]=value;
+      img.data[q+3]=255;
+    }
+  }
+
+  ctx.putImageData(img,0,0);
+  return c;
+}
+
+function buildMOON(){
+  atmosphereMesh=null;
+
+  const tx=new THREE.CanvasTexture(makeMoonTexture());
+  const tb=new THREE.CanvasTexture(makeMoonBumpTexture());
+  tx.encoding=THREE.sRGBEncoding;
+  tx.anisotropy=Math.min(8,ren.capabilities.getMaxAnisotropy());
+
+  const moon=new THREE.Mesh(
+    new THREE.SphereGeometry(1,96,64),
+    new THREE.MeshStandardMaterial({
+      map:tx,
+      bumpMap:tb,
+      bumpScale:.055,
+      roughness:1,
+      metalness:0
+    })
+  );
+
+  worldRoot.add(moon);
 }
 
 
@@ -1840,7 +2179,7 @@ function buildGrid(){
 
   grid.visible=false;
 
-  sc.add(grid);
+  worldRoot.add(grid);
 
   return grid;
 
@@ -1895,6 +2234,24 @@ function buildMarkers(){
 
 
   mk=M.map((m,i)=>{
+
+    if(!Number.isFinite(m.la) || !Number.isFinite(m.lo)){
+      const chip=document.createElement('button');
+      chip.className='chip';
+      chip.innerHTML='<i class="d" style="background:'+C[m.k]+'"></i>'+m.n;
+      chip.onclick=()=>selectMission(i);
+      $('#rw').appendChild(chip);
+      return {
+        g:new THREE.Group(),
+        bd:new THREE.Object3D(),
+        rg:null,
+        el:null,
+        ch:chip,
+        p:null,
+        m,
+        sp:new THREE.Object3D()
+      };
+    }
 
     const col=
       new THREE.Color(C[m.k]);
@@ -2005,7 +2362,7 @@ function buildMarkers(){
     );
 
 
-    sc.add(g);
+    worldRoot.add(g);
 
 
     const el=
@@ -2173,7 +2530,7 @@ function createFilters(grid){
 }
 
 
-const LA={
+const MARS_LA={
 
   'Viking 1':'Aug 20, 1975',
   'Viking 2':'Sep 9, 1975',
@@ -2186,6 +2543,27 @@ const LA={
   'Perseverance':'Jul 30, 2020'
 
 };
+
+const MOON_LA={
+  'Apollo 11':'TODO: verify launch date',
+  'Apollo 12':'TODO: verify launch date',
+  'Apollo 14':'TODO: verify launch date',
+  'Apollo 15':'TODO: verify launch date',
+  'Apollo 16':'TODO: verify launch date',
+  'Apollo 17':'TODO: verify launch date',
+  'Surveyor 1':'TODO: verify launch date',
+  'Surveyor 3':'TODO: verify launch date',
+  'Surveyor 7':'TODO: verify launch date',
+  'Ranger 7':'TODO: verify launch date',
+  'Lunokhod 1':'TODO: verify launch date',
+  'Lunokhod 2':'TODO: verify launch date',
+  'Apollo Lunar Roving Vehicle':'TODO: verify vehicle-level launch date',
+  'Yutu':'TODO: verify launch date',
+  'Yutu-2':'TODO: verify launch date',
+  'Pragyan':'TODO: verify launch date'
+};
+
+let LA=MARS_LA;
 
 
 function duration(m){
@@ -2202,6 +2580,10 @@ function duration(m){
 
   const end=
     Date.parse(m.e);
+
+  if(!Number.isFinite(start) || !Number.isFinite(end)){
+    return 'TODO: verify duration';
+  }
 
 
   const months=
@@ -2241,6 +2623,9 @@ function selectMission(i,inspect=true){
   const m=M[i];
 
   const c=C[m.k];
+  const coordinates=Number.isFinite(m.la) && Number.isFinite(m.lo)
+    ? `${Math.abs(m.la).toFixed(2)}°${m.la<0?'S':'N'}, ${((m.lo+360)%360).toFixed(2)}°E`
+    : 'TODO: verify coordinates';
 
 
   mk.forEach((o,j)=>{
@@ -2291,9 +2676,7 @@ function selectMission(i,inspect=true){
       <span>Coordinates</span>
 
       <b>
-        ${Math.abs(m.la).toFixed(2)}
-        °${m.la<0?'S':'N'},
-        ${((m.lo+360)%360).toFixed(2)}°E
+        ${coordinates}
       </b>
 
       <span>Launch</span>
@@ -2317,13 +2700,15 @@ function selectMission(i,inspect=true){
   `;
 
 
-  go(
-    P(m.la,m.lo,1),
-    Math.min(
-      cam.position.length(),
-      D0*.72
-    )
-  );
+  if(Number.isFinite(m.la) && Number.isFinite(m.lo)){
+    go(
+      P(m.la,m.lo,1),
+      Math.min(
+        cam.position.length(),
+        D0*.72
+      )
+    );
+  }
 
   if(inspect){
     openInspect(m);
@@ -2508,7 +2893,7 @@ function buildMoons(){
 
     group.add(mesh);
 
-    sc.add(group);
+    worldRoot.add(group);
 
 
     const el=
@@ -2756,6 +3141,10 @@ function animate(){
       (time*.45+i*.11)%1;
 
 
+    if(!o.rg || !o.p || !o.el){
+      return;
+    }
+
     o.rg.scale.setScalar(
       1+k*2.4
     );
@@ -2919,7 +3308,7 @@ function parseRoute(){
     return {view:'inspect',roverId:inspect[1]};
   }
   return {
-    view:['login','character','planet','atlas'].includes(hash) ? hash : 'login'
+    view:['login','character','planet','focus','atlas'].includes(hash) ? hash : 'login'
   };
 }
 
@@ -2947,6 +3336,7 @@ function setRoute(view,roverId,replace=false){
 function previousView(view){
   if(view === 'character') return 'login';
   if(view === 'planet') return 'character';
+  if(view === 'focus') return 'planet';
   if(view === 'atlas') return 'planet';
   if(view === 'inspect') return 'atlas';
   return 'login';
@@ -3240,6 +3630,7 @@ function renderView(){
   const view=route.view;
   document.body.dataset.view=view;
   hideGameScreens();
+  $('#focusOverlay').hidden=true;
 
   if(view !== 'character'){
     disposePreview(characterPreview);
@@ -3291,7 +3682,35 @@ function renderView(){
     return;
   }
 
+  if(view === 'focus'){
+    showAtlasActions(false);
+    $('#focusOverlay').hidden=false;
+    $('#focusTitle').textContent=`Flying to ${activePlanet}`;
+    $('#focusCopy').textContent=activePlanet === 'Moon'
+      ? 'The Moon atlas is waking up. Get ready to explore.'
+      : 'The Mars atlas is waking up. Get ready to explore.';
+    $('.top h1').textContent=`${activePlanet.toUpperCase()} LANDING ATLAS`;
+    $('.sub').textContent=`DATA • Drag to orbit • Scroll / pinch to zoom`;
+    const loading=$('#ld');
+    if(loading){
+      loading.textContent=`Initializing ${activePlanet}…`;
+    }
+    if(!globeReady){
+      try{
+        initGlobe();
+      }catch(error){
+        console.error('Kids atlas initialization failed:',error);
+        $('#planetStatus').textContent='The atlas needs an internet connection to load.';
+        setRoute('planet',null,true);
+        return;
+      }
+    }
+    startPlanetFocus();
+    return;
+  }
+
   showAtlasActions(true);
+  $('.top h1').textContent=`${activePlanet.toUpperCase()} LANDING ATLAS`;
   $('#avatarBadge').textContent=`✦ ${profile.nickname}`;
 
   if(!globeReady){
@@ -3389,14 +3808,20 @@ function bindKidsFlow(){
   $('#characterBack').addEventListener('click',()=>setRoute('login'));
   $('#planetBack').addEventListener('click',()=>setRoute('character'));
 
-  $('#marsChoice').addEventListener('click',()=>{
-    profile=KidsAuth.updateProfile({planet:'Mars'});
-    setRoute('atlas');
-  });
+  function choosePlanet(planet){
+    profile=KidsAuth.updateProfile({planet});
+    if(globeReady && activePlanet !== planet){
+      disposeActivePlanet();
+      activePlanet=planet;
+      buildPlanetContent();
+    }else{
+      activePlanet=planet;
+    }
+    setRoute('focus');
+  }
 
-  $('#moonChoice').addEventListener('click',()=>{
-    $('#planetStatus').textContent='Moon base is coming soon. Mars is ready to explore!';
-  });
+  $('#marsChoice').addEventListener('click',()=>choosePlanet('Mars'));
+  $('#moonChoice').addEventListener('click',()=>choosePlanet('Moon'));
 
   $('#inspectClose').addEventListener('click',()=>setRoute('atlas'));
   $('#changePlanet').addEventListener('click',()=>setRoute('planet'));
@@ -3420,6 +3845,9 @@ function bindKidsFlow(){
 }
 
 profile=KidsAuth.getProfile();
+if(profile?.planet === 'Moon'){
+  activePlanet='Moon';
+}
 if(profile?.character){
   character={
     ...character,
