@@ -13,7 +13,13 @@ const requiredFiles = [
   'rover-data.js',
   'route-guard.js',
   'kids-game.html',
-  'kids-auth.js'
+  'kids-auth.js',
+  'kids-strings.js',
+  'audio.js',
+  'service-worker.js',
+  'manifest.webmanifest',
+  'icons/rover-icon.svg',
+  'icons/rover-maskable.svg'
 ];
 
 for (const file of requiredFiles) {
@@ -42,11 +48,39 @@ for (const requiredKidsMarker of [
   'id="characterPreview"',
   'id="roverPreview"',
   'HOOK: Watch landing button goes here',
-  'function initGlobe()'
+  'function initGlobe()',
+  'id="settingsPanel"',
+  'id="audioControls"',
+  'rel="manifest"',
+  'serviceWorker'
 ]) {
   if (!kidsGame.includes(requiredKidsMarker)) {
     throw new Error(`Kids game is missing ${requiredKidsMarker}`);
   }
 }
 
-console.log('Build check passed. Static entry points, routes, and kids flow are present.');
+const manifest = JSON.parse(await readFile(join(root, 'manifest.webmanifest'), 'utf8'));
+
+for (const requiredManifestField of ['name', 'short_name', 'start_url', 'display', 'icons']) {
+  if (!manifest[requiredManifestField]) {
+    throw new Error(`Manifest is missing ${requiredManifestField}`);
+  }
+}
+
+if (!manifest.icons.some((icon) => icon.purpose === 'maskable')) {
+  throw new Error('Manifest is missing a maskable icon');
+}
+
+for (const icon of manifest.icons) {
+  await access(join(root, icon.src));
+}
+
+const serviceWorker = await readFile(join(root, 'service-worker.js'), 'utf8');
+
+for (const requiredWorkerMarker of ['CACHE_VERSION', 'kids-game.html', 'cdn.jsdelivr.net']) {
+  if (!serviceWorker.includes(requiredWorkerMarker)) {
+    throw new Error(`Service worker is missing ${requiredWorkerMarker}`);
+  }
+}
+
+console.log('Build check passed. Static entry points, routes, kids flow, and PWA assets are present.');
