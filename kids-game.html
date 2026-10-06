@@ -3420,6 +3420,12 @@ function bindKidsFlow(){
 }
 
 profile=KidsAuth.getProfile();
+if(profile?.character){
+  character={
+    ...character,
+    ...profile.character
+  };
+}
 bindKidsFlow();
 
 const initialRoute=parseRoute();
