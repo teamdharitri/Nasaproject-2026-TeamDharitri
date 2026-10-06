@@ -41,7 +41,9 @@
     if (!button) {
       return;
     }
-    button.textContent = settings.muted ? '🔇 Sound off' : '🔊 Sound on';
+    button.textContent = settings.muted
+      ? global.KidsStrings?.get('soundOff') || '🔇 Sound off'
+      : global.KidsStrings?.get('soundOn') || '🔊 Sound on';
     button.setAttribute('aria-pressed', String(settings.muted));
   }
 
@@ -181,6 +183,7 @@
   global.KidsAudio = {
     chime,
     mount,
+    refresh: updateButton,
     setMood,
     setMuted,
     setVolume,

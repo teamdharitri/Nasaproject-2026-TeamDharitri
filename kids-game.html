@@ -16,6 +16,38 @@ href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&displa
   --mut:#a99b93;
   --gl:rgba(18,14,20,.68);
   --ln:rgba(255,255,255,.14);
+  --space-navy:#05060b;
+  --space-indigo:#11152d;
+  --sunny-yellow:#ffb454;
+  --rocket-orange:#c76843;
+  --aqua-teal:#5ce1e6;
+  --friendly-purple:#9b8cff;
+  --soft-coral:#ef9b68;
+  --mars-ui:#d7774e;
+  --moon-ui:#c7d2df;
+  --ui-focus:#ffcf72;
+  color-scheme:dark;
+}
+
+body[data-theme="bright-day"]{
+  --bg:#eef4fb;
+  --ink:#172033;
+  --mut:#40516a;
+  --gl:rgba(255,255,255,.9);
+  --ln:rgba(23,32,51,.22);
+  --space-navy:#eef4fb;
+  --space-indigo:#dfe9f6;
+  color-scheme:light;
+}
+
+body[data-theme="night-mode"]{
+  --bg:#02030a;
+  --ink:#e3e9f4;
+  --mut:#98a3b8;
+  --gl:rgba(8,10,22,.86);
+  --ln:rgba(190,205,235,.18);
+  --space-navy:#02030a;
+  --space-indigo:#090d20;
   color-scheme:dark;
 }
 
@@ -135,7 +167,7 @@ button{
   left:0;
   right:0;
   bottom:0;
-  padding:0 12px calc(10px + env(safe-area-inset-bottom,0px));
+  padding:0 12px calc(72px + env(safe-area-inset-bottom,0px));
   display:flex;
   flex-direction:column;
   gap:8px;
@@ -266,10 +298,9 @@ body[data-view="inspect"] #ld{
 
 .game-screen{
   position:fixed;
-  inset:0;
+  inset:0 0 88px;
   z-index:200;
   display:grid;
-  place-items:center;
   overflow:auto;
   padding:24px;
   background:
@@ -336,6 +367,7 @@ body[data-view="inspect"] #ld{
   position:relative;
   z-index:1;
   width:min(680px,100%);
+  margin:auto;
   padding:clamp(24px,5vw,52px);
   border:1px solid var(--ln);
   border-radius:28px;
@@ -652,7 +684,7 @@ body[data-view="inspect"] #ld{
   position:fixed;
   right:16px;
   bottom:16px;
-  z-index:35;
+  z-index:210;
   display:flex;
   align-items:center;
   gap:8px;
@@ -692,6 +724,53 @@ body[data-view="inspect"] #ld{
 .volume-control input{
   width:72px;
   accent-color:#ffb454;
+}
+
+.settings-panel{
+  position:fixed;
+  right:16px;
+  bottom:86px;
+  z-index:211;
+  width:min(320px,calc(100vw - 32px));
+  padding:16px;
+  border:1px solid var(--ln);
+  border-radius:20px;
+  background:var(--gl);
+  box-shadow:0 18px 60px rgba(0,0,0,.42);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+.settings-panel[hidden]{
+  display:none;
+}
+
+.settings-panel h2{
+  margin:0 0 12px;
+  font-size:20px;
+  letter-spacing:-.04em;
+}
+
+.settings-panel .game-label{
+  margin-bottom:12px;
+  font-size:12px;
+}
+
+.settings-panel .volume-control{
+  display:grid;
+  gap:8px;
+  padding:0;
+  margin-bottom:12px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.settings-panel .volume-control input{
+  width:100%;
+}
+
+.settings-panel .game-button{
+  width:100%;
 }
 
 .inspect-panel{
@@ -781,7 +860,7 @@ body[data-view="inspect"] #ld{
 
 @media(max-width:700px){
   .game-screen{
-    align-items:start;
+    inset:0 0 80px;
     padding:14px;
   }
 
@@ -829,16 +908,10 @@ body[data-view="inspect"] #ld{
   .audio-controls{
     right:10px;
     bottom:10px;
-    left:10px;
-    justify-content:space-between;
   }
 
-  .volume-control{
-    flex:1;
-  }
-
-  .volume-control input{
-    width:100%;
+  .dock{
+    padding:0 10px calc(72px + env(safe-area-inset-bottom,0px));
   }
 
   .avatar-badge{
@@ -938,7 +1011,7 @@ body[data-view="inspect"] #ld{
               <option>Blue visor</option>
             </select>
           </label>
-          <label class="game-label" for="suitChoice">Suit color
+          <label class="game-label" for="suitChoice"><span id="suitColorText">Suit color</span>
             <select id="suitChoice" class="game-select">
               <option value="#ef9b68">Mars orange</option>
               <option value="#5ce1e6">Orbit teal</option>
@@ -975,12 +1048,12 @@ body[data-view="inspect"] #ld{
       <button id="marsChoice" class="planet-choice" type="button">
         <span class="planet-orb planet-orb--mars" aria-hidden="true"></span>
         <strong>Mars</strong>
-        <span>The red planet, full of rover tracks.</span>
+        <span id="marsDescription">The red planet, full of rover tracks.</span>
       </button>
       <button id="moonChoice" class="planet-choice" type="button">
         <span class="planet-orb planet-orb--moon" aria-hidden="true"></span>
         <strong>Moon</strong>
-        <span>Moon base is coming soon. Choose Mars to play now.</span>
+        <span id="moonDescription">A silvery world with stories from Apollo and robotic explorers.</span>
       </button>
     </div>
     <p id="planetStatus" class="game-status" role="status" aria-live="polite"></p>
@@ -1006,11 +1079,37 @@ body[data-view="inspect"] #ld{
 
 <div id="audioControls" class="audio-controls">
   <button id="muteButton" class="audio-pill" type="button" aria-pressed="false" data-audio-tap>🔊 Sound on</button>
+  <button id="settingsButton" class="audio-pill" type="button" aria-expanded="false" aria-controls="settingsPanel" data-audio-tap>⚙ Settings</button>
+</div>
+
+<section id="settingsPanel" class="settings-panel" aria-labelledby="settingsTitle" hidden>
+  <h2 id="settingsTitle">Settings</h2>
   <label class="volume-control" for="volumeControl">
-    <span>Volume</span>
+    <span id="volumeLabel">Volume</span>
     <input id="volumeControl" type="range" min="0" max=".2" step=".01" value=".12">
   </label>
-</div>
+  <label class="game-label" for="languageChoice">Language / spelling
+    <select id="languageChoice" class="game-select">
+      <option value="us">English (US)</option>
+      <option value="uk">English (UK)</option>
+      <option value="ca">English (Canada)</option>
+    </select>
+  </label>
+  <label class="game-label" for="readingChoice"><span id="readingLabelText">Reading level</span>
+    <select id="readingChoice" class="game-select">
+      <option value="younger">Younger (ages 6–9)</option>
+      <option value="older">Older (ages 10–14)</option>
+    </select>
+  </label>
+  <label class="game-label" for="themeChoice"><span id="themeLabelText">Theme</span>
+    <select id="themeChoice" class="game-select">
+      <option value="classic-space">Classic space</option>
+      <option value="bright-day">Bright day</option>
+      <option value="night-mode">Night mode</option>
+    </select>
+  </label>
+  <button id="settingsDone" class="game-button game-button--quiet" type="button">Done</button>
+</section>
 
 <section id="inspectPanel" class="inspect-panel" aria-labelledby="inspectTitle" hidden>
   <button id="inspectClose" class="inspect-close" type="button" aria-label="Close rover inspection">×</button>
@@ -1054,6 +1153,7 @@ body[data-view="inspect"] #ld{
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
+<script src="./kids-strings.js"></script>
 <script src="./audio.js"></script>
 <script src="./kids-auth.js"></script>
 
@@ -1299,6 +1399,8 @@ let activePlanet = 'Mars';
 let focusTimer = null;
 
 let mk = [];
+let selectedMission = null;
+let inspectedMission = null;
 let fly = null;
 let bg = null;
 let cl = null;
@@ -2692,11 +2794,8 @@ function selectMission(i,inspect=true){
 
   const m=M[i];
 
-  const c=C[m.k];
   KidsAudio.chime();
-  const coordinates=Number.isFinite(m.la) && Number.isFinite(m.lo)
-    ? `${Math.abs(m.la).toFixed(2)}°${m.la<0?'S':'N'}, ${((m.lo+360)%360).toFixed(2)}°E`
-    : 'TODO: verify coordinates';
+  selectedMission=m;
 
 
   mk.forEach((o,j)=>{
@@ -2722,7 +2821,35 @@ function selectMission(i,inspect=true){
   );
 
 
-  $('#card').innerHTML=`
+  $('#card').innerHTML=renderMissionCard(m);
+
+
+  if(Number.isFinite(m.la) && Number.isFinite(m.lo)){
+    go(
+      P(m.la,m.lo,1),
+      Math.min(
+        cam.position.length(),
+        D0*.72
+      )
+    );
+  }
+
+  if(inspect){
+    openInspect(m);
+  }
+
+}
+
+
+function renderMissionCard(m){
+
+  const c=C[m.k];
+
+  const coordinates=Number.isFinite(m.la) && Number.isFinite(m.lo)
+    ? `${Math.abs(m.la).toFixed(2)}°${m.la<0?'S':'N'}, ${((m.lo+360)%360).toFixed(2)}°E`
+    : 'TODO: verify coordinates';
+
+  return `
 
     <div class="h">
 
@@ -2744,46 +2871,31 @@ function selectMission(i,inspect=true){
 
     <div class="g">
 
-      <span>Coordinates</span>
+      <span>${KidsStrings.get('coordinates')}</span>
 
       <b>
         ${coordinates}
       </b>
 
-      <span>Launch</span>
+      <span>${KidsStrings.get('launch')}</span>
       <b>${LA[m.n]}</b>
 
-      <span>Landing</span>
+      <span>${KidsStrings.get('landing')}</span>
       <b>${m.a}</b>
 
-      <span>End</span>
+      <span>${KidsStrings.get('end')}</span>
       <b>${m.e}</b>
 
-      <span>Duration</span>
+      <span>${KidsStrings.get('duration')}</span>
       <b>${duration(m)}</b>
 
     </div>
 
     <div>
-      ${m.d}
+      ${KidsStrings.missionDescription(m)}
     </div>
 
   `;
-
-
-  if(Number.isFinite(m.la) && Number.isFinite(m.lo)){
-    go(
-      P(m.la,m.lo,1),
-      Math.min(
-        cam.position.length(),
-        D0*.72
-      )
-    );
-  }
-
-  if(inspect){
-    openInspect(m);
-  }
 
 }
 
@@ -3669,13 +3781,14 @@ function refreshRoverPreview(m){
 }
 
 function renderInspect(m){
-  $('#inspectTitle').textContent=`Meet ${m.n}`;
-  $('#inspectDescription').textContent=m.d;
+  inspectedMission=m;
+  $('#inspectTitle').textContent=`${KidsStrings.get('meet')} ${m.n}`;
+  $('#inspectDescription').textContent=KidsStrings.missionDescription(m);
   $('#inspectFacts').innerHTML=`
     <dt>What it is</dt><dd>${m.t}</dd>
-    <dt>Where</dt><dd>${m.s}</dd>
-    <dt>Arrived</dt><dd>${m.a}</dd>
-    <dt>Mission</dt><dd>${m.k ? 'Still exploring' : 'Finished its amazing job and went to sleep'}</dd>
+    <dt>${KidsStrings.get('where')}</dt><dd>${m.s}</dd>
+    <dt>${KidsStrings.get('arrived')}</dt><dd>${m.a}</dd>
+    <dt>${KidsStrings.get('mission')}</dt><dd>${m.k ? KidsStrings.get('stillExploring') : KidsStrings.get('finished')}</dd>
   `;
   $('#inspectFunFact').textContent=FUN_FACTS[m.n] || 'Every rover carries a special piece of Earth’s curiosity to another world.';
   $('#inspectPanel').hidden=false;
@@ -3695,6 +3808,45 @@ function hideInspect(){
 function showAtlasActions(show){
   $('#avatarBadge').hidden=!show;
   $('#atlasActions').hidden=!show;
+}
+
+function syncSettingsControls(){
+  $('#languageChoice').value=KidsStrings.getLanguage();
+  $('#readingChoice').value=KidsStrings.getReadingLevel();
+  $('#themeChoice').value=KidsStrings.getTheme();
+}
+
+function closeSettingsPanel(){
+  $('#settingsPanel').hidden=true;
+  $('#settingsButton').setAttribute('aria-expanded','false');
+}
+
+function applyStrings(){
+  const t=key=>KidsStrings.get(key);
+  $('#settingsButton').textContent=`⚙ ${t('settings')}`;
+  $('#settingsTitle').textContent=t('settings');
+  $('#readingLabelText').textContent=t('readingLevel');
+  $('#themeLabelText').textContent=t('theme');
+  $('#volumeLabel').textContent=t('volume');
+  $('#settingsDone').textContent=t('save');
+  $('#suitColorText').textContent=`Suit ${t('color')}`;
+  $('#marsDescription').textContent=t('marsDescription');
+  $('#moonDescription').textContent=t('moonDescription');
+  $('#languageChoice option[value="us"]').textContent=t('languageUS');
+  $('#languageChoice option[value="uk"]').textContent=t('languageUK');
+  $('#languageChoice option[value="ca"]').textContent=t('languageCA');
+  $('#readingChoice option[value="younger"]').textContent=t('younger');
+  $('#readingChoice option[value="older"]').textContent=t('older');
+  $('#themeChoice option[value="classic-space"]').textContent=t('classicSpace');
+  $('#themeChoice option[value="bright-day"]').textContent=t('brightDay');
+  $('#themeChoice option[value="night-mode"]').textContent=t('nightMode');
+  KidsAudio.refresh();
+  if(selectedMission){
+    $('#card').innerHTML=renderMissionCard(selectedMission);
+  }
+  if(inspectedMission && !$('#inspectPanel').hidden){
+    renderInspect(inspectedMission);
+  }
 }
 
 function renderView(){
@@ -3759,9 +3911,9 @@ function renderView(){
     showAtlasActions(false);
     $('#focusOverlay').hidden=false;
     $('#focusTitle').textContent=`Flying to ${activePlanet}`;
-    $('#focusCopy').textContent=activePlanet === 'Moon'
-      ? 'The Moon atlas is waking up. Get ready to explore.'
-      : 'The Mars atlas is waking up. Get ready to explore.';
+    $('#focusCopy').textContent=KidsStrings.get(
+      activePlanet === 'Moon' ? 'focusMoon' : 'focusMars'
+    );
     $('.top h1').textContent=`${activePlanet.toUpperCase()} LANDING ATLAS`;
     $('.sub').textContent=`DATA • Drag to orbit • Scroll / pinch to zoom`;
     const loading=$('#ld');
@@ -3906,11 +4058,51 @@ function bindKidsFlow(){
     setRoute('login');
   });
 
+  $('#settingsButton').addEventListener('click',()=>{
+    const panel=$('#settingsPanel');
+    const opening=panel.hidden;
+    panel.hidden=!opening;
+    $('#settingsButton').setAttribute('aria-expanded',String(opening));
+    if(opening){
+      syncSettingsControls();
+    }
+  });
+
+  $('#settingsDone').addEventListener('click',closeSettingsPanel);
+
+  document.addEventListener('click',(event)=>{
+    if($('#settingsPanel').hidden){
+      return;
+    }
+    if(event.target.closest('#settingsPanel') || event.target.closest('#settingsButton')){
+      return;
+    }
+    closeSettingsPanel();
+  });
+
+  $('#languageChoice').addEventListener('change',(event)=>{
+    KidsStrings.setLanguage(event.target.value);
+    applyStrings();
+  });
+
+  $('#readingChoice').addEventListener('change',(event)=>{
+    KidsStrings.setReadingLevel(event.target.value);
+    applyStrings();
+  });
+
+  $('#themeChoice').addEventListener('change',(event)=>{
+    KidsStrings.setTheme(event.target.value);
+  });
+
   const backBtn=$('#backBtn');
   backBtn.textContent='← Back';
   backBtn.addEventListener('click',stepBack);
   window.addEventListener('keydown',(event)=>{
     if(event.key === 'Escape'){
+      if(!$('#settingsPanel').hidden){
+        closeSettingsPanel();
+        return;
+      }
       stepBack();
     }
   });
@@ -3927,6 +4119,8 @@ if(profile?.character){
     ...profile.character
   };
 }
+document.body.dataset.theme=KidsStrings.getTheme();
+applyStrings();
 KidsAudio.mount();
 bindKidsFlow();
 
