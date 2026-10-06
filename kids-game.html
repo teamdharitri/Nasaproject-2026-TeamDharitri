@@ -534,6 +534,34 @@ body[data-view="inspect"] #ld{
   font-size:13px;
 }
 
+.grown-up-link{
+  display:block;
+  margin:18px auto 0;
+  border:0;
+  background:transparent;
+  color:#d6cbc3;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.grown-up-panel{
+  margin-top:14px;
+  padding:12px;
+  border:1px solid var(--ln);
+  border-radius:12px;
+  background:rgba(0,0,0,.2);
+  color:#d6cbc3;
+  font-size:12px;
+}
+
+.grown-up-panel[hidden]{
+  display:none;
+}
+
+.grown-up-panel p{
+  margin:0 0 8px;
+}
+
 .avatar-badge{
   position:fixed;
   top:calc(12px + env(safe-area-inset-top,0px));
@@ -764,6 +792,12 @@ body[data-view="inspect"] #ld{
         <button id="guestButton" class="game-button game-button--quiet" type="button">Play as guest</button>
       </div>
       <p id="loginStatus" class="game-status" role="status" aria-live="polite"></p>
+      <button id="grownUpButton" class="grown-up-link" type="button" aria-expanded="false" aria-controls="grownUpPanel">Ask a grown-up</button>
+      <div id="grownUpPanel" class="grown-up-panel" hidden>
+        <p><strong>Grown-up mission control</strong></p>
+        <p>This local demo does not connect parent accounts or send information anywhere.</p>
+        <button id="grownUpDone" class="game-button game-button--quiet" type="button">Got it</button>
+      </div>
     </form>
   </div>
 </section>
@@ -3219,6 +3253,13 @@ function renderView(){
   if(view === 'login'){
     showAtlasActions(false);
     $('#loginScreen').hidden=false;
+    const savedProfile=KidsAuth.getProfile();
+    const returningPlayer=Boolean(savedProfile?.pinHash && !KidsAuth.isLoggedIn());
+    $('#nickname').readOnly=returningPlayer;
+    if(returningPlayer){
+      $('#nickname').value=savedProfile.nickname;
+      $('#loginForm button[type="submit"]').textContent='Return to my crew ↗';
+    }
     return;
   }
 
@@ -3280,15 +3321,29 @@ function bindKidsFlow(){
 
   loginForm.addEventListener('submit',(event)=>{
     event.preventDefault();
-    const nickname=cleanNickname($('#nickname').value);
+    const savedProfile=KidsAuth.getProfile();
+    const returningPlayer=Boolean(savedProfile?.pinHash && !KidsAuth.isLoggedIn());
+    const nickname=cleanNickname($('#nickname').value) || savedProfile?.nickname || '';
     const pin=$('#pin').value;
-    const nicknameMessage=nicknameIsSafe(nickname) ? '' : 'Choose a friendly nickname with at least two letters.';
+    const nicknameMessage=returningPlayer ? '' : nicknameIsSafe(nickname) ? '' : 'Choose a friendly nickname with at least two letters.';
     const pinMessage=/^\d{4}$/.test(pin) ? '' : 'Your secret PIN needs exactly four numbers.';
     setError('nicknameError',nicknameMessage,'nickname');
     setError('pinError',pinMessage,'pin');
 
     if(nicknameMessage || pinMessage){
       (nicknameMessage ? $('#nickname') : $('#pin')).focus();
+      return;
+    }
+
+    if(returningPlayer){
+      const signedInProfile=KidsAuth.login(pin);
+      if(!signedInProfile){
+        setError('pinError','That PIN does not match your crew badge.','pin');
+        $('#pin').focus();
+        return;
+      }
+      profile=signedInProfile;
+      setRoute('character');
       return;
     }
 
@@ -3303,6 +3358,22 @@ function bindKidsFlow(){
     const nickname=cleanNickname($('#nickname').value) || 'Brave Comet';
     profile=KidsAuth.playAsGuest(nicknameIsSafe(nickname) ? nickname : 'Brave Comet');
     setRoute('character');
+  });
+
+  $('#grownUpButton').addEventListener('click',()=>{
+    const panel=$('#grownUpPanel');
+    const expanded=panel.hidden;
+    panel.hidden=!expanded;
+    $('#grownUpButton').setAttribute('aria-expanded',String(expanded));
+    if(expanded){
+      $('#grownUpDone').focus();
+    }
+  });
+
+  $('#grownUpDone').addEventListener('click',()=>{
+    $('#grownUpPanel').hidden=true;
+    $('#grownUpButton').setAttribute('aria-expanded','false');
+    $('#grownUpButton').focus();
   });
 
   ['skinChoice','helmetChoice','suitChoice','buddyChoice'].forEach(id=>{
