@@ -1,0 +1,29 @@
+{
+  "name": "Rover Crew Academy",
+  "short_name": "Rover Crew",
+  "description": "A kid-friendly atlas of Mars and Moon landing missions.",
+  "id": "/rover-crew-academy",
+  "start_url": "./kids-game.html#login",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "lang": "en",
+  "dir": "ltr",
+  "background_color": "#05060b",
+  "theme_color": "#05060b",
+  "categories": ["education", "kids"],
+  "icons": [
+    {
+      "src": "./icons/rover-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/rover-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

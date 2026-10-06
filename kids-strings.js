@@ -168,12 +168,22 @@
     return global.localStorage.getItem(READING_KEY) || 'younger';
   }
 
+  const THEME_COLORS = {
+    'classic-space': '#05060b',
+    'bright-day': '#eef4fb',
+    'night-mode': '#02030a'
+  };
+
   function setTheme(theme) {
-    const next = ['classic-space', 'bright-day', 'night-mode'].includes(theme)
-      ? theme
-      : 'classic-space';
+    const next = THEME_COLORS[theme] ? theme : 'classic-space';
     global.localStorage.setItem(THEME_KEY, next);
     document.body.dataset.theme = next;
+
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+      themeColor.setAttribute('content', THEME_COLORS[next]);
+    }
+
     return next;
   }
 

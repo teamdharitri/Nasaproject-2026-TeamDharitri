@@ -6,6 +6,13 @@
 
 <title>MARS LANDING ATLAS (MARS DATA)</title>
 
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icons/rover-icon.svg">
+<link rel="apple-touch-icon" href="./icons/rover-icon.svg">
+<meta name="theme-color" content="#05060b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rover Crew">
+
 <link rel="stylesheet"
 href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 
@@ -4119,7 +4126,7 @@ if(profile?.character){
     ...profile.character
   };
 }
-document.body.dataset.theme=KidsStrings.getTheme();
+KidsStrings.setTheme(KidsStrings.getTheme());
 applyStrings();
 KidsAudio.mount();
 bindKidsFlow();
@@ -4138,6 +4145,15 @@ if(profile && KidsAuth.isLoggedIn() && initialRoute.view === 'login'){
 }
 
 renderView();
+
+// Offline support is optional: the atlas still works when registration fails.
+if('serviceWorker' in navigator && window.location.protocol.startsWith('http')){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./service-worker.js').catch((error)=>{
+      console.warn('Offline mode is unavailable:',error);
+    });
+  });
+}
 
 </script>
 

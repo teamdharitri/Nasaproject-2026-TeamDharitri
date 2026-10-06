@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Rover Crew Academy">
+  <defs>
+    <radialGradient id="skyMask" cx="30%" cy="22%" r="85%">
+      <stop offset="0%" stop-color="#1b2347"/>
+      <stop offset="100%" stop-color="#05060b"/>
+    </radialGradient>
+    <linearGradient id="planetMask" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb454"/>
+      <stop offset="100%" stop-color="#c76843"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#skyMask)"/>
+
+  <!-- Art stays inside the maskable safe zone: a centred circle of radius 40%. -->
+  <g transform="translate(256 256) scale(.62) translate(-256 -256)">
+    <circle cx="140" cy="104" r="8" fill="#f6eee8" opacity=".85"/>
+    <circle cx="384" cy="132" r="7" fill="#5ce1e6" opacity=".8"/>
+
+    <circle cx="256" cy="232" r="118" fill="url(#planetMask)"/>
+    <circle cx="214" cy="196" r="22" fill="#05060b" opacity=".16"/>
+    <circle cx="296" cy="262" r="30" fill="#05060b" opacity=".13"/>
+    <circle cx="246" cy="296" r="14" fill="#05060b" opacity=".12"/>
+
+    <g fill="#f6eee8">
+      <rect x="176" y="358" width="160" height="62" rx="20"/>
+      <rect x="214" y="330" width="56" height="34" rx="12"/>
+    </g>
+    <rect x="222" y="338" width="40" height="18" rx="8" fill="#5ce1e6"/>
+    <path d="M316 330h44" stroke="#5ce1e6" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="360" cy="312" r="13" fill="#5ce1e6"/>
+
+    <g fill="#05060b">
+      <circle cx="206" cy="428" r="26"/>
+      <circle cx="306" cy="428" r="26"/>
+    </g>
+    <g fill="#9b8cff">
+      <circle cx="206" cy="428" r="11"/>
+      <circle cx="306" cy="428" r="11"/>
+    </g>
+  </g>
+</svg>
