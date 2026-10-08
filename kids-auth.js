@@ -41,7 +41,7 @@
     return savedProfile;
   }
 
-  function playAsGuest(nickname = 'Brave Comet') {
+  function playAsGuest(nickname = 'hangy buddy') {
     return createProfile({
       nickname,
       character: {
