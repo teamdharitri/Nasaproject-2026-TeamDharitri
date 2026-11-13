@@ -15,6 +15,9 @@ A new detective, a little robot named Bolt (BOLT-7), and Commander Nova uncover 
 | Case M-2 | Backwards Wheel | Spirit |
 | Case M-3 | Little Blueberry | Opportunity |
 
+use this link to access the PWA (Progressive Web App) for this project-
+[Rover Buddies]https://nasaproject-2026-team-dharitri.vercel.app/
+
 Each case follows the rover's case file, landing, missing pieces, investigation, deduction board, identity file, final message, and Bolt's unlocked file.
 
 ## Run the project
