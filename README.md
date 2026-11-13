@@ -1,107 +1,83 @@
-# Rover Mission Atlas
+# Rover Buddies
 
-An interactive field guide to Mars and Moon rover missions. The existing Three.js
-maps remain available through the Mars map and Moon map links, and `kids-game.html`
-adds an installable, offline-capable children’s version of both worlds.
+"Every rover has a story."
 
-## Stack
+A scroll-based digital story about Mars rovers, inspired by the style of *A Solar Tale* and by real NASA data.
 
-- Static HTML, CSS, and vanilla JavaScript
-- Three.js `r128` via the existing CDN imports in `mars-map.html` and `moon-map.html`
-- Inter via Google Fonts
-- Native CSS/SVG landing animations, with no additional runtime dependency
+A new detective, a little robot named Bolt (BOLT-7), and Commander Nova uncover the mysteries hidden in the damaged Archive X-17.
 
-## Run locally
+## What's included
 
-The app uses client-side routes, so serve the repository from a local HTTP server
-instead of opening `index.html` directly:
+| Section | Codename | Mission |
+|---|---|---|
+| Prologue | Archive X-17 | Meet Nova and Bolt at headquarters |
+| Case M-1 | Little Wheel | Sojourner and Mars Pathfinder |
+| Case M-2 | Backwards Wheel | Spirit |
+| Case M-3 | Little Blueberry | Opportunity |
 
-```powershell
-py -m http.server 4173 --directory .
+Each case follows the rover's case file, landing, missing pieces, investigation, deduction board, identity file, final message, and Bolt's unlocked file.
+
+## Run the project
+
+```bash
+npm install
+npm run dev       # http://localhost:5173
+npm run build     # creates a production build in dist/
 ```
 
-Open `http://localhost:4173/`. The root route opens the login page for signed-out
-visitors and the missions page for an existing demo session.
+## Project structure
 
-The Python server does not rewrite clean URLs. Use the app links for local testing,
-or configure the host to serve `404.html` as the SPA fallback. GitHub Pages uses
-`404.html` automatically.
+- `src/data/story.js`: chapter text, images, dialogue, and NASA data.
+- `src/data/characters.js`: Nova, Bolt, and rover signal labels.
+- `src/components/Story.jsx`: scrolling, background images, chapter labels, and the NASA button.
+- `src/components/Dialogue.jsx`: speaker dialogue bubbles.
+- `src/components/Overlay.jsx`: title, deduction board, identity file, Bolt's file, and ending.
+- `public/`: WebP images.
+- `scripts/optimize-images.mjs`: image optimization (`npm run images`).
 
-## Authentication
+## AI character voices (Kokoro)
 
-The current prototype uses mock authentication. Any valid email and a password of
-at least six characters will create a browser session. The auth implementation is
-isolated in `auth-service.js` so it can be replaced with Firebase, Supabase, or a
-backend later.
+Voices are generated offline with the free, open-source Kokoro-82M model. No
+account, API key, or credits are needed, and nothing is sent to an online service.
 
-No credentials are sent to a server. Review `.env.example` before connecting a real
-provider, and never commit real secrets.
-
-## Checks
-
-```powershell
-npm test
-npm run lint
-npm run build
+```bash
+npm run voices              # generate every missing clip (first run downloads ~90 MB)
+npm run voices -- --limit 3 # generate only the first few lines as a preview
+npm run build               # include the audio in the deployment
 ```
 
-The checks use Node's built-in test runner and static checks because this repository
-does not use a framework or package-based build tool.
+Saved clips are skipped on reruns. Changed text, voices, or effects produce new
+files. Generated MP3s and their manifest live in `public/voices/`. Only character
+dialogue and its quoted text are spoken, never narration or hidden mission data.
 
-## Mission data
+Voices and effects are set in `scripts/voice-effects.mjs` and baked into each clip:
 
-Shared rover records live in `rover-data.js`. The Apollo Lunar Roving Vehicle entry
-contains a `TODO` note because its launch and landing dates are vehicle-level data
-that should be verified against the team's preferred NASA source.
+- Nova (`af_heart`): a natural female voice with light cleanup.
+- Bolt (`am_puck`): pitched up for a small robot, with ring modulation and a metallic echo.
+- Rover (`am_onyx`): pitched down, mechanical modulation, radio filter, and light
+  bit-crushing. Weaker signal bars add more static.
 
-## Kids rover game
+Playback starts when the corresponding chat step becomes active. Scrolling to
+another step stops the previous line instead of queuing it. Opening the case
+menu or NASA modal, hiding the tab, or leaving the story stops playback.
+Use **Voices on/off** and **Replay** to control it or retry browser autoplay.
 
-The one-page children’s flow is `kids-game.html`. Mars and Moon share one Three.js
-renderer, scene, and camera, and the renderer starts only after a planet is chosen:
+Run `npm test` for voice mapping, text splitting, effect, and playback checks.
 
-```text
-#login → #character → #planet → #focus → #atlas → #inspect=curiosity
+## Add a story step
+
+```js
+{ img: "/m1/yogi.webp", speaker: "bolt", text: "Bolt's line" }
 ```
 
-Open `http://localhost:4173/kids-game.html` after starting the local server. Choosing
-the other planet disposes the active globe’s geometries, materials, textures, markers,
-and labels before building the new one, so switching never leaks GPU resources.
+- `speaker`: `nova`, `bolt`, or `rover`. Omit it for narration.
+- For `rover`, set `signal` from 1 to 5. A value of 1 means a broken signal; 5 means clear.
+- Set `fictional: true` to show the note "Fictional voice created for the story."
+- Add `nasa: { src, title, caption, credit }` to open NASA data for that step. Other mission steps can open the mission's NASA image gallery.
+- From `reveal: true`, the chapter chip shows the real mission name instead of the codename.
 
-Moon records come from the data already in `moon-map.html`. Missions whose
-coordinates, dates, sites, or status are not available in this repository keep a
-`TODO: verify` marker instead of an invented value, and those entries appear as
-selectable chips without a globe marker.
+## Images and credits
 
-### Settings
-
-The settings panel (⚙ in the bottom-right bar) stores four preferences locally:
-
-- **Language / spelling** — English (US), English (UK), or English (Canada). UK and
-  Canadian spelling switch words such as "colour" and "metre".
-- **Reading level** — Younger (ages 6–9) or Older (ages 10–14). Mission descriptions
-  rewrite themselves immediately, including an open inspection panel.
-- **Theme** — Classic space, Bright day, or Night mode. Every theme keeps text at or
-  above a 7:1 contrast ratio, and the installed app’s colour follows the choice.
-- **Volume and mute** — audio is generated with the Web Audio API in `audio.js`, so
-  the repository ships no audio files. Sound starts only after the first tap, stays
-  at a low default volume, changes mood per screen, and suspends on a hidden tab.
-
-### Offline and install
-
-`manifest.webmanifest`, `icons/`, and `service-worker.js` make the game installable
-and usable without a connection. The worker precaches the app shell plus the Three.js
-and font CDN files, because Chrome can serve those from its memory cache without ever
-reaching the worker. Bump `CACHE_VERSION` in `service-worker.js` when shipping new
-assets; activation deletes every cache from older versions.
-
-### Data storage
-
-The local profile stores only a filtered nickname, character choices, selected planet,
-a one-way PIN hash, and a creation timestamp. The active session stores only the
-nickname. Settings live in their own keys: `rover-atlas-kids-language`,
-`rover-atlas-kids-reading-level`, `rover-atlas-kids-theme`, and
-`rover-atlas-kids-audio`. Everything stays in `localStorage` on the device.
-
-No analytics, ads, trackers, chat, outside links, or parent credentials are used. The
-`// HOOK: Watch landing button goes here` comment in `kids-game.html` is the reserved
-landing-animation hook.
+- Story illustrations were created for this project.
+- NASA data popups use images from the NASA Image and Video Library (`images.nasa.gov`); each image includes its credit.
+- This project is not endorsed by NASA.

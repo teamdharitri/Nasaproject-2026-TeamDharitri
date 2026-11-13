@@ -1,0 +1,1486 @@
+$bg: #0b0f24;
+$orange: #e2552b;
+$orange-dark: #b13b17;
+$blue: #1f6fd1;
+$cyan: #4fd1ff;
+$cream: #fff6e8;
+$heading: "Baloo Da 2", "Hind Siliguri", sans-serif;
+$body: "Hind Siliguri", sans-serif;
+$mono: "Share Tech Mono", "Hind Siliguri", monospace;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: $bg;
+  color: #fff;
+  font-family: $body;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba($cyan, 0.55); }
+  50% { box-shadow: 0 0 0 12px rgba($cyan, 0); }
+}
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ---------- Buttons ---------- */
+
+.btn-start {
+  background: $orange;
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  padding: 0.85rem 2.4rem;
+  font-family: $heading;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 8px 24px rgba($orange, 0.45);
+  transition: transform 0.25s ease, background 0.25s ease;
+
+  &:hover {
+    transform: scale(1.08);
+    background: $orange-dark;
+  }
+
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.btn-small {
+  font-size: 1rem;
+  padding: 0.55rem 1.6rem;
+}
+
+.voice-controls {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 55;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  max-width: 190px;
+  padding: 0.4rem;
+  border: 1px solid rgba(#fff, 0.2);
+  border-radius: 14px;
+  background: rgba($bg, 0.9);
+
+  button {
+    padding: 0.3rem 0.6rem;
+    border: 1px solid rgba($cyan, 0.35);
+    border-radius: 100px;
+    background: transparent;
+    color: #fff;
+    &:disabled { opacity: 0.4; cursor: default; }
+    &:focus-visible { outline: 2px solid $cyan; outline-offset: 2px; }
+  }
+
+  span { flex-basis: 100%; font-size: 0.75rem; color: $cream; }
+}
+
+@media (max-width: 900px) {
+  .voice-controls { max-width: 160px; }
+}
+
+/* ---------- Landing ---------- */
+
+.landing {
+  position: fixed;
+  inset: 0;
+  background: url("/common/cover.webp") center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba($bg, 0.55) 0%, rgba($bg, 0.15) 60%, transparent 100%);
+  }
+
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+    text-align: center;
+    max-width: 640px;
+    padding: 1.5rem;
+    animation: fadeUp 1s ease both;
+  }
+
+  &__tagline {
+    margin: 0;
+    font-family: $heading;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $cream;
+  }
+}
+
+.logo {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 0.85;
+  font-family: $heading;
+  font-weight: 800;
+  text-shadow: 0 6px 30px rgba(#000, 0.5);
+
+  &__top {
+    font-size: clamp(3rem, 9vw, 5.6rem);
+    letter-spacing: 0.12em;
+    color: #ffb36b;
+  }
+
+  &__bottom {
+    font-size: clamp(2.2rem, 6.5vw, 4rem);
+    letter-spacing: 0.3em;
+    color: $cyan;
+  }
+}
+
+/* ---------- Story ---------- */
+
+.story {
+  position: relative;
+
+  &__progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: var(--theme);
+    z-index: 60;
+    transition: width 0.4s ease;
+  }
+
+  &__stage {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: $bg;
+    overflow: hidden;
+  }
+
+  &__vignette {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 45%, rgba($bg, 0.55) 100%);
+    pointer-events: none;
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 58vw;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 90px 3vw 40px;
+    pointer-events: none;
+
+    > * {
+      animation: fadeUp 0.6s ease both;
+      pointer-events: auto;
+    }
+
+    &.is-full {
+      width: 100vw;
+    }
+  }
+
+  &__scroll {
+    position: relative;
+    z-index: 30;
+    width: 40vw;
+    margin-left: 58vw;
+    padding-bottom: 40vh;
+    pointer-events: none;
+  }
+}
+
+.stage-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+
+  &.is-active {
+    opacity: 1;
+  }
+}
+
+.step {
+  min-height: 115vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  // Inactive bubbles are hidden completely; a faded neighbour peeking in at the
+  // screen edge looks like cut-off, unreadable text.
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+  &.is-active {
+    opacity: 1;
+  }
+
+  &--empty {
+    min-height: 130vh;
+  }
+
+  // Keeps the bubble below the planets so the hologram files stay visible.
+  &--board {
+    padding-top: 56vh;
+  }
+
+  > * {
+    pointer-events: auto;
+  }
+}
+
+/* ---------- Chapter chip & nav ---------- */
+
+// Centered with margin instead of transform, because the fadeUp animation overrides transform.
+.chapter-chip {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 1.1rem 0.35rem 0.4rem;
+  border-radius: 100px;
+  background: rgba($bg, 0.75);
+  border: 1px solid rgba(#fff, 0.15);
+  animation: fadeUp 0.5s ease both;
+
+  &__code {
+    background: var(--theme);
+    color: $bg;
+    font-family: $heading;
+    font-weight: 700;
+    padding: 0.15rem 0.75rem;
+    border-radius: 100px;
+  }
+
+  &__name {
+    font-family: $heading;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+}
+
+.case-nav {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 55;
+
+  &__toggle {
+    background: rgba($bg, 0.75);
+    color: #fff;
+    border: 1px solid rgba(#fff, 0.2);
+    border-radius: 100px;
+    padding: 0.45rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0.4rem;
+    background: rgba($bg, 0.92);
+    border: 1px solid rgba(#fff, 0.15);
+    border-radius: 14px;
+    min-width: 220px;
+  }
+
+  li button {
+    width: 100%;
+    text-align: left;
+    background: none;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.55rem 0.8rem;
+    font-size: 1rem;
+
+    &:hover,
+    &.is-current {
+      background: rgba(#fff, 0.1);
+    }
+
+    b {
+      color: $cyan;
+      margin-right: 0.3rem;
+    }
+  }
+}
+
+/* ---------- Bubbles ---------- */
+
+.bubble {
+  max-width: 92%;
+  font-size: 1.12rem;
+  line-height: 1.7;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(#000, 0.35);
+
+  p {
+    margin: 0;
+  }
+
+  &--narration {
+    background: rgba($cream, 0.95);
+    color: #2b2116;
+    padding: 1rem 1.4rem;
+    font-weight: 500;
+  }
+
+  &--bolt,
+  &--hologram {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding: 0.9rem 1.2rem 1rem 0.9rem;
+  }
+
+  &--bolt {
+    background: $blue;
+    color: #fff;
+    font-weight: 500;
+    border-bottom-left-radius: 4px;
+
+    .bubble__avatar {
+      border-color: $cyan;
+      animation: float 3s ease-in-out infinite;
+    }
+  }
+
+  &--hologram {
+    background: rgba(8, 40, 60, 0.82);
+    color: #dff8ff;
+    border: 1px solid rgba($cyan, 0.7);
+    box-shadow: 0 0 24px rgba($cyan, 0.3), inset 0 0 30px rgba($cyan, 0.08);
+    background-image: repeating-linear-gradient(0deg, rgba($cyan, 0.05) 0 1px, transparent 1px 4px);
+
+    .bubble__name {
+      color: $cyan;
+    }
+  }
+
+  &__avatar {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    background: #fff;
+  }
+
+  &__name {
+    display: block;
+    font-family: $heading;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    opacity: 0.9;
+  }
+
+  &--signal {
+    background: rgba(18, 10, 4, 0.88);
+    border: 1px dashed var(--theme);
+    color: var(--theme);
+    font-family: $mono;
+    font-size: 1.15rem;
+    padding: 0.9rem 1.3rem;
+  }
+}
+
+.signal {
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.08em;
+  }
+
+  &__bars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 14px;
+
+    i {
+      width: 4px;
+      background: rgba(#fff, 0.2);
+      border-radius: 1px;
+
+      @for $n from 1 through 5 {
+        &:nth-child(#{$n}) { height: #{$n * 20%}; }
+      }
+
+      &.on {
+        background: var(--theme);
+      }
+    }
+  }
+
+  &--5 p {
+    font-size: 1.2rem;
+    text-shadow: 0 0 12px var(--theme);
+  }
+
+  &__cursor {
+    display: inline-block;
+    width: 0.6ch;
+    height: 1.05em;
+    margin-left: 0.15em;
+    border-radius: 1px;
+    background: currentColor;
+    vertical-align: text-bottom;
+    animation: signal-caret 1s step-start infinite;
+  }
+}
+
+@keyframes signal-caret {
+  50% { opacity: 0; }
+}
+
+.fiction-note {
+  display: block;
+  margin-top: 0.4rem;
+  font-family: $body;
+  font-size: 0.85rem;
+  color: rgba(#fff, 0.75);
+}
+
+.quote {
+  margin: 0.8rem 0 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid $orange;
+  background: rgba(#000, 0.08);
+  border-radius: 0 10px 10px 0;
+  font-style: italic;
+
+  cite {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    font-style: normal;
+    opacity: 0.75;
+  }
+}
+
+.bubble--bolt .quote {
+  background: rgba(#000, 0.2);
+  border-left-color: #ffd36b;
+}
+
+/* ---------- Overlays ---------- */
+
+.ov-title {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-shadow: 0 4px 24px rgba(#000, 0.7);
+
+  &__kicker {
+    font-family: $heading;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--theme);
+    font-size: 1.2rem;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: $heading;
+    font-size: clamp(3rem, 9vw, 6.2rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #fff;
+  }
+
+  &__sub {
+    font-size: 1.1rem;
+    color: rgba(#fff, 0.85);
+  }
+
+  &__scroll {
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    opacity: 0.7;
+    animation: float 2s ease-in-out infinite;
+  }
+}
+
+.ov-break {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  color: #fff;
+  text-shadow: 0 4px 24px rgba(#000, 0.8);
+
+  h2 {
+    margin: 0;
+    font-family: $heading;
+    font-size: clamp(2.4rem, 7vw, 4.4rem);
+    font-weight: 800;
+  }
+
+  span {
+    color: var(--theme);
+    font-size: 1.6rem;
+  }
+}
+
+.ov-card {
+  width: min(520px, 100%);
+  background: rgba($cream, 0.96);
+  color: #2b2116;
+  border-radius: 22px;
+  padding: 1.4rem 1.6rem;
+  box-shadow: 0 20px 60px rgba(#000, 0.5);
+
+  h3 {
+    margin: 0 0 1rem;
+    font-family: $heading;
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+}
+
+.ov-deduction {
+  h3 {
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+
+  &__feedback {
+    min-height: 2.8em;
+    margin: 1rem 0 0;
+    padding: 0.55rem 0.7rem;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.98rem;
+    color: #6b5a44;
+
+    &.is-wrong {
+      color: #9d3028;
+      background: rgba(#e0352b, 0.1);
+    }
+
+    &.is-correct {
+      color: #1f7a45;
+      background: rgba(#1f8a4c, 0.12);
+      font-family: $heading;
+      font-weight: 800;
+    }
+
+    &.is-possible {
+      color: #23627d;
+      background: rgba($cyan, 0.14);
+    }
+  }
+}
+
+.suspects {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.65rem;
+}
+
+.suspect {
+  min-width: 0;
+  text-align: center;
+  transition: transform 0.2s ease;
+
+  &__choice {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+
+    &:focus-visible {
+      outline: 3px solid $blue;
+      outline-offset: 4px;
+      border-radius: 14px;
+    }
+  }
+
+  &__pic {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #2a2440;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    border: 3px solid transparent;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__cross {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(45deg, transparent 46%, #e0352b 46%, #e0352b 54%, transparent 54%),
+      linear-gradient(-45deg, transparent 46%, #e0352b 46%, #e0352b 54%, transparent 54%);
+    animation: fadeUp 0.4s ease both;
+  }
+
+  &__mark {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 1.65rem;
+    height: 1.65rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #1f8a4c;
+    color: #fff;
+    font-size: 1.15rem;
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  &__name {
+    display: block;
+    margin-top: 0.35rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    line-height: 1.2;
+  }
+
+  &.is-wrong .suspect__pic {
+    border-color: #e0352b;
+    box-shadow: 0 0 0 3px rgba(#e0352b, 0.18);
+  }
+
+  &.is-correct .suspect__pic {
+    border-color: #1f8a4c;
+    box-shadow: 0 0 0 4px rgba(#1f8a4c, 0.25);
+  }
+
+  &.is-possible .suspect__pic {
+    border-color: #2584a8;
+    box-shadow: 0 0 0 3px rgba(#2584a8, 0.2);
+  }
+
+  &.is-wrong,
+  &.is-correct,
+  &.is-possible {
+    .suspect__choice {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.ov-identity {
+  position: relative;
+  border: 3px solid var(--theme);
+
+  &__stamp {
+    position: absolute;
+    top: -16px;
+    right: 18px;
+    background: #1f8a4c;
+    color: #fff;
+    font-family: $heading;
+    font-weight: 700;
+    padding: 0.2rem 0.9rem;
+    border-radius: 8px;
+    transform: rotate(4deg);
+  }
+
+  h3 {
+    font-size: 1.8rem;
+    color: $orange-dark;
+  }
+
+  dl {
+    margin: 0;
+    display: grid;
+    gap: 0.45rem;
+
+    div {
+      display: grid;
+      grid-template-columns: 9.5rem 1fr;
+      gap: 0.6rem;
+      border-bottom: 1px dashed rgba(#2b2116, 0.18);
+      padding-bottom: 0.35rem;
+    }
+  }
+
+  dt {
+    font-weight: 600;
+    color: #6b5a44;
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 500;
+  }
+}
+
+.ov-bolt {
+  text-align: center;
+  background: rgba(10, 30, 70, 0.92);
+  color: #fff;
+  border: 2px solid $cyan;
+  box-shadow: 0 0 40px rgba($cyan, 0.35);
+
+  img {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    border: 3px solid $cyan;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  &__label {
+    display: block;
+    margin: 0.6rem 0;
+    color: $cyan;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    font-family: $heading;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  &__src {
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 0.95rem;
+    opacity: 0.75;
+  }
+}
+
+.ov-end {
+  text-align: center;
+  max-width: 560px;
+  padding: 2rem;
+  background: rgba($bg, 0.75);
+  border-radius: 24px;
+
+  h2 {
+    margin: 0 0 0.6rem;
+    font-family: $heading;
+    font-size: 3.4rem;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 0 0 0.6rem;
+    font-size: 1.1rem;
+  }
+
+  &__next {
+    color: $cyan;
+    font-weight: 600;
+    margin-bottom: 1.4rem !important;
+  }
+
+  &__credit {
+    margin-top: 1.4rem !important;
+    font-size: 0.8rem !important;
+    opacity: 0.6;
+  }
+}
+
+/* ---------- NASA button & modal ---------- */
+
+.nasa-btn {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.4rem 1.2rem 0.4rem 0.4rem;
+  border: 2px solid $cyan;
+  border-radius: 100px;
+  background: rgba($bg, 0.85);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+  animation: fadeUp 0.5s ease both, pulse 2s ease-in-out 0.5s infinite;
+  transition: transform 0.25s ease;
+
+  &:hover {
+    transform: scale(1.06);
+  }
+
+  &.is-locked {
+    border-color: rgba(#fff, 0.3);
+    color: rgba(#fff, 0.6);
+    cursor: not-allowed;
+    animation: fadeUp 0.5s ease both;
+
+    &:hover {
+      transform: none;
+    }
+
+    img {
+      filter: grayscale(1) brightness(0.6);
+    }
+
+    small {
+      color: rgba(#fff, 0.5);
+    }
+  }
+
+  img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+  }
+
+  small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.78rem;
+    color: $cyan;
+  }
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(#000, 0.7);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  animation: fadeUp 0.3s ease both;
+
+  &__box {
+    width: min(760px, 100%);
+    max-height: 92vh;
+    overflow: auto;
+    background: $cream;
+    color: #2b2116;
+    border-radius: 20px;
+    padding: 1.2rem 1.4rem 1.4rem;
+    text-align: center;
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      text-align: left;
+    }
+
+    h3 {
+      margin: 0;
+      font-family: $heading;
+      font-size: 1.3rem;
+    }
+
+    img {
+      display: block;
+      margin: 1rem auto;
+      max-width: 100%;
+      max-height: 55vh;
+      border-radius: 12px;
+    }
+
+    p {
+      margin: 0 0 0.4rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    small {
+      display: block;
+      margin-bottom: 1rem;
+      color: #6b5a44;
+    }
+  }
+
+  &__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+    text-align: left;
+  }
+
+  &__item {
+    min-width: 0;
+    margin: 0;
+    padding: 0.75rem;
+    border-radius: 14px;
+    background: rgba(#fff, 0.65);
+
+    img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      margin: 0 0 0.7rem;
+    }
+
+    h4 {
+      margin: 0 0 0.35rem;
+      font-family: $heading;
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    small {
+      margin: 0.4rem 0 0;
+      font-size: 0.78rem;
+    }
+  }
+
+  &__details,
+  &__item-details {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    background: rgba(#2b2116, 0.06);
+    text-align: left;
+    font-size: 0.92rem;
+    line-height: 1.55;
+
+    h4 {
+      margin: 0 0 0.45rem;
+      font-family: $heading;
+      font-size: 1.05rem;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+  }
+
+  &__details {
+    margin: 1rem 0;
+
+    li + li {
+      margin-top: 0.25rem;
+    }
+  }
+
+  &__sections {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin: 1rem 0;
+    text-align: left;
+  }
+
+  &__section {
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: rgba(#2b2116, 0.06);
+
+    h4 {
+      margin: 0 0 0.5rem;
+      font-family: $heading;
+      font-size: 1.05rem;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    li + li {
+      margin-top: 0.25rem;
+    }
+  }
+
+  &__item-details {
+    margin: 0.7rem 0 0;
+    padding: 0.65rem 0.85rem 0.65rem 1.8rem;
+    font-size: 0.84rem;
+
+    li + li {
+      margin-top: 0.25rem;
+    }
+  }
+
+  &__x {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    color: #2b2116;
+  }
+}
+
+/* ---------- Case board ---------- */
+
+.holo-board {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  pointer-events: none;
+  animation: fadeIn 0.8s ease both;
+
+  // Same box as the cover-fitted stage image, so % positions land on the painted planets.
+  &__map {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100vw, calc(100vh * 1672 / 941));
+    aspect-ratio: 1672 / 941;
+    transform: translate(-50%, -50%);
+  }
+
+  &__lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    line {
+      stroke: rgba(#8fe6ff, 0.75);
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 4px rgba($cyan, 0.9));
+    }
+  }
+}
+
+// Desktop: the group boxes vanish and each folder is placed on the illustration.
+.holo-group {
+  display: contents;
+
+  &__label {
+    display: none;
+  }
+}
+
+.holo {
+  --accent: #{$cyan};
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 8.6%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  animation: holoFloat 4s ease-in-out infinite;
+
+  &:nth-child(3) {
+    animation-delay: -1.3s;
+  }
+
+  &:nth-child(4) {
+    animation-delay: -2.6s;
+  }
+
+  &__folder {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.18;
+    padding-top: 10%;
+
+    &.is-clickable {
+      display: block;
+      padding: 10% 0 0;
+      border: none;
+      background: none;
+      color: inherit;
+      pointer-events: auto;
+      transition: transform 0.2s ease, filter 0.2s ease;
+
+      &:hover {
+        transform: scale(1.06);
+        filter: brightness(1.15);
+      }
+
+      &:focus-visible {
+        outline: 2px solid $cyan;
+        outline-offset: 4px;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  &__tab {
+    position: absolute;
+    top: 0;
+    left: 6%;
+    width: 30%;
+    height: 14%;
+    border: 2px solid rgba(#bff4ff, 0.9);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    background: rgba(#9be9ff, 0.35);
+  }
+
+  &__body {
+    position: relative;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: 2px solid rgba(#bff4ff, 0.95);
+    border-radius: 8px;
+    background: linear-gradient(160deg, rgba(#b8f1ff, 0.55), rgba(#5cc8f0, 0.32));
+    box-shadow: 0 0 14px rgba($cyan, 0.75), inset 0 0 18px rgba(#fff, 0.25);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__lock {
+    font-size: clamp(1.2rem, 2.4vw, 2.2rem);
+    filter: grayscale(1) brightness(0.35) drop-shadow(0 0 2px rgba(#fff, 0.4));
+  }
+
+  &__label {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 0.3rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 8px;
+    background: rgba($bg, 0.78);
+    font-size: clamp(0.72rem, 0.95vw, 0.9rem);
+    line-height: 1.35;
+    text-align: center;
+    white-space: nowrap;
+
+    b {
+      font-family: $mono;
+      color: $cyan;
+    }
+
+    span {
+      width: 100%;
+    }
+  }
+
+  &.is-current .holo__body {
+    border-color: var(--accent);
+    box-shadow: 0 0 22px var(--accent), inset 0 0 18px rgba(#fff, 0.3);
+    animation: holoPulse 1.6s ease-in-out infinite;
+  }
+
+  &.is-open {
+    .holo__tab {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 55%, transparent);
+    }
+
+    .holo__body {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--accent);
+      animation: holoUnlock 1s ease both;
+    }
+
+    .holo__label b {
+      color: var(--accent);
+    }
+
+    .holo__label span {
+      font-weight: 700;
+    }
+  }
+}
+
+.case-file {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba($bg, 0.55);
+  animation: fadeIn 0.25s ease both;
+
+  &__panel {
+    --accent: #{$cyan};
+    width: min(380px, 100%);
+    padding: 0.9rem 1.2rem 1.1rem;
+    border: 1px solid var(--accent);
+    border-radius: 14px;
+    background: rgba(#06132a, 0.94);
+    box-shadow: 0 0 28px color-mix(in srgb, var(--accent) 55%, transparent);
+    font-family: $mono;
+    animation: fadeUp 0.3s ease both;
+
+    p {
+      margin: 0;
+      min-height: 7lh;
+      white-space: pre-line;
+      line-height: 1.75;
+      color: $cream;
+    }
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(#fff, 0.15);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+
+    button {
+      border: none;
+      background: none;
+      color: #fff;
+      font-size: 1.4rem;
+      line-height: 1;
+
+      &:focus-visible {
+        outline: 2px solid $cyan;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes holoFloat {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+@keyframes holoPulse {
+  50% {
+    box-shadow: 0 0 6px var(--accent), inset 0 0 18px rgba(#fff, 0.3);
+  }
+}
+
+@keyframes holoUnlock {
+  0% {
+    box-shadow: 0 0 0 transparent;
+    filter: brightness(2.2);
+  }
+  100% {
+    box-shadow: 0 0 20px var(--accent);
+    filter: none;
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 900px) {
+  .story__vignette {
+    background: linear-gradient(180deg, transparent 40%, rgba($bg, 0.6) 100%);
+  }
+
+  .story__overlay {
+    width: 100%;
+    align-items: flex-start;
+    padding-top: 112px;
+  }
+
+  .ov-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .ov-identity h3 {
+    font-size: 1.45rem;
+  }
+
+  .story__scroll {
+    width: 100%;
+    margin-left: 0;
+    padding: 0 4vw 40vh;
+  }
+
+  .step {
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 12vh;
+  }
+
+  .bubble {
+    max-width: 100%;
+    font-size: 1.02rem;
+  }
+
+  .ov-card {
+    padding: 1rem 1.1rem;
+  }
+
+  .modal__gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .modal__sections {
+    grid-template-columns: 1fr;
+  }
+
+  .modal__item img {
+    height: 190px;
+  }
+
+  .ov-identity dl div {
+    grid-template-columns: 7.5rem 1fr;
+    font-size: 0.92rem;
+  }
+
+  .suspects {
+    gap: 0.5rem;
+  }
+
+  // Phones crop the board image to its middle, so the folders sit in two rows instead.
+  .holo-board__map {
+    position: static;
+    width: auto;
+    aspect-ratio: auto;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 112px 4vw 0;
+  }
+
+  .holo-board__lines {
+    display: none;
+  }
+
+  .holo-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem 0.6rem;
+    padding: 0.45rem 0.6rem 0.6rem;
+    border-radius: 16px;
+    background: rgba($bg, 0.55);
+    border: 1px solid rgba($cyan, 0.35);
+
+    &__label {
+      display: block;
+      grid-column: 1 / -1;
+      font-family: $heading;
+      font-size: 0.9rem;
+      color: $cream;
+    }
+  }
+
+  .holo {
+    position: static;
+    width: auto;
+    transform: none;
+    gap: 0.25rem;
+
+    &__label {
+      white-space: normal;
+      font-size: 0.72rem;
+    }
+  }
+
+  .chapter-chip {
+    top: 58px;
+
+    &__name {
+      font-size: 0.95rem;
+    }
+  }
+
+  .nasa-btn {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: max-content;
+    bottom: auto;
+    top: 108px;
+    font-size: 0.85rem;
+
+    img {
+      width: 38px;
+      height: 38px;
+    }
+  }
+}

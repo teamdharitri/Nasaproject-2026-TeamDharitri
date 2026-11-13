@@ -1,0 +1,445 @@
+{
+  "version": 1,
+  "clips": {
+    "nova:Bolt was built using designs from old rovers and landers. He'll give you facts about the machines. But he won't name a mission without evidence.": {
+      "src": "/voices/nova-dd25d0e3dc90bfba35cd5d7b.mp3",
+      "speaker": "nova"
+    },
+    "nova:Our first file, Detective. Something crossed space and landed on Mars—without saying a word. Its name stays locked until the evidence is complete.": {
+      "src": "/voices/nova-acc6898d00ccabc961cd9031.mp3",
+      "speaker": "nova"
+    },
+    "bolt:The old flight log starts in Florida, mid-1990s. Destination: Mars. Mission: prove a cheaper, safer way to land a robot explorer on the surface.": {
+      "src": "/voices/bolt-a559520ffd1d332e9d9759f1.mp3",
+      "speaker": "bolt"
+    },
+    "nova:More than a landing test! The promise: carry a rover safely across space, and set it down gently on another world.": {
+      "src": "/voices/nova-1e3ef1e8f4c2593f7142ccd1.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Found the landing recipe! A parachute to slow down, rockets to steer, and giant airbags wrapping it up like a bubble shield.": {
+      "src": "/voices/bolt-3f03473950e11c36c81464f2.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:Watch closely! A little altimeter counted the distance to the ground. At the perfect moment—whoosh!—the computer blew up the airbags, just before impact.": {
+      "src": "/voices/bolt-99e22bd67af9c77cc3a47440.mp3",
+      "speaker": "bolt"
+    },
+    "nova:It worked! The traveler bounced and bounced across the rocks, then went still. Mars had spared it. Time for the real detective work.": {
+      "src": "/voices/nova-6527e0445338600791369684.mp3",
+      "speaker": "nova"
+    },
+    "nova:The map lights up: an ancient valley in Mars's northern hemisphere. One of the rockiest regions on the planet—and still the scientists' choice for a safe landing.": {
+      "src": "/voices/nova-d0fb2ed035068e8e83335baf.mp3",
+      "speaker": "nova"
+    },
+    "bolt:A giant flood carved this dry channel long ago—the rocks are its diary! Look at the picture: boulders, windblown soil, and a dusty gray-tan sky.": {
+      "src": "/voices/bolt-10bcd18e4c079d099a1d5248.mp3",
+      "speaker": "bolt"
+    },
+    "nova:How much water? As much as the Great Lakes, sweeping across in about two weeks! These rocks aren't scenery, Detective. They're evidence.": {
+      "src": "/voices/nova-7820eba68e680bb2760d458a.mp3",
+      "speaker": "nova"
+    },
+    "bolt:New log entry! Late on the second Martian day, a hidden passenger stood up... and rolled down a rear ramp onto the soil.": {
+      "src": "/voices/bolt-e624f5b004ccf3a93641bf7d.mp3",
+      "speaker": "bolt"
+    },
+    "nova:The little traveler: six wheels, a solar panel, and a tiny antenna. But it couldn't phone home—every message went through its bigger companion.": {
+      "src": "/voices/nova-62ae970e1d3b0048eab10385.mp3",
+      "speaker": "nova"
+    },
+    "rover:…small wheels… new ground… where is my friend…?": {
+      "src": "/voices/rover-0773aed544270135efffbf73.mp3",
+      "speaker": "rover"
+    },
+    "bolt:Light, slow, and carrying a tiny science lab. What did it discover out there? Let's look before we guess who it is.": {
+      "src": "/voices/bolt-bb156d997026cb3e3bdeaee9.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:The lander worked too! Three cameras to study the ground and check its own new tech, plus instruments for the air during descent and the weather below.": {
+      "src": "/voices/bolt-7e59816b679e34a8abb79ecc.mp3",
+      "speaker": "bolt"
+    },
+    "nova:And the rover's secret tool: a chemical analyzer. Touch a rock—and it knows what that rock and the soil are made of.": {
+      "src": "/voices/nova-d43e090e836643441b6bff33.mp3",
+      "speaker": "nova"
+    },
+    "bolt:That rock has a nickname: Yogi! The rover pressed its analyzer right against it, while the lander kept watch over the work.": {
+      "src": "/voices/bolt-6f1b800a45263aecc1716a0b.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:The scientists named everything—Barnacle Bill, Yogi, even Scooby-Doo! Back home came thousands of pictures, millions of weather measurements, and close-up rock reports.": {
+      "src": "/voices/bolt-6197eea2fa52572fe66d49f0.mp3",
+      "speaker": "bolt"
+    },
+    "nova:A clue in the pebbles! Rounded smooth—the fingerprint of running water, pressed together into rock. This Mars was once warm, with liquid water that stayed.": {
+      "src": "/voices/nova-939053f4a34b6179e9381927.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Even the dust holds a clue! It's magnetic, and its minerals may be souvenirs of an ancient water cycle. The whole planet keeps a diary.": {
+      "src": "/voices/bolt-32232a2c13cd3d96085c5e77.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:The weather mast caught dust devils spinning past! Those gusts help stir dust into the air. And before dawn: water-ice clouds, low in the sky.": {
+      "src": "/voices/bolt-29b702b9572029134feaa200.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Here's a dawn trick: the ground warms the air, heat climbs in tiny swirls, and the temperature leaps from night-cold toward midday warmth.": {
+      "src": "/voices/nova-94844c66117dd6b2f02c07c3.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Enough evidence, Detective! Clue one: this machine can move across the Martian ground.": {
+      "src": "/voices/bolt-4ce44ba6b76914c7ead34797.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:Clue two: about 11 kilograms, six wheels, and an APXS instrument—no large robotic arm.": {
+      "src": "/voices/bolt-083b78e41595d8eef5bee506.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:Final clue: it arrived inside giant airbags, rolled down a ramp, and messaged home through its lander. Which rover fits every clue?": {
+      "src": "/voices/bolt-812b5c5f7d96255426f4af47.mp3",
+      "speaker": "bolt"
+    },
+    "rover:Yes. I'm Sojourner. And that's my friend, the Pathfinder lander.": {
+      "src": "/voices/rover-fb7e6fbed44e3b7676ea4866.mp3",
+      "speaker": "rover"
+    },
+    "bolt:The name came from a 12-year-old girl's winning essay! She chose Sojourner, after the civil-rights hero Sojourner Truth.": {
+      "src": "/voices/bolt-6ccd2c45aca4975e13d94fdd.mp3",
+      "speaker": "bolt"
+    },
+    "rover:I was planned for seven days. But my friend and I kept working for about 83 days.": {
+      "src": "/voices/rover-242a7a6122d703f0414b418e.mp3",
+      "speaker": "rover"
+    },
+    "bolt:The mission went quiet on September 27, 1997. Its short life left thousands of images, millions of weather measurements, and the first close-up chemistry of Martian rocks and soil.": {
+      "src": "/voices/bolt-a3447344db1e1546fdc26a1a.mp3",
+      "speaker": "bolt"
+    },
+    "rover:I can't hear my friend's voice anymore. But I'll stay right by its side.": {
+      "src": "/voices/rover-5b1fb324b6bf20c3cb736a93.mp3",
+      "speaker": "rover"
+    },
+    "nova:The lander had a name too: Carl Sagan Memorial Station, for the astronomer who died the year before. The two friends still sit together in Ares Vallis.": {
+      "src": "/voices/nova-fc894fd8f6ea65968145245b.mp3",
+      "speaker": "nova"
+    },
+    "nova:First file closed. But the next one... isn't alone.": {
+      "src": "/voices/nova-6bff13122be352082547e210.mp3",
+      "speaker": "nova"
+    },
+    "nova:The second file, Detective. Two explorers left Earth for opposite sides of Mars. One is still rolling. The other left a strange trail...": {
+      "src": "/voices/nova-1740ec0d548c4ae081841742.mp3",
+      "speaker": "nova"
+    },
+    "bolt:The record shows twins! Matching machines the size of golf carts: six wheels, solar panels, a tall camera mast, and a robotic arm.": {
+      "src": "/voices/bolt-82fccbd8014ca4a07b83bc29.mp3",
+      "speaker": "bolt"
+    },
+    "nova:They were sent where water might once have changed the ground. Their job: read the rocks and soil, and find that water's fingerprints.": {
+      "src": "/voices/nova-b9751d21fe4a7b82907b0f74.mp3",
+      "speaker": "nova"
+    },
+    "bolt:But this file is strange. One wheel stopped turning—yet a long groove cuts through the soil. Somehow, it kept moving.": {
+      "src": "/voices/bolt-859109688fffb85b51bb0663.mp3",
+      "speaker": "bolt"
+    },
+    "rover:…backward… one wheel drags… my twin… where…": {
+      "src": "/voices/rover-2b7d673732e4a1e2d962f505.mp3",
+      "speaker": "rover"
+    },
+    "nova:The map points to a crater about 160 kilometers wide. Scientists wondered: did a lake once fill it?": {
+      "src": "/voices/nova-6aadd21e0be2378cf79b4b73.mp3",
+      "speaker": "nova"
+    },
+    "bolt:This rover is a giant next to our first case—about 185 kilograms! Its camera mast stands about five feet high, almost your eye level.": {
+      "src": "/voices/bolt-023bee23c5679e6260ea7ab9.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:Its robotic arm carries a whole science kit, placed right against rocks and soil. And those twin tracks nearby? Another machine just like this one rolled here too.": {
+      "src": "/voices/bolt-a1ebc9bdfc6f83135e0ba290.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Dust piled up on the panels. The rover's power began to fade. Then the wind sent an unexpected visitor...": {
+      "src": "/voices/nova-8f63b41649f26c62df508043.mp3",
+      "speaker": "nova"
+    },
+    "bolt:A spinning dust devil swept across the panels like a giant cleaning brush! Power came back, and the journey could continue.": {
+      "src": "/voices/bolt-f297d0bb14efb59ee1c0a7d0.mp3",
+      "speaker": "bolt"
+    },
+    "nova:The trail climbs uphill. In 2005, the rover crawled up rock and sand toward a summit overlooking the whole crater.": {
+      "src": "/voices/nova-7373627d0f8f1828e3fe3b8d.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Then—trouble. The front wheel died. Instead of stopping, the rover drove backward, dragging the dead wheel and carving a long track across Mars.": {
+      "src": "/voices/bolt-f79f68deeeda8c3fcf6a1791.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:The broken wheel turned into a shovel! Scraping away the top layer, it uncovered bright, silica-rich soil—a clue that water once changed this place.": {
+      "src": "/voices/bolt-d66661606eae9d914e3c79ab.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:The road wasn't smooth. A memory fault once cut the signal completely! The team repaired it from Earth with a software patch—and the rover spoke again.": {
+      "src": "/voices/bolt-8179be7dc8d9ef46028d3001.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Back online, it ground open a rock with its grinding tool—a first on Mars! Scientists could finally peek inside.": {
+      "src": "/voices/nova-b4843eb1db811516e26a29b2.mp3",
+      "speaker": "nova"
+    },
+    "bolt:The plan was just 90 Martian days. This explorer kept going—past one crater, up the hills, all the way to a summit view.": {
+      "src": "/voices/bolt-1914a218cacea0d179be2b4c.mp3",
+      "speaker": "bolt"
+    },
+    "nova:From the top: a 360-degree panorama in true color. The dust devils had cleaned the panels too—a fresh burst of energy.": {
+      "src": "/voices/nova-9863d9472dc2797b5ee460cf.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Winter was coming, so the team aimed for a hill with more sunlight. But the dragging wheel kept digging—and kept uncovering bright silica.": {
+      "src": "/voices/bolt-097874a7413c431c659a2614.mp3",
+      "speaker": "bolt"
+    },
+    "nova:New software made the rovers clever: they could choose for themselves—send this image? Move the arm? Then dust storms darkened the sky and drained their solar power.": {
+      "src": "/voices/nova-e90f9a0490673e5beaa8b5e0.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Then the wind helped again, sweeping the panels clean. Power returned—until soft ground beside a low plateau grabbed the wheels and held on.": {
+      "src": "/voices/bolt-fb1d7726547af98f281c95e6.mp3",
+      "speaker": "bolt"
+    },
+    "nova:The team tried everything. Then another wheel failed. New plan: stop driving—the rover would become a stationary science station.": {
+      "src": "/voices/nova-82176336bb215b19969c67a8.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Even from one spot, it had work! Measure tiny wobbles in Mars's rotation—is the planet's core liquid, or solid? The rover would find out.": {
+      "src": "/voices/bolt-b305ec358cf74810cac6379f.mp3",
+      "speaker": "bolt"
+    },
+    "nova:For that, it needed to tilt its panels toward the winter Sun. The tilt never came. Then the signal fell silent—and more than a thousand calls brought no answer.": {
+      "src": "/voices/nova-fbb4964ceec332242b7c4b33.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Let's open the file. Clue one: this machine can travel over Mars on six wheels.": {
+      "src": "/voices/bolt-af4c4b1ffeac332c645b4852.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:Clue two: about 185 kilograms, with a robotic arm to investigate rocks and soil.": {
+      "src": "/voices/bolt-00a693863cc650736f912898.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:Final clue: the crater with the old lake, the climb up the hills, and a broken wheel that uncovered silica-rich soil. Which rover fits?": {
+      "src": "/voices/bolt-361bd9946eaa953dcc5d313e.mp3",
+      "speaker": "bolt"
+    },
+    "rover:Yes. I'm Spirit. I was the first of the twins to land on Mars.": {
+      "src": "/voices/rover-e13775f880f233e8b30e500d.mp3",
+      "speaker": "rover"
+    },
+    "bolt:The file speaks: Spirit, rover MER-A. One of two twins, sent to opposite sides of Mars to hunt for clues of ancient water.": {
+      "src": "/voices/bolt-6729ec735d224e7f3ba07faa.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Its landing site was later named Columbia Memorial Station, for the seven astronauts lost with the shuttle Columbia.": {
+      "src": "/voices/nova-ecaf5a97c686b1c8e348ef75.mp3",
+      "speaker": "nova"
+    },
+    "nova:By May 2009, Spirit was trapped in soft soil beside a low plateau called Home Plate. The slippery ground gave its wheels no grip.": {
+      "src": "/voices/nova-14e676ac7cf62d4cc9b2d595.mp3",
+      "speaker": "nova"
+    },
+    "bolt:The team tried for months. On Earth, they even stuck a test rover in soft soil to practice the escape! On November 28, another wheel—the right rear one—stopped working.": {
+      "src": "/voices/bolt-e1a27ffdd93ed948cfc3b5e9.mp3",
+      "speaker": "bolt"
+    },
+    "rover:I can't move. But I can still measure and listen. I'll keep working right here.": {
+      "src": "/voices/rover-e04cbcb442c7717beb92a874.mp3",
+      "speaker": "rover"
+    },
+    "nova:In late January 2010, the plan changed: stay in place and listen for tiny wobbles in Mars's spin—liquid core, or solid? But the tilt toward the winter Sun never came.": {
+      "src": "/voices/nova-a6f851398b562644b4983827.mp3",
+      "speaker": "nova"
+    },
+    "bolt:After March 22, 2010—silence. More than 1,300 commands, no answer. Recovery ended on May 25, 2011. Extreme cold had likely beaten the survival heaters.": {
+      "src": "/voices/bolt-38d526d1b82b74a120776237.mp3",
+      "speaker": "bolt"
+    },
+    "rover:I was meant to last 90 Martian days. I traveled for years. …Tell my twin I kept trying.": {
+      "src": "/voices/rover-268604c3760f9cc601c29075.mp3",
+      "speaker": "rover"
+    },
+    "bolt:The final count: 4.8 miles—7.73 kilometers—and six years, two months, and 19 days of work. More than 25 times its planned life.": {
+      "src": "/voices/bolt-20601a597418fd6d8b571d40.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Dust storms, software faults, broken wheels, a final winter—it survived them all. And one dead wheel uncovered bright soil that proved water once touched Mars.": {
+      "src": "/voices/nova-733eb8a85b3b4ea407ebcf99.mp3",
+      "speaker": "nova"
+    },
+    "nova:When Spirit stopped, its twin was still rolling on the other side of Mars. The next file is that twin.": {
+      "src": "/voices/nova-26db13e7214298db7ae62a52.mp3",
+      "speaker": "nova"
+    },
+    "nova:The third file, Detective. One twin's story is closed. This is the mirror twin: same design, same 90-day promise—very different road.": {
+      "src": "/voices/nova-a9b200a49808b8f1d3f17e9d.mp3",
+      "speaker": "nova"
+    },
+    "bolt:The record matches our last case exactly: six wheels, solar panels, a tall camera mast, a robotic arm. About 185 kilograms, golf-cart size. Built as twins.": {
+      "src": "/voices/bolt-da1c741c9b20bc47dce8c64d.mp3",
+      "speaker": "bolt"
+    },
+    "nova:But careful—don't confuse the twins! The last one dragged a broken wheel. This one's log just counts on: day 90... day 1,000... day 5,000...": {
+      "src": "/voices/nova-d6528fd22f07432e480d59e2.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Day 5,000?! A machine built for 90 days? My counting circuits are overheating!": {
+      "src": "/voices/bolt-c01cc9bba9e35c3424d0c38b.mp3",
+      "speaker": "bolt"
+    },
+    "rover:…dust… darkness… I'm still… moving…": {
+      "src": "/voices/rover-fe84f5a8d582ed665cfb5839.mp3",
+      "speaker": "rover"
+    },
+    "nova:The map lights up: Meridiani Planum, a flat plain near the Martian equator. Why here? Hematite—an iron-rich mineral that usually forms in liquid water.": {
+      "src": "/voices/nova-c2f457b6ce5cf99318c41d03.mp3",
+      "speaker": "nova"
+    },
+    "bolt:The landing was smooth—but the airbag-wrapped lander bounced at least 26 times! It rolled to a stop 9 miles (14.9 kilometers) off target, inside a tiny crater only 22 meters wide. A \"hole-in-one in space!\"": {
+      "src": "/voices/bolt-de9ad5ffcc1c283b1728c0a8.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Inside that little crater: the first discovery. Exposed bedrock, stacked in thin layers—and layers like these usually form underwater. Liquid water once flowed on the surface of Mars. Confirmed.": {
+      "src": "/voices/nova-1a79c696ac25732934841272.mp3",
+      "speaker": "nova"
+    },
+    "bolt:And look—\"blueberries\"! Small, round grains of hematite embedded right in the rock. They usually form in standing water.": {
+      "src": "/voices/bolt-5bd6dd5d94c68403146964d6.mp3",
+      "speaker": "bolt"
+    },
+    "nova:On March 22, 2004, the rover climbed over the rim and rolled out. One last look back: spectacular photos of its abandoned lander, backshell, and parachute. Then off to a larger crater, 820 yards (750 meters) away.": {
+      "src": "/voices/nova-1f0ca998ed6bfbeec4444214.mp3",
+      "speaker": "nova"
+    },
+    "bolt:By July 26, 2004—Martian day 180—it had already doubled its planned mission! January 2005, beside its own discarded heat shield: a basketball-sized rock of iron and nickel. A meteorite! The first ever found on another planet.": {
+      "src": "/voices/bolt-6da47f762bb1b6761bda936f.mp3",
+      "speaker": "bolt"
+    },
+    "nova:The road wasn't always easy. In 2005 it sank into soft ground, several wheels buried in sand. Engineers freed it a few inches at a time—and after six weeks, it rolled on.": {
+      "src": "/voices/nova-0e728dcec1099b55c819f71a.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Two years traveling south: past Erebus, an old eroded crater, then a 21-month trip to Victoria—800 meters wide, deeper than anything either twin had studied. After a dust-storm summer on almost no power, it drove down inside for a year of work.": {
+      "src": "/voices/bolt-fdccd854780fe180a551d902.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Then the longest drive yet: three whole years to Endeavour, a giant crater 22 kilometers wide. On the way, a strange rock that seemed to come from deep inside the Martian crust. Arriving in August 2011, it found clay minerals—signs of ancient water with a neutral pH. Water that microbes could have lived in.": {
+      "src": "/voices/nova-f0c953999fcc9b33505e3b7c.mp3",
+      "speaker": "nova"
+    },
+    "bolt:And in the cracks of the crater's rim: bright white veins of gypsum! Water once flowed right through them.": {
+      "src": "/voices/bolt-76ef2fc8d185532a37730a99.mp3",
+      "speaker": "bolt"
+    },
+    "nova:The records kept falling! 2010: past Viking 1's mark for working nonstop on Mars—6 years and 116 days. 2013: past the Apollo 17 moon rover's distance record. 2014: past the Soviet Lunokhod 2's.": {
+      "src": "/voices/nova-843fbe6a527b3e21d4fdc865.mp3",
+      "speaker": "nova"
+    },
+    "bolt:March 2015, after 11 years and 2 months: a full marathon—42.195 kilometers! No machine from Earth had ever driven that far on another world.": {
+      "src": "/voices/bolt-d7cd1251647000351581752e.mp3",
+      "speaker": "bolt"
+    },
+    "nova:The machine was aging. Its flash memory began to fail, so engineers reformatted it and later ran the rover on RAM alone. In its seventh winter it still swept dust off rocks, day after day. The wind even cleaned its panels for a famous \"selfie.\"": {
+      "src": "/voices/nova-ba233498b9e24adc0b162428.mp3",
+      "speaker": "nova"
+    },
+    "bolt:It even crossed a slope tilted 32 degrees—the steepest any rover had driven on Mars, breaking a record it set itself back in 2004!": {
+      "src": "/voices/bolt-7e7ca55230f5873330700287.mp3",
+      "speaker": "bolt"
+    },
+    "nova:In 2017 it reached its last destination: a gully cutting through the rim of Endeavour, carved—scientists believe—by water. Down it went, gently, saving its power.": {
+      "src": "/voices/nova-ba8ce2645b47614a096789ff.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Clue two: about 185 kilograms, with a robotic arm for rocks and soil.": {
+      "src": "/voices/bolt-de7ee579dac0e4d013ab28d2.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:Final clue: a hematite-rich plain, round \"blueberries\" in the bedrock, and plain tracks from all six wheels—no dragging wheel like its twin's. Which rover fits the evidence?": {
+      "src": "/voices/bolt-95ec79a572b45cf18e0528ca.mp3",
+      "speaker": "bolt"
+    },
+    "rover:Yes. I'm Opportunity. Everyone calls me Oppy for short.": {
+      "src": "/voices/rover-a864ab4ae4c9e3f54b4e562c.mp3",
+      "speaker": "rover"
+    },
+    "bolt:The file opens: Opportunity, rover MER-B, the second twin to land. Launched July 7, 2003, from Cape Canaveral—and it reached Meridiani Planum just 20 days after Spirit.": {
+      "src": "/voices/bolt-f8ee9ae9998d661e4b62f277.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Its landing site was named Challenger Memorial Station, in tribute to the Space Shuttle crew lost in 1986.": {
+      "src": "/voices/nova-f9aa2794e7e72750da3c921d.mp3",
+      "speaker": "nova"
+    },
+    "bolt:A 9-year-old girl named Sophie Collis chose the twins' names. In her essay, she wrote: I used to live in an orphanage. It was dark, cold, and lonely. At night, I liked looking up at the sparkling sky. ...Thank you for \"Spirit\" and \"Opportunity.\"": {
+      "src": "/voices/bolt-dd1faae542a1e0dd5711abe0.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Its final years were slow. A wheel stalled on the way into the gully, and the Sun slipped between the planets, muting the radios for weeks. In mid-July 2017, it entered its last home: Perseverance Valley—a name that means perseverance.": {
+      "src": "/voices/nova-7b0aac07ade0aa48446d8758.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Then, in June 2018, a historic dust storm swallowed the whole planet. No sunlight could reach the solar panels. The last signal came on June 10, 2018.": {
+      "src": "/voices/bolt-7dd5a3a37aa6a05a0a4f0513.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Earth called more than 1,000 times. No answer. On February 13, 2019, NASA declared the mission complete.": {
+      "src": "/voices/nova-04feb3c2a971c8b2ce00ad85.mp3",
+      "speaker": "nova"
+    },
+    "bolt:A journalist turned Oppy's final data into a poem. The line spread around the world: My battery is running low, and it's getting dark.": {
+      "src": "/voices/bolt-b7e8c6b9645400bf8b48178d.mp3",
+      "speaker": "bolt"
+    },
+    "nova:On the night of February 12, the team called one last time—and played an old song: \"I'll Be Seeing You.\" It means \"I'll see you again.\"": {
+      "src": "/voices/nova-d3f1418201a304b6b260f7d8.mp3",
+      "speaker": "nova"
+    },
+    "rover:I was meant to last 90 days and drive 1,100 yards. I kept going for almost 15 years and more than 28 miles. My final resting place is Perseverance Valley.": {
+      "src": "/voices/rover-1334454b021e82dadc0b7bc1.mp3",
+      "speaker": "rover"
+    },
+    "bolt:Its distance record stood until October 11, 2026, when NASA's Perseverance rover finally drove farther. And the next rover sent to Mars? Also named Perseverance.": {
+      "src": "/voices/bolt-73619729e3b64aa9d3448af3.mp3",
+      "speaker": "bolt"
+    },
+    "nova:Spirit and Opportunity. Twins, on opposite sides of Mars. Both files are complete now, Detective.": {
+      "src": "/voices/nova-4d911afc56a7d833f601f981.mp3",
+      "speaker": "nova"
+    },
+    "nova:Hello, Detective! I am Commander Nova. Welcome to the Space Detective Team! Our agency investigates forgotten and unidentified space explorers. Many historical mission archives are incomplete, and we need your help to uncover their stories.": {
+      "src": "/voices/nova-914c8ae18e1a8855f703833b.mp3",
+      "speaker": "nova"
+    },
+    "nova:Your job is to investigate the evidence, identify missing hardware, and recover their original mission records.": {
+      "src": "/voices/nova-905608e05b28f80671e5a8d8.mp3",
+      "speaker": "nova"
+    },
+    "nova:Archive X-17 (damaged). Contains 6 case files: 3 from Mars, 3 from the Moon. The identity of each is locked. The archive has come a long way, and as a result, the data has become fragmented. To reveal the identity, you must go to the original source and verify the evidence. That is your task.": {
+      "src": "/voices/nova-45a92c20fa439556df96973c.mp3",
+      "speaker": "nova"
+    },
+    "nova:I have a gift for you.": {
+      "src": "/voices/nova-ae34b5eb7a0b0c29c63e8710.mp3",
+      "speaker": "nova"
+    },
+    "bolt:Hello! I am BOLT-7. You can call me Bolt! I am your mission partner.": {
+      "src": "/voices/bolt-be4678341c208e1cdda63e0d.mp3",
+      "speaker": "bolt"
+    },
+    "bolt:Every rover has a story. Data never lies! Let's start with the first three files from Mars.": {
+      "src": "/voices/bolt-6bb704b7e31e96b5e28bf078.mp3",
+      "speaker": "bolt"
+    }
+  }
+}
