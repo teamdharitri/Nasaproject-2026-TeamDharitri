@@ -11,21 +11,24 @@
 //              (also marks the case as solved on the case board)
 // Steps using BOARD_IMG show the interactive case board instead of a side bubble.
 
-export const BOARD_IMG = "/common/case-board.webp";
-export const BOARD_INTRO_IMG = "/common/case-board-intro.webp";
+export const BOARD_IMG = "common/case-board.webp";
+export const BOARD_INTRO_IMG = "common/case-board-intro.webp";
 
-// Moon cases are not written yet; they stay locked on the case board.
+// Moon cases without a chapter stay locked on the case board.
 export const MOON_CASES = [
-  { code: "L-1", codeName: "Footprints" },
   { code: "L-2", codeName: "The Guest" },
   { code: "L-3", codeName: "The Mirror" },
 ];
 
 const SUSPECT_IMG = {
-  Sojourner: "/m1/lander-ramp.webp",
-  Spirit: "/m2/twins.webp",
-  Opportunity: "/m3/eagle-crater.webp",
-  "Viking 1": "/rovers/viking-1.webp",
+  Sojourner: "m1/lander-ramp.webp",
+  Spirit: "m2/twins.webp",
+  Opportunity: "m3/eagle-crater.webp",
+  "Viking 1": "rovers/viking-1.webp",
+  "Apollo 8": "rovers/apollo-8.webp",
+  "Apollo 10": "rovers/apollo-10.webp",
+  "Apollo 11": "rovers/apollo-11.webp",
+  "Apollo 12": "rovers/apollo-12.webp",
 };
 export { SUSPECT_IMG };
 
@@ -38,14 +41,14 @@ export const chapters = [
     codeName: "Archive X-17",
     theme: "#4fd1ff",
     steps: [
-      { img: "/common/hq-nova.webp", overlay: { type: "title", kicker: "Prologue", title: "Archive X-17", subtitle: "A Mysterious Message" } },
-      { img: "/common/hq-nova.webp", speaker: "nova", text: "Hello, Detective! I am Commander Nova. Welcome to the Space Detective Team! Our agency investigates forgotten and unidentified space explorers. Many historical mission archives are incomplete, and we need your help to uncover their stories." },
-      { img: "/common/hq-nova.webp", speaker: "nova", text: "Your job is to investigate the evidence, identify missing hardware, and recover their original mission records." },
+      { img: "common/hq-nova.webp", overlay: { type: "title", kicker: "Prologue", title: "Archive X-17", subtitle: "A Mysterious Message" } },
+      { img: "common/hq-nova.webp", speaker: "nova", text: "Hello, Detective! I am Commander Nova. Welcome to the Space Detective Team! Our agency investigates forgotten and unidentified space explorers. Many historical mission archives are incomplete, and we need your help to uncover their stories." },
+      { img: "common/hq-nova.webp", speaker: "nova", text: "Your job is to investigate the evidence, identify missing hardware, and recover their original mission records." },
       { img: BOARD_INTRO_IMG, speaker: "nova", text: "Archive X-17 (damaged). Contains 6 case files: 3 from Mars, 3 from the Moon. The identity of each is locked. The archive has come a long way, and as a result, the data has become fragmented. To reveal the identity, you must go to the original source and verify the evidence. That is your task." },
       { img: BOARD_INTRO_IMG, speaker: "nova", text: "I have a gift for you." },
-      { img: "/common/bolt-capsule.webp", speaker: "bolt", text: "Hello! I am BOLT-7. You can call me Bolt! I am your mission partner." },
-      { img: "/common/bolt-capsule.webp", speaker: "nova", text: "Bolt was built using designs from old rovers and landers. He'll give you facts about the machines. But he won't name a mission without evidence." },
-      { img: "/common/case-board.webp", speaker: "bolt", text: "Every rover has a story. Data never lies! Let's start with the first three files from Mars." },
+      { img: "common/bolt-capsule.webp", speaker: "bolt", text: "Hello! I am BOLT-7. You can call me Bolt! I am your mission partner." },
+      { img: "common/bolt-capsule.webp", speaker: "nova", text: "Bolt was built using designs from old rovers and landers. He'll give you facts about the machines. But he won't name a mission without evidence." },
+      { img: "common/case-board.webp", speaker: "bolt", text: "Every rover has a story. Data never lies! Let's start with the first three files from Mars." },
     ],
   },
 
@@ -54,12 +57,15 @@ export const chapters = [
     code: "Case M-1",
     codeName: "Little Wheel",
     realName: "Sojourner and Pathfinder",
-    portrait: "/rovers/sojourner.webp",
+    portrait: "rovers/sojourner.webp",
     theme: "#ff8a4c",
     caseFile: { destination: "Mars", location: "Ares Vallis", difficulty: "Easy" },
     nasaSections: [
       {
         title: "Mission Record",
+        img: "m1/section-mission-record.webp",
+        credit: "Image: NASA/JPL",
+        summary: "A lander carrying a tiny rover launched in December 1996 and reached Mars on July 4, 1997. Its job: prove a low-cost, safe way to land on Mars.",
         items: [
           "Mission type: lander and rover. Central body: Mars.",
           "Objective: demonstrate a low-cost way to land safely on Mars and deliver its first robotic rover.",
@@ -72,6 +78,9 @@ export const chapters = [
       },
       {
         title: "Airbag Landing",
+        img: "m1/section-airbag-landing.webp",
+        credit: "Image: NASA/JPL",
+        summary: "Giant airbags wrapped around the spacecraft like bubble wrap. It hit the ground at about 50 km/h, bounced about 15 times, and rolled to a stop.",
         items: [
           "The spacecraft entered the Martian atmosphere under parachute. Solid rockets and a first-of-its-kind giant airbag system helped cushion the landing.",
           "An onboard altimeter measured the distance to the ground. The computer inflated the airbags about 330 feet (100 meters) above the surface.",
@@ -83,6 +92,9 @@ export const chapters = [
       },
       {
         title: "Ares Vallis",
+        img: "m1/section-ares-vallis.webp",
+        credit: "Image: NASA/JPL",
+        summary: "The landing site was an ancient flood plain covered with rocks that huge floods carried there long ago—perfect for studying many kinds of rock.",
         items: [
           "\"Ares\" is the Greek counterpart of the Roman god Mars; \"vallis\" is Latin for valley.",
           "Ares Vallis is an ancient flood plain in Mars's northern hemisphere and one of the rockiest regions on the planet.",
@@ -94,6 +106,9 @@ export const chapters = [
       },
       {
         title: "Instruments and Data",
+        img: "m1/section-instruments-and-data.webp",
+        credit: "Image: NASA/JPL",
+        summary: "Cameras, a weather station, and a rock-reading spectrometer sent home more than 16,500 pictures and millions of weather measurements.",
         items: [
           "Three cameras photographed the terrain for geological studies and documented the mission technologies and their operating environment.",
           "The lander's imaging instrument (IMP) photographed the landing site.",
@@ -106,6 +121,9 @@ export const chapters = [
       },
       {
         title: "Science Highlights",
+        img: "m1/section-science-highlights.webp",
+        credit: "Image: NASA/JPL/University of Arizona",
+        summary: "Rounded pebbles hinted that water once flowed on a warmer Mars. The lander also saw dust devils, icy clouds, and huge day-to-night temperature swings.",
         items: [
           "Rounded pebbles and cobbles suggested conglomerate rocks formed by running water in a warmer past when liquid water was stable.",
           "Radio tracking precisely measured the lander's location and Mars's pole of rotation.",
@@ -120,6 +138,9 @@ export const chapters = [
       },
       {
         title: "Names and Deployment",
+        img: "m1/section-names-and-deployment.webp",
+        credit: "Image: NASA/JPL",
+        summary: "The lander became the Carl Sagan Memorial Station, and the rover was named Sojourner by a 12-year-old. Planned for 7 days, it worked for about 83.",
         revealOnly: true,
         items: [
           "The lander was named the Carl Sagan Memorial Station, honoring the astronomer who had died the year before.",
@@ -132,57 +153,57 @@ export const chapters = [
       },
     ],
     steps: [
-      { img: "/m1/airbag-bounce.webp", overlay: { type: "title", kicker: "Case M-1", title: "Little Wheel", subtitle: "Mars · Difficulty: Easy" } },
-      { img: "/common/case-board.webp", speaker: "nova", text: "Our first file, Detective. Something crossed space and landed on Mars—without saying a word. Its name stays locked until the evidence is complete." },
-      { img: "/m1/airbag-bounce.webp", speaker: "bolt", text: "The old flight log starts in Florida, mid-1990s. Destination: Mars. Mission: prove a cheaper, safer way to land a robot explorer on the surface." },
-      { img: "/m1/airbag-bounce.webp", speaker: "nova", text: "More than a landing test! The promise: carry a rover safely across space, and set it down gently on another world." },
-      { img: "/m1/airbag-bounce.webp", speaker: "bolt", text: "Found the landing recipe! A parachute to slow down, rockets to steer, and giant airbags wrapping it up like a bubble shield." },
+      { img: "m1/airbag-bounce.webp", overlay: { type: "title", kicker: "Case M-1", title: "Little Wheel", subtitle: "Mars · Difficulty: Easy" } },
+      { img: "common/case-board.webp", speaker: "nova", text: "Our first file, Detective. Something crossed space and landed on Mars—without saying a word. Its name stays locked until the evidence is complete." },
+      { img: "m1/airbag-bounce.webp", speaker: "bolt", text: "The old flight log starts in Florida, mid-1990s. Destination: Mars. Mission: prove a cheaper, safer way to land a robot explorer on the surface." },
+      { img: "m1/airbag-bounce.webp", speaker: "nova", text: "More than a landing test! The promise: carry a rover safely across space, and set it down gently on another world." },
+      { img: "m1/airbag-bounce.webp", speaker: "bolt", text: "Found the landing recipe! A parachute to slow down, rockets to steer, and giant airbags wrapping it up like a bubble shield." },
 
       {
-        img: "/m1/airbag-bounce.webp", speaker: "bolt",
+        img: "m1/airbag-bounce.webp", speaker: "bolt",
         text: "Watch closely! A little altimeter counted the distance to the ground. At the perfect moment—whoosh!—the computer blew up the airbags, just before impact.",
-        nasa: { src: "/m1/nasa-airbags.webp", title: "Airbags on Martian Soil", caption: "A photo taken by the lander's camera after landing. You can see the deflated white airbags and rocky ground.", credit: JPL },
+        nasa: { src: "m1/nasa-airbags.webp", title: "Airbags on Martian Soil", caption: "A photo taken by the lander's camera after landing. You can see the deflated white airbags and rocky ground.", credit: JPL },
       },
-      { img: "/m1/airbag-bounce.webp", speaker: "nova", text: "It worked! The traveler bounced and bounced across the rocks, then went still. Mars had spared it. Time for the real detective work." },
+      { img: "m1/airbag-bounce.webp", speaker: "nova", text: "It worked! The traveler bounced and bounced across the rocks, then went still. Mars had spared it. Time for the real detective work." },
 
-      { img: "/m1/airbag-bounce.webp", speaker: "nova", text: "The map lights up: an ancient valley in Mars's northern hemisphere. One of the rockiest regions on the planet—and still the scientists' choice for a safe landing." },
-      { img: "/m1/airbag-bounce.webp", speaker: "bolt", text: "A giant flood carved this dry channel long ago—the rocks are its diary! Look at the picture: boulders, windblown soil, and a dusty gray-tan sky." },
-      { img: "/m1/airbag-bounce.webp", speaker: "nova", text: "How much water? As much as the Great Lakes, sweeping across in about two weeks! These rocks aren't scenery, Detective. They're evidence." },
+      { img: "m1/airbag-bounce.webp", speaker: "nova", text: "The map lights up: an ancient valley in Mars's northern hemisphere. One of the rockiest regions on the planet—and still the scientists' choice for a safe landing." },
+      { img: "m1/airbag-bounce.webp", speaker: "bolt", text: "A giant flood carved this dry channel long ago—the rocks are its diary! Look at the picture: boulders, windblown soil, and a dusty gray-tan sky." },
+      { img: "m1/airbag-bounce.webp", speaker: "nova", text: "How much water? As much as the Great Lakes, sweeping across in about two weeks! These rocks aren't scenery, Detective. They're evidence." },
 
-      { img: "/m1/lander-ramp.webp", speaker: "bolt", text: "New log entry! Late on the second Martian day, a hidden passenger stood up... and rolled down a rear ramp onto the soil." },
-      { img: "/m1/lander-ramp.webp", speaker: "nova", text: "The little traveler: six wheels, a solar panel, and a tiny antenna. But it couldn't phone home—every message went through its bigger companion." },
-      { img: "/m1/lander-ramp.webp", speaker: "rover", signal: 1, fictional: true, text: "…small wheels… new ground… where is my friend…?" },
-      { img: "/m1/lander-ramp.webp", speaker: "bolt", text: "Light, slow, and carrying a tiny science lab. What did it discover out there? Let's look before we guess who it is." },
+      { img: "m1/lander-ramp.webp", speaker: "bolt", text: "New log entry! Late on the second Martian day, a hidden passenger stood up... and rolled down a rear ramp onto the soil." },
+      { img: "m1/lander-ramp.webp", speaker: "nova", text: "The little traveler: six wheels, a solar panel, and a tiny antenna. But it couldn't phone home—every message went through its bigger companion." },
+      { img: "m1/lander-ramp.webp", speaker: "rover", signal: 1, fictional: true, text: "…small wheels… new ground… where is my friend…?" },
+      { img: "m1/lander-ramp.webp", speaker: "bolt", text: "Light, slow, and carrying a tiny science lab. What did it discover out there? Let's look before we guess who it is." },
 
-      { img: "/m1/yogi.webp", speaker: "bolt", text: "The lander worked too! Three cameras to study the ground and check its own new tech, plus instruments for the air during descent and the weather below." },
-      { img: "/m1/yogi.webp", speaker: "nova", text: "And the rover's secret tool: a chemical analyzer. Touch a rock—and it knows what that rock and the soil are made of." },
+      { img: "m1/yogi.webp", speaker: "bolt", text: "The lander worked too! Three cameras to study the ground and check its own new tech, plus instruments for the air during descent and the weather below." },
+      { img: "m1/yogi.webp", speaker: "nova", text: "And the rover's secret tool: a chemical analyzer. Touch a rock—and it knows what that rock and the soil are made of." },
       {
-        img: "/m1/yogi.webp",
+        img: "m1/yogi.webp",
         speaker: "bolt",
         text: "That rock has a nickname: Yogi! The rover pressed its analyzer right against it, while the lander kept watch over the work.",
-        nasa: { src: "/m1/nasa-yogi.webp", title: "The Rover and the Rock \"Yogi\"", caption: "The little rover is examining the rock \"Yogi\" by touching it with an instrument.", credit: JPL },
+        nasa: { src: "m1/nasa-yogi.webp", title: "The Rover and the Rock \"Yogi\"", caption: "The little rover is examining the rock \"Yogi\" by touching it with an instrument.", credit: JPL },
       },
       {
-        img: "/m1/yogi.webp", speaker: "bolt",
+        img: "m1/yogi.webp", speaker: "bolt",
         text: "The scientists named everything—Barnacle Bill, Yogi, even Scooby-Doo! Back home came thousands of pictures, millions of weather measurements, and close-up rock reports.",
-        nasa: { src: "/m1/nasa-barnacle-bill.webp", title: "The Rock \"Barnacle Bill\"", caption: "The first rock the rover examined. The lander's camera combined lots of pictures to make this clear image.", credit: JPL },
+        nasa: { src: "m1/nasa-barnacle-bill.webp", title: "The Rock \"Barnacle Bill\"", caption: "The first rock the rover examined. The lander's camera combined lots of pictures to make this clear image.", credit: JPL },
       },
 
-      { img: "/m1/yogi.webp", speaker: "nova", text: "A clue in the pebbles! Rounded smooth—the fingerprint of running water, pressed together into rock. This Mars was once warm, with liquid water that stayed." },
-      { img: "/m1/yogi.webp", speaker: "bolt", text: "Even the dust holds a clue! It's magnetic, and its minerals may be souvenirs of an ancient water cycle. The whole planet keeps a diary." },
+      { img: "m1/yogi.webp", speaker: "nova", text: "A clue in the pebbles! Rounded smooth—the fingerprint of running water, pressed together into rock. This Mars was once warm, with liquid water that stayed." },
+      { img: "m1/yogi.webp", speaker: "bolt", text: "Even the dust holds a clue! It's magnetic, and its minerals may be souvenirs of an ancient water cycle. The whole planet keeps a diary." },
       {
-        img: "/m1/yogi.webp", speaker: "bolt",
+        img: "m1/yogi.webp", speaker: "bolt",
         text: "The weather mast caught dust devils spinning past! Those gusts help stir dust into the air. And before dawn: water-ice clouds, low in the sky.",
-        nasa: { src: "/m1/nasa-yogi.webp", title: "Weather and Rocks at Ares Vallis", caption: "The lander's camera documented the rover examining a rock at the landing site.", credit: JPL },
+        nasa: { src: "m1/nasa-yogi.webp", title: "Weather and Rocks at Ares Vallis", caption: "The lander's camera documented the rover examining a rock at the landing site.", credit: JPL },
       },
-      { img: "/m1/yogi.webp", speaker: "nova", text: "Here's a dawn trick: the ground warms the air, heat climbs in tiny swirls, and the temperature leaps from night-cold toward midday warmth." },
+      { img: "m1/yogi.webp", speaker: "nova", text: "Here's a dawn trick: the ground warms the air, heat climbs in tiny swirls, and the temperature leaps from night-cold toward midday warmth." },
 
-      { img: "/m1/yogi.webp", dim: true, speaker: "bolt", text: "Enough evidence, Detective! Clue one: this machine can move across the Martian ground.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1"], reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover, so it couldn't move across the Martian ground." } } },
-      { img: "/m1/yogi.webp", dim: true, speaker: "bolt", text: "Clue two: about 11 kilograms, six wheels, and an APXS instrument—no large robotic arm.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Spirit", "Opportunity"], reasons: { "Viking 1": "Viking 1 was a stationary lander and couldn't move.", Spirit: "Spirit weighed about 185 kilograms and had a robotic arm. It doesn't match the 11-kilogram clue.", Opportunity: "Opportunity also weighed about 185 kilograms and had a robotic arm. It doesn't match the 11-kilogram clue." } } },
-      { img: "/m1/yogi.webp", dim: true, speaker: "bolt", text: "Final clue: it arrived inside giant airbags, rolled down a ramp, and messaged home through its lander. Which rover fits every clue?", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Spirit", "Opportunity"], solved: "Sojourner", reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover.", Spirit: "Spirit was a much bigger rover, weighing about 185 kilograms. It didn't communicate through the Pathfinder lander.", Opportunity: "Opportunity was also a rover weighing about 185 kilograms. It didn't communicate through the Pathfinder lander." } } },
+      { img: "m1/yogi.webp", dim: true, speaker: "bolt", text: "Enough evidence, Detective! Clue one: this machine can move across the Martian ground.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1"], reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover, so it couldn't move across the Martian ground." } } },
+      { img: "m1/yogi.webp", dim: true, speaker: "bolt", text: "Clue two: about 11 kilograms, six wheels, and an APXS instrument—no large robotic arm.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Spirit", "Opportunity"], reasons: { "Viking 1": "Viking 1 was a stationary lander and couldn't move.", Spirit: "Spirit weighed about 185 kilograms and had a robotic arm. It doesn't match the 11-kilogram clue.", Opportunity: "Opportunity also weighed about 185 kilograms and had a robotic arm. It doesn't match the 11-kilogram clue." } } },
+      { img: "m1/yogi.webp", dim: true, speaker: "bolt", text: "Final clue: it arrived inside giant airbags, rolled down a ramp, and messaged home through its lander. Which rover fits every clue?", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Spirit", "Opportunity"], solved: "Sojourner", reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover.", Spirit: "Spirit was a much bigger rover, weighing about 185 kilograms. It didn't communicate through the Pathfinder lander.", Opportunity: "Opportunity was also a rover weighing about 185 kilograms. It didn't communicate through the Pathfinder lander." } } },
 
       {
-        img: "/m1/lander-ramp.webp", dim: true, reveal: true, speaker: "rover", signal: 5, roverName: "Sojourner", fictional: true,
+        img: "m1/lander-ramp.webp", dim: true, reveal: true, speaker: "rover", signal: 5, roverName: "Sojourner", fictional: true,
         text: "Yes. I'm Sojourner. And that's my friend, the Pathfinder lander.",
         overlay: {
           type: "identity", name: "Sojourner and Mars Pathfinder",
@@ -194,15 +215,15 @@ export const chapters = [
           ],
         },
       },
-      { img: "/m1/lander-ramp.webp", reveal: true, speaker: "bolt", text: "The name came from a 12-year-old girl's winning essay! She chose Sojourner, after the civil-rights hero Sojourner Truth." },
+      { img: "m1/lander-ramp.webp", reveal: true, speaker: "bolt", text: "The name came from a 12-year-old girl's winning essay! She chose Sojourner, after the civil-rights hero Sojourner Truth." },
 
-      { img: "/m1/last-night.webp", reveal: true, overlay: { type: "chapterBreak", title: "The Last Message" } },
-      { img: "/m1/last-night.webp", reveal: true, speaker: "rover", signal: 5, roverName: "Sojourner", fictional: true, text: "I was planned for seven days. But my friend and I kept working for about 83 days." },
-      { img: "/m1/last-night.webp", reveal: true, speaker: "bolt", text: "The mission went quiet on September 27, 1997. Its short life left thousands of images, millions of weather measurements, and the first close-up chemistry of Martian rocks and soil." },
-      { img: "/m1/last-night.webp", reveal: true, speaker: "rover", signal: 3, roverName: "Sojourner", fictional: true, text: "I can't hear my friend's voice anymore. But I'll stay right by its side." },
-      { img: "/m1/last-night.webp", reveal: true, speaker: "nova", text: "The lander had a name too: Carl Sagan Memorial Station, for the astronomer who died the year before. The two friends still sit together in Ares Vallis." },
-      { img: "/m1/last-night.webp", reveal: true, dim: true, overlay: { type: "boltLearns", text: "If you get lost, find your way back to a friend.", source: "Sojourner" } },
-      { img: "/common/case-board.webp", reveal: true, speaker: "nova", text: "First file closed. But the next one... isn't alone." },
+      { img: "m1/last-night.webp", reveal: true, overlay: { type: "chapterBreak", title: "The Last Message" } },
+      { img: "m1/last-night.webp", reveal: true, speaker: "rover", signal: 5, roverName: "Sojourner", fictional: true, text: "I was planned for seven days. But my friend and I kept working for about 83 days." },
+      { img: "m1/last-night.webp", reveal: true, speaker: "bolt", text: "The mission went quiet on September 27, 1997. Its short life left thousands of images, millions of weather measurements, and the first close-up chemistry of Martian rocks and soil." },
+      { img: "m1/last-night.webp", reveal: true, speaker: "rover", signal: 3, roverName: "Sojourner", fictional: true, text: "I can't hear my friend's voice anymore. But I'll stay right by its side." },
+      { img: "m1/last-night.webp", reveal: true, speaker: "nova", text: "The lander had a name too: Carl Sagan Memorial Station, for the astronomer who died the year before. The two friends still sit together in Ares Vallis." },
+      { img: "m1/last-night.webp", reveal: true, dim: true, overlay: { type: "boltLearns", text: "If you get lost, find your way back to a friend.", source: "Sojourner" } },
+      { img: "common/case-board.webp", reveal: true, speaker: "nova", text: "First file closed. But the next one... isn't alone." },
     ],
   },
 
@@ -211,12 +232,15 @@ export const chapters = [
     code: "Case M-2",
     codeName: "The Backward Wheel",
     realName: "Spirit",
-    portrait: "/rovers/spirit.webp",
+    portrait: "rovers/spirit.webp",
     theme: "#7cc4ff",
     caseFile: { destination: "Mars", location: "Gusev Crater", difficulty: "Medium" },
     nasaSections: [
       {
         title: "Mission Record",
+        img: "m2/section-mission-record.webp",
+        credit: "Image: NASA/JPL-Caltech/MSSS/Cornell/Ohio State Univ.",
+        summary: "A golf-cart-sized rover landed in Gusev Crater in January 2004. Built for 90 days, it explored for more than six years and drove 7.73 km.",
         items: [
           "Mission type: rover. Central body: Mars.",
           "Objective: study a range of rocks and soil for clues of past water activity.",
@@ -229,6 +253,9 @@ export const chapters = [
       },
       {
         title: "Twin Rover Design",
+        img: "m2/section-twin-rover-design.webp",
+        credit: "Image: NASA/JPL/Cornell University",
+        summary: "Two identical rovers went to opposite sides of Mars. Each had six wheels, a tall camera mast, and a robotic arm full of science tools.",
         items: [
           "The twin rovers were built for a twin-rover mission in NASA's long-term Mars exploration program. They launched about a month apart in 2003.",
           "They were sent to opposite sides of Mars to places suspected of past liquid water, to study many kinds of rocks and soil.",
@@ -239,6 +266,9 @@ export const chapters = [
       },
       {
         title: "Science Instruments",
+        img: "m2/section-science-instruments.webp",
+        credit: "Image: NASA/JPL/University of Mainz",
+        summary: "Cameras, spectrometers, a microscope, and a rock grinder made a geologist's toolkit. Pictured: a hand-sized spectrometer that finds iron minerals.",
         items: [
           "Panoramic Camera (Pancam): high-resolution color images of terrain and geological structures.",
           "Miniature Thermal Emission Spectrometer (Mini-TES): identified minerals and rock types from a distance.",
@@ -251,6 +281,9 @@ export const chapters = [
       },
       {
         title: "Launch and Cruise",
+        img: "m2/section-launch-and-cruise.webp",
+        credit: "Image: NASA",
+        summary: "The rover launched on June 10, 2003, and cruised for seven months to Mars, making a few small course corrections along the way.",
         items: [
           "Liftoff was at 10:58:47 a.m. PDT (17:58:47 UTC) on June 10, 2003.",
           "The spacecraft first entered an Earth parking orbit about 100 by 2,960 miles (163 by 4,762 kilometers) at 28.5 degrees inclination.",
@@ -261,6 +294,9 @@ export const chapters = [
       },
       {
         title: "Entry, Descent, and Landing",
+        img: "m2/section-entry-descent-and-landing.webp",
+        credit: "Image: NASA/JPL",
+        summary: "A heat shield, a parachute, rockets, and airbags took turns slowing the rover down. Pictured: the parachute being tested in a giant wind tunnel.",
         items: [
           "About 15 minutes before atmospheric entry, the lander inside its protective aeroshell separated from the cruise stage.",
           "At about 4 to 5 miles (6 to 7.5 kilometers) altitude, a parachute deployed. Thirty seconds later, the aeroshell's bottom heat shield was released.",
@@ -274,6 +310,9 @@ export const chapters = [
       },
       {
         title: "Surface Operations",
+        img: "m2/section-surface-operations.webp",
+        credit: "Image: NASA/JPL/Cornell",
+        summary: "After engineers fixed a computer memory problem, the rover ground into a rock for the first time ever on Mars and studied its fresh inside.",
         items: [
           "At first, the rover sent data through Mars Global Surveyor. About 90 minutes after landing, its airbags had deflated and its petal-like solar panels deployed; it then relayed data through the 2001 Mars Odyssey orbiter.",
           "It immediately began sending spectacular images back to Earth.",
@@ -284,6 +323,9 @@ export const chapters = [
       },
       {
         title: "Mission Highlights",
+        img: "m2/section-mission-highlights.webp",
+        credit: "Image: NASA/JPL-Caltech/Cornell",
+        summary: "It climbed a hill, got its solar panels cleaned by dust devils, and while dragging a broken wheel uncovered silica-rich soil—a sign of past water.",
         items: [
           "A visit to Bonneville Crater took the rover about 400 yards (370 meters) from its original landing point; it later reached the base of Columbia Hills.",
           "In 2005 it climbed rocky, sandy terrain toward Husband Hill and reached the summit on September 29. From there it captured true-color 360-degree panoramas of Gusev Crater.",
@@ -297,6 +339,9 @@ export const chapters = [
       },
       {
         title: "Final Science and Recovery",
+        img: "m2/section-final-science-and-recovery.webp",
+        credit: "Image: NASA/JPL-Caltech/Cornell University",
+        summary: "Stuck in soft sand in 2009, the rover became a parked science station. Contact was lost in March 2010, probably because of the bitter winter cold.",
         items: [
           "By late January 2010, the mission was replanned as a stationary science platform.",
           "A new goal was to measure tiny wobbles in Mars's rotation to learn whether its core is liquid or solid.",
@@ -307,6 +352,9 @@ export const chapters = [
       },
       {
         title: "Name and Landing Tribute",
+        img: "m2/section-name-and-landing-tribute.webp",
+        credit: "Image: NASA/JPL-Caltech/Univ. of Arizona",
+        summary: "This was Spirit, the first twin of the Mars Exploration Rovers. Its landing site, seen here from orbit, honors the seven astronauts of the shuttle Columbia.",
         revealOnly: true,
         items: [
           "The mission was NASA's Mars Exploration Rover (MER) mission, part of the Mars Exploration Program. This rover was MER-A, the first of the twins to land.",
@@ -316,53 +364,53 @@ export const chapters = [
       },
     ],
     steps: [
-      { img: "/m2/white-soil.webp", overlay: { type: "title", kicker: "Case M-2", title: "The Backward Wheel", subtitle: "Mars · Difficulty: Medium" } },
-      { img: "/common/case-board.webp", speaker: "nova", text: "The second file, Detective. Two explorers left Earth for opposite sides of Mars. One is still rolling. The other left a strange trail..." },
-      { img: "/m2/twins.webp", speaker: "bolt", text: "The record shows twins! Matching machines the size of golf carts: six wheels, solar panels, a tall camera mast, and a robotic arm." },
-      { img: "/m2/twins.webp", speaker: "nova", text: "They were sent where water might once have changed the ground. Their job: read the rocks and soil, and find that water's fingerprints." },
-      { img: "/m2/white-soil.webp", speaker: "bolt", text: "But this file is strange. One wheel stopped turning—yet a long groove cuts through the soil. Somehow, it kept moving." },
-      { img: "/m2/white-soil.webp", speaker: "rover", signal: 1, fictional: true, text: "…backward… one wheel drags… my twin… where…" },
+      { img: "m2/white-soil.webp", overlay: { type: "title", kicker: "Case M-2", title: "The Backward Wheel", subtitle: "Mars · Difficulty: Medium" } },
+      { img: "common/case-board.webp", speaker: "nova", text: "The second file, Detective. Two explorers left Earth for opposite sides of Mars. One is still rolling. The other left a strange trail..." },
+      { img: "m2/twins.webp", speaker: "bolt", text: "The record shows twins! Matching machines the size of golf carts: six wheels, solar panels, a tall camera mast, and a robotic arm." },
+      { img: "m2/twins.webp", speaker: "nova", text: "They were sent where water might once have changed the ground. Their job: read the rocks and soil, and find that water's fingerprints." },
+      { img: "m2/white-soil.webp", speaker: "bolt", text: "But this file is strange. One wheel stopped turning—yet a long groove cuts through the soil. Somehow, it kept moving." },
+      { img: "m2/white-soil.webp", speaker: "rover", signal: 1, fictional: true, text: "…backward… one wheel drags… my twin… where…" },
 
-      { img: "/m2/dust-devil.webp", speaker: "nova", text: "The map points to a crater about 160 kilometers wide. Scientists wondered: did a lake once fill it?" },
-      { img: "/m2/twins.webp", speaker: "bolt", text: "This rover is a giant next to our first case—about 185 kilograms! Its camera mast stands about five feet high, almost your eye level." },
-      { img: "/m2/twins.webp", speaker: "bolt", text: "Its robotic arm carries a whole science kit, placed right against rocks and soil. And those twin tracks nearby? Another machine just like this one rolled here too." },
+      { img: "m2/dust-devil.webp", speaker: "nova", text: "The map points to a crater about 160 kilometers wide. Scientists wondered: did a lake once fill it?" },
+      { img: "m2/twins.webp", speaker: "bolt", text: "This rover is a giant next to our first case—about 185 kilograms! Its camera mast stands about five feet high, almost your eye level." },
+      { img: "m2/twins.webp", speaker: "bolt", text: "Its robotic arm carries a whole science kit, placed right against rocks and soil. And those twin tracks nearby? Another machine just like this one rolled here too." },
 
-      { img: "/m2/dust-devil.webp", speaker: "nova", text: "Dust piled up on the panels. The rover's power began to fade. Then the wind sent an unexpected visitor..." },
+      { img: "m2/dust-devil.webp", speaker: "nova", text: "Dust piled up on the panels. The rover's power began to fade. Then the wind sent an unexpected visitor..." },
       {
-        img: "/m2/dust-devil.webp", speaker: "bolt",
+        img: "m2/dust-devil.webp", speaker: "bolt",
         text: "A spinning dust devil swept across the panels like a giant cleaning brush! Power came back, and the journey could continue.",
-        nasa: { src: "/m2/nasa-dust-devils.webp", title: "Two Dust Devils", caption: "Two moving dust devils caught by the rover's camera. Gusts like these sometimes cleaned off the solar panels.", credit: "Image: NASA/JPL/Texas A&M" },
+        nasa: { src: "m2/nasa-dust-devils.webp", title: "Two Dust Devils", caption: "Two moving dust devils caught by the rover's camera. Gusts like these sometimes cleaned off the solar panels.", credit: "Image: NASA/JPL/Texas A&M" },
       },
       {
-        img: "/m2/dust-devil.webp",
+        img: "m2/dust-devil.webp",
         speaker: "nova",
         text: "The trail climbs uphill. In 2005, the rover crawled up rock and sand toward a summit overlooking the whole crater.",
-        nasa: { src: "/m2/nasa-husband-hill.webp", title: "View from Husband Hill", caption: "The rover's view looking south from the top of the hill.", credit: JPL },
+        nasa: { src: "m2/nasa-husband-hill.webp", title: "View from Husband Hill", caption: "The rover's view looking south from the top of the hill.", credit: JPL },
       },
-      { img: "/m2/white-soil.webp", speaker: "bolt", text: "Then—trouble. The front wheel died. Instead of stopping, the rover drove backward, dragging the dead wheel and carving a long track across Mars." },
+      { img: "m2/white-soil.webp", speaker: "bolt", text: "Then—trouble. The front wheel died. Instead of stopping, the rover drove backward, dragging the dead wheel and carving a long track across Mars." },
       {
-        img: "/m2/white-soil.webp", speaker: "bolt",
+        img: "m2/white-soil.webp", speaker: "bolt",
         text: "The broken wheel turned into a shovel! Scraping away the top layer, it uncovered bright, silica-rich soil—a clue that water once changed this place.",
-        nasa: { src: "/m2/nasa-silica.webp", title: "Silica-Rich Soil", caption: "Bright white soil uncovered when the rover dragged its broken wheel. It was found to contain about 90 percent silica.", credit: "Image: NASA/JPL/Cornell" },
+        nasa: { src: "m2/nasa-silica.webp", title: "Silica-Rich Soil", caption: "Bright white soil uncovered when the rover dragged its broken wheel. It was found to contain about 90 percent silica.", credit: "Image: NASA/JPL/Cornell" },
       },
 
-      { img: "/m2/dust-devil.webp", speaker: "bolt", text: "The road wasn't smooth. A memory fault once cut the signal completely! The team repaired it from Earth with a software patch—and the rover spoke again." },
-      { img: "/m2/twins.webp", speaker: "nova", text: "Back online, it ground open a rock with its grinding tool—a first on Mars! Scientists could finally peek inside." },
-      { img: "/m2/dust-devil.webp", speaker: "bolt", text: "The plan was just 90 Martian days. This explorer kept going—past one crater, up the hills, all the way to a summit view." },
-      { img: "/m2/twins.webp", speaker: "nova", text: "From the top: a 360-degree panorama in true color. The dust devils had cleaned the panels too—a fresh burst of energy." },
-      { img: "/m2/white-soil.webp", speaker: "bolt", text: "Winter was coming, so the team aimed for a hill with more sunlight. But the dragging wheel kept digging—and kept uncovering bright silica." },
-      { img: "/m2/dust-devil.webp", speaker: "nova", text: "New software made the rovers clever: they could choose for themselves—send this image? Move the arm? Then dust storms darkened the sky and drained their solar power." },
-      { img: "/m2/twins.webp", speaker: "bolt", text: "Then the wind helped again, sweeping the panels clean. Power returned—until soft ground beside a low plateau grabbed the wheels and held on." },
-      { img: "/m2/white-soil.webp", speaker: "nova", text: "The team tried everything. Then another wheel failed. New plan: stop driving—the rover would become a stationary science station." },
-      { img: "/m2/twins.webp", speaker: "bolt", text: "Even from one spot, it had work! Measure tiny wobbles in Mars's rotation—is the planet's core liquid, or solid? The rover would find out." },
-      { img: "/m2/white-soil.webp", speaker: "nova", text: "For that, it needed to tilt its panels toward the winter Sun. The tilt never came. Then the signal fell silent—and more than a thousand calls brought no answer." },
+      { img: "m2/dust-devil.webp", speaker: "bolt", text: "The road wasn't smooth. A memory fault once cut the signal completely! The team repaired it from Earth with a software patch—and the rover spoke again." },
+      { img: "m2/twins.webp", speaker: "nova", text: "Back online, it ground open a rock with its grinding tool—a first on Mars! Scientists could finally peek inside." },
+      { img: "m2/dust-devil.webp", speaker: "bolt", text: "The plan was just 90 Martian days. This explorer kept going—past one crater, up the hills, all the way to a summit view." },
+      { img: "m2/twins.webp", speaker: "nova", text: "From the top: a 360-degree panorama in true color. The dust devils had cleaned the panels too—a fresh burst of energy." },
+      { img: "m2/white-soil.webp", speaker: "bolt", text: "Winter was coming, so the team aimed for a hill with more sunlight. But the dragging wheel kept digging—and kept uncovering bright silica." },
+      { img: "m2/dust-devil.webp", speaker: "nova", text: "New software made the rovers clever: they could choose for themselves—send this image? Move the arm? Then dust storms darkened the sky and drained their solar power." },
+      { img: "m2/twins.webp", speaker: "bolt", text: "Then the wind helped again, sweeping the panels clean. Power returned—until soft ground beside a low plateau grabbed the wheels and held on." },
+      { img: "m2/white-soil.webp", speaker: "nova", text: "The team tried everything. Then another wheel failed. New plan: stop driving—the rover would become a stationary science station." },
+      { img: "m2/twins.webp", speaker: "bolt", text: "Even from one spot, it had work! Measure tiny wobbles in Mars's rotation—is the planet's core liquid, or solid? The rover would find out." },
+      { img: "m2/white-soil.webp", speaker: "nova", text: "For that, it needed to tilt its panels toward the winter Sun. The tilt never came. Then the signal fell silent—and more than a thousand calls brought no answer." },
 
-      { img: "/m2/white-soil.webp", dim: true, speaker: "bolt", text: "Let's open the file. Clue one: this machine can travel over Mars on six wheels.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1"], reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover, so it couldn't move across the Martian ground." } } },
-      { img: "/m2/white-soil.webp", dim: true, speaker: "bolt", text: "Clue two: about 185 kilograms, with a robotic arm to investigate rocks and soil.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Sojourner"], reasons: { "Viking 1": "Viking 1 was a stationary lander and couldn't move.", Sojourner: "Sojourner weighed only about 11 kilograms. That doesn't match the 185-kilogram clue." } } },
-      { img: "/m2/white-soil.webp", dim: true, speaker: "bolt", text: "Final clue: the crater with the old lake, the climb up the hills, and a broken wheel that uncovered silica-rich soil. Which rover fits?", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Sojourner", "Opportunity"], solved: "Spirit", reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover.", Sojourner: "Sojourner was a small, 11-kilogram rover; this file describes a rover weighing 185 kilograms.", Opportunity: "Opportunity worked at Meridiani Planum. The ancient lake, nearby hills, and silica uncovered by a dragging wheel point to this rover's twin." } } },
+      { img: "m2/white-soil.webp", dim: true, speaker: "bolt", text: "Let's open the file. Clue one: this machine can travel over Mars on six wheels.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1"], reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover, so it couldn't move across the Martian ground." } } },
+      { img: "m2/white-soil.webp", dim: true, speaker: "bolt", text: "Clue two: about 185 kilograms, with a robotic arm to investigate rocks and soil.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Sojourner"], reasons: { "Viking 1": "Viking 1 was a stationary lander and couldn't move.", Sojourner: "Sojourner weighed only about 11 kilograms. That doesn't match the 185-kilogram clue." } } },
+      { img: "m2/white-soil.webp", dim: true, speaker: "bolt", text: "Final clue: the crater with the old lake, the climb up the hills, and a broken wheel that uncovered silica-rich soil. Which rover fits?", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Sojourner", "Opportunity"], solved: "Spirit", reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover.", Sojourner: "Sojourner was a small, 11-kilogram rover; this file describes a rover weighing 185 kilograms.", Opportunity: "Opportunity worked at Meridiani Planum. The ancient lake, nearby hills, and silica uncovered by a dragging wheel point to this rover's twin." } } },
 
       {
-        img: "/m2/twins.webp", dim: true, reveal: true, speaker: "rover", signal: 5, roverName: "Spirit", fictional: true,
+        img: "m2/twins.webp", dim: true, reveal: true, speaker: "rover", signal: 5, roverName: "Spirit", fictional: true,
         text: "Yes. I'm Spirit. I was the first of the twins to land on Mars.",
         overlay: {
           type: "identity", name: "Spirit",
@@ -378,23 +426,23 @@ export const chapters = [
         },
       },
 
-      { img: "/m2/twins.webp", reveal: true, speaker: "bolt", text: "The file speaks: Spirit, rover MER-A. One of two twins, sent to opposite sides of Mars to hunt for clues of ancient water." },
-      { img: "/m2/twins.webp", reveal: true, speaker: "nova", text: "Its landing site was later named Columbia Memorial Station, for the seven astronauts lost with the shuttle Columbia." },
-      { img: "/m2/troy.webp", reveal: true, overlay: { type: "chapterBreak", title: "The Last Message" } },
+      { img: "m2/twins.webp", reveal: true, speaker: "bolt", text: "The file speaks: Spirit, rover MER-A. One of two twins, sent to opposite sides of Mars to hunt for clues of ancient water." },
+      { img: "m2/twins.webp", reveal: true, speaker: "nova", text: "Its landing site was later named Columbia Memorial Station, for the seven astronauts lost with the shuttle Columbia." },
+      { img: "m2/troy.webp", reveal: true, overlay: { type: "chapterBreak", title: "The Last Message" } },
       {
-        img: "/m2/troy.webp", reveal: true, speaker: "nova",
+        img: "m2/troy.webp", reveal: true, speaker: "nova",
         text: "By May 2009, Spirit was trapped in soft soil beside a low plateau called Home Plate. The slippery ground gave its wheels no grip.",
-        nasa: { src: "/m2/nasa-troy.webp", title: "Trapped in Soft Soil", caption: "A computer-made image from data sent by the rover, showing how far its wheels sank into the soft sand.", credit: JPL },
+        nasa: { src: "m2/nasa-troy.webp", title: "Trapped in Soft Soil", caption: "A computer-made image from data sent by the rover, showing how far its wheels sank into the soft sand.", credit: JPL },
       },
-      { img: "/m2/troy.webp", reveal: true, speaker: "bolt", text: "The team tried for months. On Earth, they even stuck a test rover in soft soil to practice the escape! On November 28, another wheel—the right rear one—stopped working." },
-      { img: "/m2/troy.webp", reveal: true, speaker: "rover", signal: 4, roverName: "Spirit", fictional: true, text: "I can't move. But I can still measure and listen. I'll keep working right here." },
-      { img: "/m2/troy.webp", reveal: true, speaker: "nova", text: "In late January 2010, the plan changed: stay in place and listen for tiny wobbles in Mars's spin—liquid core, or solid? But the tilt toward the winter Sun never came." },
-      { img: "/m2/troy.webp", reveal: true, speaker: "bolt", text: "After March 22, 2010—silence. More than 1,300 commands, no answer. Recovery ended on May 25, 2011. Extreme cold had likely beaten the survival heaters." },
-      { img: "/m2/troy.webp", reveal: true, speaker: "rover", signal: 2, roverName: "Spirit", fictional: true, text: "I was meant to last 90 Martian days. I traveled for years. …Tell my twin I kept trying." },
-      { img: "/m2/troy.webp", reveal: true, speaker: "bolt", text: "The final count: 4.8 miles—7.73 kilometers—and six years, two months, and 19 days of work. More than 25 times its planned life." },
-      { img: "/m2/troy.webp", reveal: true, speaker: "nova", text: "Dust storms, software faults, broken wheels, a final winter—it survived them all. And one dead wheel uncovered bright soil that proved water once touched Mars." },
-      { img: "/m2/troy.webp", reveal: true, dim: true, overlay: { type: "boltLearns", text: "When you hit an obstacle, keep going—even if you have to go backward.", source: "Spirit" } },
-      { img: "/common/case-board.webp", reveal: true, speaker: "nova", text: "When Spirit stopped, its twin was still rolling on the other side of Mars. The next file is that twin." },
+      { img: "m2/troy.webp", reveal: true, speaker: "bolt", text: "The team tried for months. On Earth, they even stuck a test rover in soft soil to practice the escape! On November 28, another wheel—the right rear one—stopped working." },
+      { img: "m2/troy.webp", reveal: true, speaker: "rover", signal: 4, roverName: "Spirit", fictional: true, text: "I can't move. But I can still measure and listen. I'll keep working right here." },
+      { img: "m2/troy.webp", reveal: true, speaker: "nova", text: "In late January 2010, the plan changed: stay in place and listen for tiny wobbles in Mars's spin—liquid core, or solid? But the tilt toward the winter Sun never came." },
+      { img: "m2/troy.webp", reveal: true, speaker: "bolt", text: "After March 22, 2010—silence. More than 1,300 commands, no answer. Recovery ended on May 25, 2011. Extreme cold had likely beaten the survival heaters." },
+      { img: "m2/troy.webp", reveal: true, speaker: "rover", signal: 2, roverName: "Spirit", fictional: true, text: "I was meant to last 90 Martian days. I traveled for years. …Tell my twin I kept trying." },
+      { img: "m2/troy.webp", reveal: true, speaker: "bolt", text: "The final count: 4.8 miles—7.73 kilometers—and six years, two months, and 19 days of work. More than 25 times its planned life." },
+      { img: "m2/troy.webp", reveal: true, speaker: "nova", text: "Dust storms, software faults, broken wheels, a final winter—it survived them all. And one dead wheel uncovered bright soil that proved water once touched Mars." },
+      { img: "m2/troy.webp", reveal: true, dim: true, overlay: { type: "boltLearns", text: "When you hit an obstacle, keep going—even if you have to go backward.", source: "Spirit" } },
+      { img: "common/case-board.webp", reveal: true, speaker: "nova", text: "When Spirit stopped, its twin was still rolling on the other side of Mars. The next file is that twin." },
     ],
   },
 
@@ -403,12 +451,15 @@ export const chapters = [
     code: "Case M-3",
     codeName: "Little Blueberries",
     realName: "Opportunity",
-    portrait: "/rovers/opportunity.webp",
+    portrait: "rovers/opportunity.webp",
     theme: "#ffc65c",
     caseFile: { destination: "Mars", location: "Meridiani Planum", difficulty: "Hard" },
     nasaSections: [
       {
         title: "Mission Record",
+        img: "m3/section-mission-record.webp",
+        credit: "Image: NASA",
+        summary: "Launched in July 2003, the rover landed on Meridiani Planum in January 2004. Planned for 90 days, it worked for more than 14 years and drove 45 km.",
         items: [
           "Mission type: rover. Science target: the Martian surface. Status: successful.",
           "Objective: search for a range of rocks and soil types and look for clues of past water activity.",
@@ -422,6 +473,9 @@ export const chapters = [
       },
       {
         title: "Twin Rover Design",
+        img: "m3/section-twin-rover-design.webp",
+        credit: "Image: NASA",
+        summary: "A twin of the rover on the other side of Mars: six wheels, a mast full of cameras, a robotic arm, and heaters to survive freezing nights.",
         items: [
           "The twin rovers were built for a twin-rover mission in NASA's long-term Mars exploration program and were sent to opposite sides of the planet to study sites where conditions may once have been favorable for life—places suspected of having been affected by liquid water in the past.",
           "Each rover was about the size of a golf cart and weighed 408 pounds (185 kilograms), seven times more than the Sojourner rover.",
@@ -433,6 +487,9 @@ export const chapters = [
       },
       {
         title: "Landing at Meridiani Planum",
+        img: "m3/section-landing-at-meridiani-planum.webp",
+        credit: "Image: NASA/JPL-Caltech/Univ. of Arizona",
+        summary: "Bouncing at least 26 times on its airbags, the rover rolled right into a small crater—a lucky hole-in-one on a plain rich in hematite.",
         items: [
           "Meridiani Planum is a flat plain near the Martian equator, chosen for its abundant deposits of hematite, an iron-rich mineral that typically forms in liquid water.",
           "After a final course correction on January 16, 2004, the spacecraft dived into the Martian atmosphere. The descent was uneventful, with no anomalies.",
@@ -442,6 +499,9 @@ export const chapters = [
       },
       {
         title: "First Discoveries",
+        img: "m3/section-first-discoveries.webp",
+        credit: "Image: NASA/JPL/Cornell",
+        summary: "Layered bedrock and tiny round \"blueberries\" showed that water once soaked this place. The rover also found the first meteorite ever discovered on another planet.",
         items: [
           "Inside the tiny landing crater, the rover immediately spotted exposed bedrock, confirming that liquid water once flowed on the Martian surface.",
           "Small, iron-rich round structures, nicknamed \"blueberries,\" were found embedded in the rock. These hematite spherules formed in standing water.",
@@ -453,6 +513,9 @@ export const chapters = [
       },
       {
         title: "Victoria Crater",
+        img: "m3/section-victoria-crater.webp",
+        credit: "Image: NASA/JPL/Cornell",
+        summary: "After escaping a sand trap, the rover drove 21 months to Victoria Crater, survived a huge dust storm, and spent almost a year studying its rock layers.",
         items: [
           "In 2005, the rover got stuck after driving into an area where several of its wheels were buried in sand. Controllers at NASA's Jet Propulsion Laboratory maneuvered it a few inches at a time and freed it in June 2005, after six weeks.",
           "Through the rest of 2005 and into 2006, it headed slowly south, first arriving at Erebus, a highly eroded impact crater about 980 feet (300 meters) in diameter.",
@@ -463,6 +526,9 @@ export const chapters = [
       },
       {
         title: "The Road to Endeavour",
+        img: "m3/section-the-road-to-endeavour.webp",
+        credit: "Image: NASA/JPL-Caltech",
+        summary: "A three-year drive led to giant Endeavour Crater, where clay minerals pointed to ancient water gentle enough for tiny life.",
         items: [
           "The next target was the enormous Endeavour Crater, about 13 miles (22 kilometers) in diameter.",
           "On the way, the rover studied the so-called Marquette Island rock, \"different in composition and character from any known rock on Mars or meteorite from Mars,\" according to principal investigator Steve Squyres. It appeared to have originated deep in the Martian crust, far from the landing site, unlike almost all the rocks the rover had studied before.",
@@ -476,6 +542,9 @@ export const chapters = [
       },
       {
         title: "Records and the Marathon",
+        img: "m3/section-records-and-the-marathon.webp",
+        credit: "Image: NASA/JPL-Caltech/Cornell Univ./Arizona State Univ.",
+        summary: "It broke the record for the longest drive on another world and finished a full marathon—42.195 km—in just over 11 years.",
         items: [
           "On May 16, 2013, the rover passed the record for the farthest distance traveled by any NASA vehicle on another celestial body: 22.21 miles (35.744 kilometers), a record set by the Apollo 17 Lunar Roving Vehicle in December 1972.",
           "On January 3, 2014, it passed 10 years on the surface, with relatively clean solar panels allowing increased power. A \"selfie\" combining multiple frames taken by the panoramic camera through three color filters from March 22 to 24, 2014, showed a rover swept clean by wind, raising hopes for the mission's future.",
@@ -488,6 +557,9 @@ export const chapters = [
       },
       {
         title: "The Final Valley",
+        img: "m3/section-the-final-valley.webp",
+        credit: "Image: NASA/JPL-Caltech",
+        summary: "In its last years, the rover drove the steepest slope ever on Mars and explored a valley probably carved by water, until a planet-wide dust storm in 2018.",
         items: [
           "In its seventh Martian winter (Earth winter 2015–2016), the rover was kept at energy-minimum levels, but it still used its RAT to remove surface dust from a target called \"Private John Potts,\" a name referencing a member of the Lewis and Clark Expedition.",
           "It explored the western rim of Endeavour, especially the south side of Marathon Valley, which slices through the crater's rim from west to east. From a perch high on a ridge on March 31, 2016 (sol 4,332), it recorded a dust devil twisting through the valley below, with a view back at its own tracks up the southern edge of the valley.",
@@ -500,6 +572,9 @@ export const chapters = [
       },
       {
         title: "Name and Landing Tribute",
+        img: "m3/section-name-and-landing-tribute.webp",
+        credit: "Image: NASA/JPL/MSSS",
+        summary: "This was Opportunity, nicknamed \"Oppy,\" the second twin. Its landing site, seen here from orbit, honors the crew of the shuttle Challenger, lost in 1986.",
         revealOnly: true,
         items: [
           "The mission was NASA's Mars Exploration Rover (MER) mission, part of the Mars Exploration Program. This rover was MER-B, the second of the twins to land.",
@@ -509,51 +584,51 @@ export const chapters = [
       },
     ],
     steps: [
-      { img: "/m3/blueberries.webp", overlay: { type: "title", kicker: "Case M-3", title: "Little Blueberries", subtitle: "Mars · Difficulty: Medium" } },
-      { img: "/common/case-board.webp", speaker: "nova", text: "The third file, Detective. One twin's story is closed. This is the mirror twin: same design, same 90-day promise—very different road." },
-      { img: "/m3/blueberries.webp", speaker: "bolt", text: "The record matches our last case exactly: six wheels, solar panels, a tall camera mast, a robotic arm. About 185 kilograms, golf-cart size. Built as twins." },
-      { img: "/m3/marathon.webp", speaker: "nova", text: "But careful—don't confuse the twins! The last one dragged a broken wheel. This one's log just counts on: day 90... day 1,000... day 5,000..." },
-      { img: "/m3/marathon.webp", speaker: "bolt", text: "Day 5,000?! A machine built for 90 days? My counting circuits are overheating!" },
-      { img: "/m3/marathon.webp", speaker: "rover", signal: 1, fictional: true, text: "…dust… darkness… I'm still… moving…" },
+      { img: "m3/blueberries.webp", overlay: { type: "title", kicker: "Case M-3", title: "Little Blueberries", subtitle: "Mars · Difficulty: Medium" } },
+      { img: "common/case-board.webp", speaker: "nova", text: "The third file, Detective. One twin's story is closed. This is the mirror twin: same design, same 90-day promise—very different road." },
+      { img: "m3/blueberries.webp", speaker: "bolt", text: "The record matches our last case exactly: six wheels, solar panels, a tall camera mast, a robotic arm. About 185 kilograms, golf-cart size. Built as twins." },
+      { img: "m3/marathon.webp", speaker: "nova", text: "But careful—don't confuse the twins! The last one dragged a broken wheel. This one's log just counts on: day 90... day 1,000... day 5,000..." },
+      { img: "m3/marathon.webp", speaker: "bolt", text: "Day 5,000?! A machine built for 90 days? My counting circuits are overheating!" },
+      { img: "m3/marathon.webp", speaker: "rover", signal: 1, fictional: true, text: "…dust… darkness… I'm still… moving…" },
 
-      { img: "/m3/eagle-crater.webp", speaker: "nova", text: "The map lights up: Meridiani Planum, a flat plain near the Martian equator. Why here? Hematite—an iron-rich mineral that usually forms in liquid water." },
+      { img: "m3/eagle-crater.webp", speaker: "nova", text: "The map lights up: Meridiani Planum, a flat plain near the Martian equator. Why here? Hematite—an iron-rich mineral that usually forms in liquid water." },
       {
-        img: "/m3/eagle-crater.webp", speaker: "bolt",
+        img: "m3/eagle-crater.webp", speaker: "bolt",
         text: "The landing was smooth—but the airbag-wrapped lander bounced at least 26 times! It rolled to a stop 9 miles (14.9 kilometers) off target, inside a tiny crater only 22 meters wide. A \"hole-in-one in space!\"",
-        nasa: { src: "/m3/nasa-eagle-crater.webp", title: "Eagle Crater", caption: "The rover looks back after driving out of the crater. Wheel tracks crisscross the inside, and layers of rock line the rim.", credit: JPL },
+        nasa: { src: "m3/nasa-eagle-crater.webp", title: "Eagle Crater", caption: "The rover looks back after driving out of the crater. Wheel tracks crisscross the inside, and layers of rock line the rim.", credit: JPL },
       },
-      { img: "/m3/eagle-crater.webp", speaker: "nova", text: "Inside that little crater: the first discovery. Exposed bedrock, stacked in thin layers—and layers like these usually form underwater. Liquid water once flowed on the surface of Mars. Confirmed." },
+      { img: "m3/eagle-crater.webp", speaker: "nova", text: "Inside that little crater: the first discovery. Exposed bedrock, stacked in thin layers—and layers like these usually form underwater. Liquid water once flowed on the surface of Mars. Confirmed." },
       {
-        img: "/m3/blueberries.webp", speaker: "bolt",
+        img: "m3/blueberries.webp", speaker: "bolt",
         text: "And look—\"blueberries\"! Small, round grains of hematite embedded right in the rock. They usually form in standing water.",
-        nasa: { src: "/m3/nasa-berries.webp", title: "\"Blueberries\" on the Ground", caption: "Small round grains photographed by the rover's microscopic camera. They aren't really blue—the colors in the picture were changed to show details.", credit: "Image: NASA/JPL/Cornell/USGS" },
+        nasa: { src: "m3/nasa-berries.webp", title: "\"Blueberries\" on the Ground", caption: "Small round grains photographed by the rover's microscopic camera. They aren't really blue—the colors in the picture were changed to show details.", credit: "Image: NASA/JPL/Cornell/USGS" },
       },
-      { img: "/m3/eagle-crater.webp", speaker: "nova", text: "On March 22, 2004, the rover climbed over the rim and rolled out. One last look back: spectacular photos of its abandoned lander, backshell, and parachute. Then off to a larger crater, 820 yards (750 meters) away." },
-      { img: "/m3/marathon.webp", speaker: "bolt", text: "By July 26, 2004—Martian day 180—it had already doubled its planned mission! January 2005, beside its own discarded heat shield: a basketball-sized rock of iron and nickel. A meteorite! The first ever found on another planet." },
-      { img: "/m3/marathon.webp", speaker: "nova", text: "The road wasn't always easy. In 2005 it sank into soft ground, several wheels buried in sand. Engineers freed it a few inches at a time—and after six weeks, it rolled on." },
-      { img: "/m3/marathon.webp", speaker: "bolt", text: "Two years traveling south: past Erebus, an old eroded crater, then a 21-month trip to Victoria—800 meters wide, deeper than anything either twin had studied. After a dust-storm summer on almost no power, it drove down inside for a year of work." },
-      { img: "/m3/marathon.webp", speaker: "nova", text: "Then the longest drive yet: three whole years to Endeavour, a giant crater 22 kilometers wide. On the way, a strange rock that seemed to come from deep inside the Martian crust. Arriving in August 2011, it found clay minerals—signs of ancient water with a neutral pH. Water that microbes could have lived in." },
+      { img: "m3/eagle-crater.webp", speaker: "nova", text: "On March 22, 2004, the rover climbed over the rim and rolled out. One last look back: spectacular photos of its abandoned lander, backshell, and parachute. Then off to a larger crater, 820 yards (750 meters) away." },
+      { img: "m3/marathon.webp", speaker: "bolt", text: "By July 26, 2004—Martian day 180—it had already doubled its planned mission! January 2005, beside its own discarded heat shield: a basketball-sized rock of iron and nickel. A meteorite! The first ever found on another planet." },
+      { img: "m3/marathon.webp", speaker: "nova", text: "The road wasn't always easy. In 2005 it sank into soft ground, several wheels buried in sand. Engineers freed it a few inches at a time—and after six weeks, it rolled on." },
+      { img: "m3/marathon.webp", speaker: "bolt", text: "Two years traveling south: past Erebus, an old eroded crater, then a 21-month trip to Victoria—800 meters wide, deeper than anything either twin had studied. After a dust-storm summer on almost no power, it drove down inside for a year of work." },
+      { img: "m3/marathon.webp", speaker: "nova", text: "Then the longest drive yet: three whole years to Endeavour, a giant crater 22 kilometers wide. On the way, a strange rock that seemed to come from deep inside the Martian crust. Arriving in August 2011, it found clay minerals—signs of ancient water with a neutral pH. Water that microbes could have lived in." },
       {
-        img: "/m3/marathon.webp", speaker: "bolt",
+        img: "m3/marathon.webp", speaker: "bolt",
         text: "And in the cracks of the crater's rim: bright white veins of gypsum! Water once flowed right through them.",
-        nasa: { src: "/m3/nasa-homestake.webp", title: "The White Vein Called \"Homestake\"", caption: "A white line of gypsum in a crack in the rock. Strong evidence that water once flowed underground.", credit: "Image: NASA/JPL-Caltech/Cornell/ASU" },
+        nasa: { src: "m3/nasa-homestake.webp", title: "The White Vein Called \"Homestake\"", caption: "A white line of gypsum in a crack in the rock. Strong evidence that water once flowed underground.", credit: "Image: NASA/JPL-Caltech/Cornell/ASU" },
       },
-      { img: "/m3/marathon.webp", speaker: "nova", text: "The records kept falling! 2010: past Viking 1's mark for working nonstop on Mars—6 years and 116 days. 2013: past the Apollo 17 moon rover's distance record. 2014: past the Soviet Lunokhod 2's." },
+      { img: "m3/marathon.webp", speaker: "nova", text: "The records kept falling! 2010: past Viking 1's mark for working nonstop on Mars—6 years and 116 days. 2013: past the Apollo 17 moon rover's distance record. 2014: past the Soviet Lunokhod 2's." },
       {
-        img: "/m3/marathon.webp", speaker: "bolt",
+        img: "m3/marathon.webp", speaker: "bolt",
         text: "March 2015, after 11 years and 2 months: a full marathon—42.195 kilometers! No machine from Earth had ever driven that far on another world.",
-        nasa: { src: "/m3/nasa-marathon.webp", title: "The First Marathon on Mars", caption: "A map of the rover's entire journey, from tiny Eagle Crater to enormous Endeavour Crater.", credit: "Image: NASA/JPL-Caltech/Univ. of Arizona" },
+        nasa: { src: "m3/nasa-marathon.webp", title: "The First Marathon on Mars", caption: "A map of the rover's entire journey, from tiny Eagle Crater to enormous Endeavour Crater.", credit: "Image: NASA/JPL-Caltech/Univ. of Arizona" },
       },
-      { img: "/m3/marathon.webp", speaker: "nova", text: "The machine was aging. Its flash memory began to fail, so engineers reformatted it and later ran the rover on RAM alone. In its seventh winter it still swept dust off rocks, day after day. The wind even cleaned its panels for a famous \"selfie.\"" },
-      { img: "/m3/marathon.webp", speaker: "bolt", text: "It even crossed a slope tilted 32 degrees—the steepest any rover had driven on Mars, breaking a record it set itself back in 2004!" },
-      { img: "/m3/marathon.webp", speaker: "nova", text: "In 2017 it reached its last destination: a gully cutting through the rim of Endeavour, carved—scientists believe—by water. Down it went, gently, saving its power." },
+      { img: "m3/marathon.webp", speaker: "nova", text: "The machine was aging. Its flash memory began to fail, so engineers reformatted it and later ran the rover on RAM alone. In its seventh winter it still swept dust off rocks, day after day. The wind even cleaned its panels for a famous \"selfie.\"" },
+      { img: "m3/marathon.webp", speaker: "bolt", text: "It even crossed a slope tilted 32 degrees—the steepest any rover had driven on Mars, breaking a record it set itself back in 2004!" },
+      { img: "m3/marathon.webp", speaker: "nova", text: "In 2017 it reached its last destination: a gully cutting through the rim of Endeavour, carved—scientists believe—by water. Down it went, gently, saving its power." },
 
-      { img: "/m3/eagle-crater.webp", dim: true, speaker: "bolt", text: "Let's open the file. Clue one: this machine can travel over Mars on six wheels.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1"], reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover, so it couldn't move across the Martian ground." } } },
-      { img: "/m3/eagle-crater.webp", dim: true, speaker: "bolt", text: "Clue two: about 185 kilograms, with a robotic arm for rocks and soil.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Sojourner"], reasons: { "Viking 1": "Viking 1 was a stationary lander and couldn't move.", Sojourner: "Sojourner weighed only about 11 kilograms. That doesn't match the 185-kilogram clue." } } },
-      { img: "/m3/eagle-crater.webp", dim: true, speaker: "bolt", text: "Final clue: a hematite-rich plain, round \"blueberries\" in the bedrock, and plain tracks from all six wheels—no dragging wheel like its twin's. Which rover fits the evidence?", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Sojourner", "Spirit"], solved: "Opportunity", reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover.", Sojourner: "Sojourner was a small, 11-kilogram rover; this file describes a rover weighing 185 kilograms.", Spirit: "Spirit worked at Gusev Crater, on the other side of Mars, and dragged a broken wheel behind it. The hematite \"blueberries\" and the plain six-wheel tracks belong to its twin." } } },
+      { img: "m3/eagle-crater.webp", dim: true, speaker: "bolt", text: "Let's open the file. Clue one: this machine can travel over Mars on six wheels.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1"], reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover, so it couldn't move across the Martian ground." } } },
+      { img: "m3/eagle-crater.webp", dim: true, speaker: "bolt", text: "Clue two: about 185 kilograms, with a robotic arm for rocks and soil.", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Sojourner"], reasons: { "Viking 1": "Viking 1 was a stationary lander and couldn't move.", Sojourner: "Sojourner weighed only about 11 kilograms. That doesn't match the 185-kilogram clue." } } },
+      { img: "m3/eagle-crater.webp", dim: true, speaker: "bolt", text: "Final clue: a hematite-rich plain, round \"blueberries\" in the bedrock, and plain tracks from all six wheels—no dragging wheel like its twin's. Which rover fits the evidence?", overlay: { type: "deduction", suspects: ["Sojourner", "Spirit", "Opportunity", "Viking 1"], out: ["Viking 1", "Sojourner", "Spirit"], solved: "Opportunity", reasons: { "Viking 1": "Viking 1 was a stationary lander, not a rover.", Sojourner: "Sojourner was a small, 11-kilogram rover; this file describes a rover weighing 185 kilograms.", Spirit: "Spirit worked at Gusev Crater, on the other side of Mars, and dragged a broken wheel behind it. The hematite \"blueberries\" and the plain six-wheel tracks belong to its twin." } } },
 
       {
-        img: "/m3/eagle-crater.webp", dim: true, reveal: true, speaker: "rover", signal: 5, roverName: "Opportunity", fictional: true,
+        img: "m3/eagle-crater.webp", dim: true, reveal: true, speaker: "rover", signal: 5, roverName: "Opportunity", fictional: true,
         text: "Yes. I'm Opportunity. Everyone calls me Oppy for short.",
         overlay: {
           type: "identity", name: "Opportunity (\"Oppy\")",
@@ -568,33 +643,285 @@ export const chapters = [
           ],
         },
       },
-      { img: "/m3/eagle-crater.webp", reveal: true, speaker: "bolt", text: "The file opens: Opportunity, rover MER-B, the second twin to land. Launched July 7, 2003, from Cape Canaveral—and it reached Meridiani Planum just 20 days after Spirit." },
-      { img: "/m3/eagle-crater.webp", reveal: true, speaker: "nova", text: "Its landing site was named Challenger Memorial Station, in tribute to the Space Shuttle crew lost in 1986." },
+      { img: "m3/eagle-crater.webp", reveal: true, speaker: "bolt", text: "The file opens: Opportunity, rover MER-B, the second twin to land. Launched July 7, 2003, from Cape Canaveral—and it reached Meridiani Planum just 20 days after Spirit." },
+      { img: "m3/eagle-crater.webp", reveal: true, speaker: "nova", text: "Its landing site was named Challenger Memorial Station, in tribute to the Space Shuttle crew lost in 1986." },
       {
-        img: "/m2/twins.webp", reveal: true, speaker: "bolt",
+        img: "m2/twins.webp", reveal: true, speaker: "bolt",
         text: "A 9-year-old girl named Sophie Collis chose the twins' names. In her essay, she wrote:",
         quote: { text: "I used to live in an orphanage. It was dark, cold, and lonely. At night, I liked looking up at the sparkling sky. ...Thank you for \"Spirit\" and \"Opportunity.\"", source: "Sophie Collis's winning essay, 2003 (adapted translation)" },
       },
 
-      { img: "/m3/dust-storm.webp", reveal: true, overlay: { type: "chapterBreak", title: "The Last Message" } },
-      { img: "/m3/dust-storm.webp", reveal: true, speaker: "nova", text: "Its final years were slow. A wheel stalled on the way into the gully, and the Sun slipped between the planets, muting the radios for weeks. In mid-July 2017, it entered its last home: Perseverance Valley—a name that means perseverance." },
+      { img: "m3/dust-storm.webp", reveal: true, overlay: { type: "chapterBreak", title: "The Last Message" } },
+      { img: "m3/dust-storm.webp", reveal: true, speaker: "nova", text: "Its final years were slow. A wheel stalled on the way into the gully, and the Sun slipped between the planets, muting the radios for weeks. In mid-July 2017, it entered its last home: Perseverance Valley—a name that means perseverance." },
       {
-        img: "/m3/dust-storm.webp", reveal: true, speaker: "bolt",
+        img: "m3/dust-storm.webp", reveal: true, speaker: "bolt",
         text: "Then, in June 2018, a historic dust storm swallowed the whole planet. No sunlight could reach the solar panels. The last signal came on June 10, 2018.",
-        nasa: { src: "/m3/nasa-darkness.webp", title: "Darkness Falls", caption: "A simulation of how the sky grew darker from the rover's location during the dust storm. From left to right, the Sun slowly disappears.", credit: "Image: NASA/JPL-Caltech/TAMU" },
+        nasa: { src: "m3/nasa-darkness.webp", title: "Darkness Falls", caption: "A simulation of how the sky grew darker from the rover's location during the dust storm. From left to right, the Sun slowly disappears.", credit: "Image: NASA/JPL-Caltech/TAMU" },
       },
-      { img: "/m3/dust-storm.webp", reveal: true, speaker: "nova", text: "Earth called more than 1,000 times. No answer. On February 13, 2019, NASA declared the mission complete." },
+      { img: "m3/dust-storm.webp", reveal: true, speaker: "nova", text: "Earth called more than 1,000 times. No answer. On February 13, 2019, NASA declared the mission complete." },
       {
-        img: "/m3/dust-storm.webp", reveal: true, speaker: "bolt",
+        img: "m3/dust-storm.webp", reveal: true, speaker: "bolt",
         text: "A journalist turned Oppy's final data into a poem. The line spread around the world:",
         quote: { text: "My battery is running low, and it's getting dark.", source: "Not the rover's actual words, but an emotional interpretation of its final data" },
       },
-      { img: "/m3/dust-storm.webp", reveal: true, speaker: "nova", text: "On the night of February 12, the team called one last time—and played an old song: \"I'll Be Seeing You.\" It means \"I'll see you again.\"" },
-      { img: "/m3/dust-storm.webp", reveal: true, speaker: "rover", signal: 3, roverName: "Opportunity", fictional: true, text: "I was meant to last 90 days and drive 1,100 yards. I kept going for almost 15 years and more than 28 miles. My final resting place is Perseverance Valley." },
-      { img: "/m3/dust-storm.webp", reveal: true, speaker: "bolt", text: "Its distance record stood until October 11, 2026, when NASA's Perseverance rover finally drove farther. And the next rover sent to Mars? Also named Perseverance." },
-      { img: "/m3/dust-storm.webp", reveal: true, dim: true, overlay: { type: "boltLearns", text: "Find your own way, and keep going on the Sun's power.", source: "Opportunity" } },
-      { img: "/common/case-board.webp", reveal: true, speaker: "nova", text: "Spirit and Opportunity. Twins, on opposite sides of Mars. Both files are complete now, Detective." },
-      { img: "/common/cover.webp", reveal: true, overlay: { type: "end" } },
+      { img: "m3/dust-storm.webp", reveal: true, speaker: "nova", text: "On the night of February 12, the team called one last time—and played an old song: \"I'll Be Seeing You.\" It means \"I'll see you again.\"" },
+      { img: "m3/dust-storm.webp", reveal: true, speaker: "rover", signal: 3, roverName: "Opportunity", fictional: true, text: "I was meant to last 90 days and drive 1,100 yards. I kept going for almost 15 years and more than 28 miles. My final resting place is Perseverance Valley." },
+      { img: "m3/dust-storm.webp", reveal: true, speaker: "bolt", text: "Its distance record stood until October 11, 2026, when NASA's Perseverance rover finally drove farther. And the next rover sent to Mars? Also named Perseverance." },
+      { img: "m3/dust-storm.webp", reveal: true, dim: true, overlay: { type: "boltLearns", text: "Find your own way, and keep going on the Sun's power.", source: "Opportunity" } },
+      { img: "common/case-board.webp", reveal: true, speaker: "nova", text: "Spirit and Opportunity. Twins, on opposite sides of Mars. All three Mars files are complete, Detective. But the Moon archive is finally ready." },
+      { img: "common/case-board.webp", reveal: true, speaker: "bolt", text: "Moon Case L-1 is waiting! Its clues begin with a rocket, three crew members, and a trail of footprints. Let's open the first lunar file." },
+    ],
+  },
+
+  {
+    id: "l1",
+    code: "Case L-1",
+    codeName: "Footprints",
+    realName: "Apollo 11",
+    portrait: "rovers/apollo-11.webp",
+    theme: "#e7c795",
+    caseFile: { destination: "Moon", location: "Sea of Tranquility", difficulty: "Easy" },
+    nasaExtras: [
+      { src: "m4/nasa-seismometer.webp", title: "Setting Up the Moonquake Detector", caption: "An astronaut deploys the seismometer that listened for moonquakes, with the lunar module and flag behind him.", credit: "Image: NASA" },
+      { src: "m4/nasa-retroreflector.webp", title: "Laser Mirror on the Moon", caption: "The laser ranging retroreflector left on the surface. Scientists on Earth bounce laser beams off it to measure the distance to the Moon.", credit: "Image: NASA" },
+      { video: true, src: "m4/nasa-apollo11-video.mp4", title: "The Path Down to the Moon", caption: "A reconstruction of the lunar module's final descent, with markers every second for the last minutes before landing.", credit: "Visualization: Google Earth, from Apollo 11 descent data" },
+    ],
+    nasaSections: [
+      {
+        title: "Mission Objective",
+        img: "m4/section-mission-objective.webp",
+        credit: "Image: NASA (the President speaking about the Moon goal, 1962)",
+        summary: "The goal was simple and huge: land people on the Moon and bring them home safely, as the President challenged the country to do in 1961.",
+        items: [
+          "Primary objective: complete the national goal set by President John F. Kennedy on May 25, 1961, to perform a crewed lunar landing and return to Earth.",
+          "Additional objectives: scientific exploration by the lunar module crew, a television camera to send pictures to Earth, a solar wind composition experiment, a seismic experiment package, and a Laser Ranging Retroreflector.",
+          "The two surface astronauts were to gather lunar samples and photograph the terrain, the deployed equipment, the lunar module, and each other with still and motion picture cameras.",
+          "It was the last Apollo mission to fly a \"free-return\" trajectory, which could bring the spacecraft back to Earth with no engine firing if the mission had to be aborted before lunar orbit insertion.",
+        ],
+      },
+      {
+        title: "Launch and Journey Out",
+        img: "m4/section-launch-and-journey-out.webp",
+        credit: "Image: NASA",
+        summary: "A giant Saturn V rocket launched the crew on July 16, 1969. Its aim was so good that only one course correction was needed on the way out.",
+        items: [
+          "Launch: July 16, 1969, 9:32 a.m. EDT, Launch Pad 39A, Kennedy Space Center.",
+          "Launch vehicle: Saturn V AS-506. Mobile Launcher Platform-1, High Bay 1, Firing Room 1.",
+          "Initial Earth orbit: 114 by 116 miles.",
+          "At 2 hours, 44 minutes, the S-IVB stage fired for 5 minutes, 48 seconds and sent the spacecraft toward the Moon (translunar injection).",
+          "The command and service module separated, turned around, and docked with the lunar module. The S-IVB stage was sent into orbit around the Sun at 4 hours, 40 minutes.",
+          "The first color TV transmission from the mission was made during the coast to the Moon.",
+          "July 17: a 3-second engine burn made the second of four planned midcourse corrections. The launch was so accurate that the other three were not needed.",
+          "July 18: two astronauts crawled through the docking tunnel to check out the lunar module and made a second TV transmission.",
+        ],
+      },
+      {
+        title: "Lunar Orbit and Descent",
+        img: "m4/section-lunar-orbit-and-descent.webp",
+        credit: "Image: NASA",
+        summary: "After slipping into orbit around the Moon, the lander separated from the command ship and began its long, careful descent.",
+        items: [
+          "July 19: behind the Moon, a 357.5-second engine burn at about 75 hours, 50 minutes placed the spacecraft in an elliptical lunar orbit of 69 by 190 miles.",
+          "A second 17-second burn changed the orbit to 62 by 70.5 miles, planned so lunar gravity would bring it to the 69 miles needed for rendezvous later.",
+          "July 20, 100 hours, 12 minutes: the lunar module undocked from the command module.",
+          "101 hours, 36 minutes: a 30-second descent engine burn lowered the orbit to 9 by 67 miles, on a path almost identical to the one flown by Apollo 10.",
+          "102 hours, 33 minutes: powered descent began, about 300 miles uprange. The descent engine fired for 756.3 seconds.",
+          "After eight minutes the lander reached \"high gate,\" about 26,000 feet above the surface and about five miles from the landing site.",
+        ],
+      },
+      {
+        title: "Landing Site",
+        img: "m4/section-landing-site.webp",
+        credit: "Image: NASA",
+        summary: "The lander touched down in the Sea of Tranquility, about 4 miles past its target, after being steered by hand around a crater.",
+        items: [
+          "Partly piloted by hand, the lander touched down in the Sea of Tranquility, Apollo Site 2, at about 102 hours, 45 minutes.",
+          "Landing coordinates: 0 degrees, 41 minutes, 15 seconds north latitude; 23 degrees, 26 minutes east longitude (about 0.71° N, 23.63° E).",
+          "It landed about four miles downrange from the planned point and almost one and a half minutes early.",
+          "Powered descent ran about 40 seconds longer than planned because the lander was steered away from a crater in the final phase.",
+          "A commemorative plaque signed by the President and the three astronauts was attached to the descent stage.",
+        ],
+      },
+      {
+        title: "Moonwalk",
+        img: "m4/section-moonwalk.webp",
+        credit: "Image: NASA",
+        summary: "Two astronauts walked on the Moon while about 650 million people watched on TV. They set up experiments and collected 21.5 kg of Moon rocks.",
+        items: [
+          "The first EVA was planned after a four-hour rest but was moved up. About four hours after landing, the commander climbed out and set up the TV camera.",
+          "At about 109 hours, 42 minutes, the first astronaut stepped onto the Moon. The second followed about 20 minutes later.",
+          "An estimated 650 million people watched the televised first step.",
+          "The TV camera was set on a tripod about 30 feet from the lander. About half an hour later, the President spoke with the astronauts by telephone link.",
+          "The astronauts ranged up to 300 feet from the lander.",
+          "They deployed the Early Apollo Scientific Experiments Package (EASEP), including a passive seismometer and a laser-ranging retroreflector, plus a solar wind experiment.",
+          "They gathered lunar samples, about 21.5 kilograms (47.5 pounds), and described them by radio.",
+          "The lunar module pilot spent 1 hour, 33 minutes outside; the commander re-entered 41 minutes later. The EVA lasted more than two and a half hours and ended at 111 hours, 39 minutes.",
+          "Total time on the lunar surface: 21 hours, 36 minutes.",
+        ],
+      },
+      {
+        title: "Left on the Moon",
+        img: "m4/section-left-on-the-moon.webp",
+        credit: "Image: NASA",
+        summary: "The crew left a plaque, a disk of goodwill messages from 73 countries, medals honoring lost space explorers, and a laser mirror still used today.",
+        items: [
+          "Medallions bearing the names of the three Apollo 1 astronauts who died in a launch pad fire, and of two cosmonauts who also died in accidents.",
+          "A 1.5-inch silicon disk with tiny goodwill messages from 73 countries and the names of congressional and NASA leaders.",
+          "The plaque on the descent stage, which stayed behind when the ascent stage lifted off.",
+          "The laser-ranging retroreflector still helps scientists measure the Earth-Moon distance with laser pulses.",
+        ],
+      },
+      {
+        title: "Return to Earth",
+        img: "m4/section-return-to-earth.webp",
+        credit: "Image: NASA",
+        summary: "The crew lifted off, rejoined the command ship, and flew home, splashing down in the Pacific Ocean on July 24, 1969.",
+        items: [
+          "After a rest period with about seven hours of sleep, the ascent engine fired at 124 hours, 22 minutes and burned for 435 seconds, reaching an orbit of 11 by 55 miles.",
+          "Thruster firings raised the orbit to about 57 by 72 miles. Docking with the command module came at 128 hours, 3 minutes, on its 27th revolution.",
+          "About four hours later, the ascent stage was jettisoned and left in lunar orbit.",
+          "July 21: behind the Moon, a two-and-a-half-minute engine burn started the trip home (trans-Earth injection).",
+          "July 22: an 11.2-second burn made the only midcourse correction needed on the way back, at about 150 hours, 30 minutes.",
+          "July 24: the service module separated and the command module turned its heat shield forward. Parachutes opened at 195 hours, 13 minutes.",
+          "Splashdown: July 24, 1969, 12:50 p.m. EDT, Pacific Ocean, at 13° 19' N, 169° 9' W, about 13 miles from the recovery ship USS Hornet.",
+          "Bad weather moved the landing point by about 250 miles. The flight lasted 195 hours, 18 minutes, 35 seconds, about 36 minutes longer than planned.",
+        ],
+      },
+      {
+        title: "Mission Totals",
+        img: "m4/section-mission-totals.webp",
+        credit: "Image: NASA",
+        summary: "The whole trip took about 8 days and covered 953,054 miles, including 30 laps around the Moon.",
+        items: [
+          "Duration: 8 days, 3 hours, 18 minutes, 35 seconds.",
+          "Distance traveled: 953,054 miles.",
+          "Lunar orbits: 30 revolutions.",
+          "Earth parking orbit altitude: 118.65 miles; inclination: 32.521 degrees.",
+          "Spacecraft: command and service module CSM-107 and lunar module LM-5.",
+        ],
+      },
+      {
+        title: "Getting Ready",
+        img: "m4/section-getting-ready.webp",
+        credit: "Image: NASA",
+        summary: "Months of testing came first. On May 20, 1969, the fully stacked Saturn V rolled out to its launch pad.",
+        items: [
+          "Nov 21, 1968: lunar module integrated systems test. Dec 6, 1968: command and service module integrated systems test.",
+          "Jan 1969: lunar module ascent and descent stages delivered to Kennedy; S-IVB stage and command and service module arrive.",
+          "Feb 1969: S-II and S-IC rocket stages and the instrument unit arrive at Kennedy.",
+          "Mar 24, 1969: command and service module altitude testing.",
+          "May 20, 1969: the stacked Saturn V rolled out to Launch Pad 39A.",
+          "Jun 1, 1969: flight readiness test. Jun 26, 1969: countdown demonstration test.",
+        ],
+      },
+      {
+        title: "Names and Crew",
+        img: "m4/section-names-and-crew.webp",
+        credit: "Image: NASA",
+        summary: "This was Apollo 11, flown by Neil Armstrong, Buzz Aldrin, and Michael Collins. Eagle landed on the Moon while Columbia waited in orbit.",
+        revealOnly: true,
+        items: [
+          "Mission: Apollo 11, NASA's first crewed lunar landing.",
+          "Commander: Neil Armstrong. Lunar Module Pilot: Edwin E. \"Buzz\" Aldrin Jr. Command Module Pilot: Michael Collins.",
+          "Backup crew: James A. Lovell (Commander), Fred W. Haise Jr. (Lunar Module Pilot), William A. Anders (Command Module Pilot).",
+          "Command and service module: Columbia (CSM-107). Lunar module: Eagle (LM-5).",
+          "Armstrong stepped onto the Moon first; Aldrin followed about 20 minutes later. Collins flew Columbia in lunar orbit.",
+          "Armstrong's first words on the surface: \"That's one small step for [a] man, one giant leap for mankind.\"",
+          "President Richard M. Nixon signed the plaque, spoke with the crew on the Moon, and welcomed them aboard the USS Hornet.",
+        ],
+      },
+    ],
+    steps: [
+      { img: "m4/launch.webp", overlay: { type: "title", kicker: "Case L-1", title: "Footprints", subtitle: "Moon · Difficulty: Easy" } },
+      { img: "common/case-board.webp", speaker: "nova", text: "Our first Moon file, Detective! Look closely: tiny marks in grey dust, on a world with no wind and no rain. Who made them? The name stays locked until we prove it." },
+
+      { img: "m4/launch.webp", speaker: "bolt", text: "Beep! This file begins with a big dare. In 1961, a President told the whole country: let's send people to the Moon, and bring them home safe. Nobody had ever done it!" },
+      { img: "m4/launch.webp", speaker: "nova", text: "And it wasn't just a quick visit. The crew had a to-do list: explore, set up science experiments, pick up Moon rocks, and send TV pictures home. Imagine homework, but on the Moon!" },
+      {
+        img: "m4/launch.webp", speaker: "bolt",
+        text: "Countdown! Three, two, one... It's July 16, 1969, 9:32 in the morning in Florida. A Saturn V rocket, taller than a 30-story building, roars into the sky with three crew members on top. The ground shakes like thunder!",
+        nasa: { src: "m4/nasa-launch.webp", title: "Liftoff", caption: "The Saturn V space vehicle rises from Launch Pad 39A at Kennedy Space Center on July 16, 1969.", credit: "Image: NASA" },
+      },
+      { img: "m4/launch.webp", speaker: "nova", text: "A rocket that big doesn't come in one box! Its pieces arrived one by one and were tested for months, like checking every building block twice. Two months before launch, the whole tower rolled out to the pad." },
+
+      { img: "m4/orbit.webp", speaker: "bolt", text: "Two hours and 44 minutes later, the top rocket stage roared again for almost six minutes. Whoosh! Earth got smaller and smaller behind them. Next stop: the Moon!" },
+      { img: "m4/orbit.webp", speaker: "nova", text: "Now, a space dance! The command ship let go, flipped around, and clicked nose to nose with a lander hidden inside the rocket. Two spacecraft, holding hands for the long trip." },
+      { img: "m4/orbit.webp", speaker: "bolt", text: "Their aim was nearly perfect! The plan allowed four course fixes, but they needed just one tiny three-second engine puff. Along the way, the crew beamed their first color TV pictures home. Hello, Earth!" },
+      { img: "m4/orbit.webp", speaker: "nova", text: "July 19. The spacecraft slipped behind the Moon, where no radio could reach Earth. Total silence... Then the engine fired for almost six minutes, and the Moon's gravity caught them like a soft net. They were in orbit!" },
+
+      { img: "m4/descent.webp", speaker: "bolt", text: "July 20, the big day! Two explorers wiggled through a tunnel into the lander and undocked. The third stayed behind, circling the Moon all alone. What a brave job!" },
+      {
+        img: "m4/descent.webp", speaker: "nova",
+        text: "The lander's path down copied almost exactly the one a practice mission had flown two months earlier. That practice lander turned back. This one kept going down, down, down...",
+        nasa: { src: "m4/nasa-approach.webp", title: "Approach to the Landing Site", caption: "The approach to Apollo Landing Site 2 in the southwestern Sea of Tranquility, photographed from the lunar module window.", credit: "Image: NASA" },
+      },
+      { img: "m4/descent.webp", speaker: "rover", signal: 1, fictional: true, text: "…engine on… ground coming up… too many rocks… keep going…" },
+      { img: "m4/descent.webp", speaker: "bolt", text: "Uh-oh! The planned spot was full of boulders and a crater! The commander took the controls and flew partly by hand, gliding over the rocks like a hovering bird, hunting for a smooth spot while the fuel ran low." },
+      { img: "m4/descent.webp", speaker: "nova", text: "Touchdown! Soft as a feather, on a wide, quiet plain called the Sea of Tranquility. Fun fact: there's no water in this sea. It's a flat field of old, hardened lava! They landed about four miles past the plan, and almost a minute and a half early." },
+      { img: "m4/descent.webp", speaker: "rover", signal: 2, fictional: true, text: "…legs down… dust settling… we made it… safe…" },
+
+      {
+        img: "m4/footprint.webp", speaker: "bolt",
+        text: "The plan said: rest for four hours first. But who could sleep at a moment like this? They suited up instead! Back on Earth, about 650 million people crowded around TVs. That's nearly one out of every five people on the planet!",
+      },
+      {
+        img: "m4/footprint.webp", speaker: "nova",
+        text: "Step by step, the first explorer climbed down the ladder... and pressed a boot into the soft, powdery dust. About 20 minutes later, the second one followed. There's no wind on the Moon to blow those prints away. That's our evidence!",
+        nasa: { src: "m4/nasa-bootprint.webp", title: "A Bootprint in Lunar Soil", caption: "A close-up of an astronaut's bootprint in the lunar soil, photographed with a 70mm lunar surface camera on July 20, 1969.", credit: "Image: NASA" },
+      },
+      { img: "m4/footprint.webp", speaker: "bolt", text: "A TV camera on three legs showed everything live. And then... ring, ring! The President of the United States called them, all the way on the Moon. Imagine getting that phone call!" },
+
+      {
+        img: "m4/experiments.webp", speaker: "bolt",
+        text: "Science time! They set up a moonquake listener called a seismometer, a foil sheet to catch the solar wind from the Sun, and a mirror box that works like a giant bike reflector. Scientists on Earth still bounce lasers off it today!",
+        nasa: { src: "m4/nasa-easep.webp", title: "Experiments on the Moon", caption: "An astronaut stands beside the deployed Early Apollo Scientific Experiments Package, with the lunar module and flag in the background.", credit: "Image: NASA" },
+      },
+      { img: "m4/experiments.webp", speaker: "nova", text: "They collected about 21 kilograms of Moon rocks and soil. That's about as heavy as a six-year-old! They explored up to 300 feet from the lander, about the length of a football field, and described every rock by radio." },
+      { img: "m4/experiments.webp", speaker: "bolt", text: "They left some gifts behind: medals honoring space explorers who had died, a disk about the size of a coin carrying goodwill messages from 73 countries, and a plaque on the lander's legs." },
+      { img: "m4/experiments.webp", speaker: "rover", signal: 3, fictional: true, text: "…my lower half stays here… holding the plaque… my top half carries them home…" },
+
+      {
+        img: "m4/orbit.webp", speaker: "nova",
+        text: "After 21 and a half hours on the Moon and a short nap, it was time to go. Surprise: the lander splits in two! The top half blasted off, and the bottom half stayed behind as its launch pad.",
+        nasa: { src: "m4/nasa-rendezvous.webp", title: "Rising to Meet the Command Ship", caption: "The lunar module ascent stage approaches the command module in lunar orbit, with a half-Earth in the background.", credit: "Image: NASA" },
+      },
+      { img: "m4/orbit.webp", speaker: "bolt", text: "Space catch! The top half climbed up and docked with the command ship. All three explorers were together again. Group hug! Then they let the lander's top half go, and it stayed circling the Moon." },
+      { img: "m4/recovery.webp", speaker: "nova", text: "July 21: one big engine push, behind the Moon again, turned them toward home. July 24: the capsule raced into Earth's air, parachutes bloomed open, and splash! The Pacific Ocean caught them." },
+      {
+        img: "m4/recovery.webp", speaker: "bolt",
+        text: "Storm alert! Bad weather moved the splash spot about 250 miles, but the rescue ship was waiting only 13 miles away. The whole trip took more than 8 days and 953,054 miles. That's like circling Earth about 38 times!",
+        nasa: { src: "m4/nasa-hornet.webp", title: "Capsule Aboard the Recovery Ship", caption: "The command module is hoisted aboard the recovery ship USS Hornet after splashdown in the Pacific Ocean.", credit: "Image: NASA" },
+      },
+
+      { img: "m4/orbit.webp", dim: true, speaker: "bolt", text: "Detective time! Let's squeeze the evidence. Clue one: this mission brought its own lander to the Moon, separate from the command ship. Which file had no lander?", overlay: { type: "deduction", suspects: ["Apollo 8", "Apollo 10", "Apollo 11", "Apollo 12"], out: ["Apollo 8"], reasons: { "Apollo 8": "Apollo 8 circled the Moon with only its command and service module. It carried no lunar lander." } } },
+      { img: "m4/descent.webp", dim: true, speaker: "bolt", text: "Clue two: this lander didn't just fly low and turn back. It touched down! Two explorers walked outside, while one stayed in orbit above.", overlay: { type: "deduction", suspects: ["Apollo 8", "Apollo 10", "Apollo 11", "Apollo 12"], out: ["Apollo 8", "Apollo 10"], reasons: { "Apollo 8": "Apollo 8 orbited the Moon but carried no lander.", "Apollo 10": "Apollo 10 was the rehearsal. Its lander flew the same path down but never touched the surface." } } },
+      { img: "m4/footprint.webp", dim: true, speaker: "bolt", text: "Final clue: it was the very first time people landed on the Moon, at the Sea of Tranquility in July 1969. Which file fits every clue?", overlay: { type: "deduction", suspects: ["Apollo 8", "Apollo 10", "Apollo 11", "Apollo 12"], out: ["Apollo 8", "Apollo 10", "Apollo 12"], solved: "Apollo 11", reasons: { "Apollo 8": "Apollo 8 orbited the Moon but did not land.", "Apollo 10": "Apollo 10 was the landing rehearsal. Its lunar module stayed above the surface.", "Apollo 12": "Apollo 12 made the second crewed landing in November 1969, at the Ocean of Storms, not the Sea of Tranquility." } } },
+
+      {
+        img: "m4/footprint.webp", dim: true, reveal: true, speaker: "rover", signal: 5, roverName: "Eagle", fictional: true,
+        text: "Yes. I am Eagle, the lunar module of Apollo 11. And my partner Columbia waited for us above.",
+        overlay: {
+          type: "identity", name: "Apollo 11",
+          facts: [
+            ["Mission type", "First crewed lunar landing"],
+            ["Launch", "July 16, 1969 · Saturn V"],
+            ["Landing", "July 20, 1969 · Sea of Tranquility"],
+            ["Spacecraft", "Command module Columbia · lunar module Eagle"],
+            ["Return", "July 24, 1969 · Pacific Ocean"],
+          ],
+        },
+      },
+      { img: "m4/footprint.webp", reveal: true, speaker: "bolt", text: "Now we can say their names! Commander Neil Armstrong and Buzz Aldrin walked on the Moon. Michael Collins flew Columbia around and around, keeping their ride home safe." },
+      { img: "m4/footprint.webp", reveal: true, speaker: "nova", text: "Armstrong was the first to step down. Here are his words, saved in the mission transcript:", quote: { text: "That's one small step for [a] man, one giant leap for mankind.", source: "Neil Armstrong, Apollo 11 EVA transcript, NASA" } },
+      { img: "m4/descent.webp", reveal: true, speaker: "bolt", text: "And the moment the lander touched down, Armstrong sent this message to Mission Control:", quote: { text: "Houston, Tranquility Base here. The Eagle has landed.", source: "Neil Armstrong, Apollo 11 mission transcript, NASA" } },
+
+      { img: "m4/recovery.webp", reveal: true, overlay: { type: "chapterBreak", title: "Home Safe" } },
+      { img: "m4/recovery.webp", reveal: true, speaker: "rover", signal: 4, roverName: "Eagle", fictional: true, text: "My legs are still standing at Tranquility Base. My top half circled the Moon after they left me. I carried them up so they could go home." },
+      { img: "m4/recovery.webp", reveal: true, speaker: "nova", text: "Columbia carried the crew all the way home to the ship USS Hornet, where President Nixon was waiting to welcome them. Heroes, back on Earth!" },
+      { img: "m4/recovery.webp", reveal: true, speaker: "bolt", text: "Want every secret number? Open the NASA data now, Detective! Every engine burn, every mile, and every minute is in there, straight from the original records." },
+      { img: "m4/recovery.webp", reveal: true, dim: true, overlay: { type: "boltLearns", text: "A giant leap takes a whole team, careful evidence, and every crew member doing their part.", source: "Apollo 11" } },
+      { img: "common/case-board.webp", reveal: true, speaker: "nova", text: "Moon Case L-1 is solved! Great work, Detective. Two more Moon files are still locked... and their clues are waiting for us." },
+      { img: "m4/recovery.webp", reveal: true, overlay: { type: "end" } },
     ],
   },
 ];

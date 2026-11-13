@@ -13,7 +13,7 @@ export function useCharacterVoice(step, suspended) {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch("/voices/manifest.json", { signal: controller.signal, cache: "no-cache" })
+    fetch("voices/manifest.json", { signal: controller.signal, cache: "no-cache" })
       .then((response) => {
         if (!response.ok) throw new Error("Voice manifest unavailable");
         return response.json();
@@ -44,7 +44,8 @@ export function useCharacterVoice(step, suspended) {
       setStatus("error");
       return undefined;
     }
-    const player = createCharacterAudio(clip.src);
+    // Manifest paths are root-style; drop the slash so they resolve under any hosting subfolder.
+    const player = createCharacterAudio(clip.src.slice(1));
     let disposed = false;
     const finish = () => {
       if (!disposed) {

@@ -25,6 +25,18 @@ npm run dev       # http://localhost:5173
 npm run build     # creates a production build in dist/
 ```
 
+## Publish on GitHub Pages
+
+All asset paths are relative (`base: "./"` in `vite.config.js`), so the site works
+from a repository subfolder such as `https://<user>.github.io/rover-buddies/`.
+
+1. Push this project to the `main` branch of a GitHub repository.
+2. In the repository, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+3. `.github/workflows/deploy.yml` builds the site and publishes `dist/` on every push to `main`.
+
+Images and voice clips live in `public/` and must be committed. Keep image paths in
+code relative (`"m1/yogi.webp"`, not `"/m1/yogi.webp"`), or they break on GitHub Pages.
+
 ## Project structure
 
 - `src/data/story.js`: chapter text, images, dialogue, and NASA data.

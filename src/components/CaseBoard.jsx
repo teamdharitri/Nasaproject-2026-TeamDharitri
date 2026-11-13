@@ -13,7 +13,11 @@ const MOON = { x: 1312, y: 415, r: 135 };
 const MARS_SLOTS = [[590, 135], [660, 570], [1050, 135]];
 const MOON_SLOTS = [[1255, 130], [1120, 320], [1120, 530]];
 
-const marsCases = chapters.map((c, ci) => ({ ...c, ci })).filter((c) => c.portrait);
+const marsCases = chapters.map((c, ci) => ({ ...c, ci })).filter((c) => c.portrait && c.id.startsWith("m"));
+const moonCases = [
+  ...chapters.map((c, ci) => ({ ...c, ci })).filter((c) => c.id === "l1"),
+  ...MOON_CASES,
+];
 const shortCode = (code) => code.replace("Case ", "");
 
 // A file opens once the reader reaches the step where that rover's identity is revealed.
@@ -90,9 +94,21 @@ export default function CaseBoard({ step }) {
 
         <div className="holo-group">
           <span className="holo-group__label">Moon</span>
-          {MOON_CASES.map((c, i) => (
-            <Folder key={c.code} code={c.code} name={c.codeName} state="locked" slot={MOON_SLOTS[i]} />
-          ))}
+          {moonCases.map((c, i) => {
+            const state = c.ci === undefined ? "locked" : cardState(step, c.ci);
+            return (
+              <Folder
+                key={c.code ?? c.id}
+                code={c.id ? shortCode(c.code) : c.code}
+                name={state === "open" ? c.realName : c.codeName}
+                state={state}
+                photo={c.portrait}
+                accent={c.theme}
+                slot={MOON_SLOTS[i]}
+                onOpen={missionStarted && state !== "locked" ? () => setOpenFile({ ...c, code: c.id ? shortCode(c.code) : c.code, state }) : undefined}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

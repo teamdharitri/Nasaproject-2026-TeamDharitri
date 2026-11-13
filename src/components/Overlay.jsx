@@ -79,7 +79,7 @@ function Identity({ o }) {
 function BoltLearns({ o }) {
   return (
     <div className="ov-card ov-bolt">
-      <img src="/chars/bolt.webp" alt="Bolt" />
+      <img src="chars/bolt.webp" alt="Bolt" />
       <span className="ov-bolt__label">🔓 Bolt's locked file has been unlocked</span>
       <p>"{o.text}"</p>
       <span className="ov-bolt__src">Source: {o.source}</span>
@@ -101,8 +101,10 @@ function End({ onRestart }) {
   return (
     <div className="ov-end">
       <h2>To be continued...</h2>
-      <p>All three Mars files are unlocked. The three Moon files are still locked.</p>
-      <p className="ov-end__next">Next file: Moon Case L-1 🔒</p>
+      <p>Apollo 11 is restored. Moon Cases L-2 and L-3 are upcoming—new clues are on their way!</p>
+      <p className="ov-end__next">
+        <span className="ov-end__badge">🚀 Upcoming</span> Next file: Moon Case L-2
+      </p>
       <button className="btn-start" onClick={onRestart}>Restart from the beginning ↑</button>
       <p className="ov-end__credit">
         Images: NASA/JPL-Caltech and partner institutions (for factual data); all other images were illustrated for this story.

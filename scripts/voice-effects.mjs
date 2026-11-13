@@ -70,13 +70,20 @@ export function normalize(input, peak = 0.89) {
   return max ? input.map((x) => (x / max) * peak) : input;
 }
 
+// Soft saturation lifts average loudness while the peak stays fixed by normalize().
+export function drive(input, amount) {
+  const scale = Math.tanh(amount);
+  return input.map((x) => Math.tanh(x * amount) / scale);
+}
+
 export const characterVoices = {
   // A natural female commander, only lightly cleaned up.
   nova: { voice: "af_heart", speed: 0.95, pitch: 1 },
   // Generated slow, then sped up: higher, smaller voice at a normal talking pace.
   bolt: { voice: "am_puck", speed: 0.86, pitch: 1.2 },
-  // Generated fast, then slowed: a lower, heavier machine voice.
-  rover: { voice: "am_onyx", speed: 1.05, pitch: 0.9 },
+  // Generated fast, then slowed: a lower, heavier machine voice. The radio filters make it
+  // sound quieter than the others at the same peak, so it gets extra drive.
+  rover: { voice: "am_onyx", speed: 1.05, pitch: 0.9, drive: 1.8 },
 };
 
 export function applyCharacterEffect(samples, rate, speaker, signal = 3) {
@@ -96,6 +103,7 @@ export function applyCharacterEffect(samples, rate, speaker, signal = 3) {
     x = bitcrush(normalize(x), 8, 0.35);
     // Weaker signal bars mean more radio static.
     x = addStatic(x, 0.006 * (6 - Math.max(1, Math.min(5, signal))), x.length);
+    x = drive(normalize(x), characterVoices.rover.drive);
   }
   return normalize(x);
 }

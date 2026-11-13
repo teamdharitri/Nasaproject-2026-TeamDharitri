@@ -24,7 +24,11 @@ export default function NasaModal({ content, onClose }) {
           <div className="modal__gallery">
             {items.map((item) => (
               <figure className="modal__item" key={item.src}>
-                <img src={item.src} alt={item.title} />
+                {item.video ? (
+                  <video src={item.src} controls preload="metadata" playsInline aria-label={item.title} />
+                ) : (
+                  <img src={item.src} alt={item.title} />
+                )}
                 <figcaption>
                   <h4>{item.title}</h4>
                   <p>{item.caption}</p>
@@ -38,7 +42,7 @@ export default function NasaModal({ content, onClose }) {
               </figure>
             ))}
           </div>
-        ) : (
+        ) : content.src ? (
           <>
             <img src={content.src} alt={content.title} />
             <p>{content.caption}</p>
@@ -52,12 +56,19 @@ export default function NasaModal({ content, onClose }) {
               </section>
             )}
           </>
-        )}
+        ) : null}
         {sections.length > 0 && (
           <div className="modal__sections">
             {sections.map((section) => (
               <section className="modal__section" key={section.title}>
+                {section.img && (
+                  <figure className="modal__section-photo">
+                    <img src={section.img} alt={section.title} loading="lazy" />
+                    {section.credit && <small>{section.credit}</small>}
+                  </figure>
+                )}
                 <h4>{section.title}</h4>
+                {section.summary && <p className="modal__summary">{section.summary}</p>}
                 <ul>
                   {section.items.map((item) => <li key={item}>{item}</li>)}
                 </ul>

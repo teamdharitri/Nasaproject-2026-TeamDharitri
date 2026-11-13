@@ -12,9 +12,10 @@ const allSteps = chapters.flatMap((chapter, ci) =>
   chapter.steps.map((step, si) => ({ ...step, ci, isFirst: si === 0 }))
 );
 const chapterStart = chapters.map((_, ci) => allSteps.findIndex((s) => s.ci === ci));
-const nasaGalleries = chapters.map((chapter) =>
-  [...new Map(chapter.steps.filter((step) => step.nasa).map((step) => [step.nasa.src, step.nasa])).values()]
-);
+const nasaGalleries = chapters.map((chapter) => [
+  ...new Map(chapter.steps.filter((step) => step.nasa).map((step) => [step.nasa.src, step.nasa])).values(),
+  ...(chapter.nasaExtras ?? []),
+]);
 const images = [...new Set(allSteps.map((s) => s.img))];
 const isBoard = (img) => img === BOARD_IMG || img === BOARD_INTRO_IMG;
 // Centered overlays take the whole screen, so the text column stays empty for them.
@@ -37,7 +38,7 @@ export default function Story({ onExit }) {
   const nasaSections = (chapter.nasaSections ?? []).filter((section) => !section.revealOnly || step.reveal);
   const nasaContent = step.nasa
     ? { ...step.nasa, sections: nasaSections }
-    : chapter.id !== "intro" && nasaGalleries[step.ci].length
+    : chapter.id !== "intro" && (nasaGalleries[step.ci].length || nasaSections.length)
       ? { title: `${label} · NASA Images & Data`, gallery: nasaGalleries[step.ci], sections: nasaSections }
       : null;
   // NASA records would give the answer away, so they stay locked until the identity is confirmed.
@@ -113,10 +114,10 @@ export default function Story({ onExit }) {
           disabled={nasaLocked}
           key={`nasa-${current}-${nasaLocked}`}
         >
-          <img src="/chars/bolt.webp" alt="" />
+          <img src="chars/bolt.webp" alt="" />
           <span>
             {nasaLocked ? "🔒 View NASA data" : "🔓 View NASA data"}
-            <small>{nasaLocked ? "Unlocks when identity is confirmed" : "Real images"}</small>
+            <small>{nasaLocked ? "Unlocks when identity is confirmed" : nasaGalleries[step.ci].length ? "Real images & mission data" : "NASA mission data"}</small>
           </span>
         </button>
       )}
